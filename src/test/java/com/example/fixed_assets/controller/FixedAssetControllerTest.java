@@ -61,7 +61,7 @@ public class FixedAssetControllerTest {
 
     @Test
     public void testUpdateFixedAsset() throws Exception {
-        FixedAsset fixedAsset = new FixedAsset(1, 1, "Laptop", new Date(), new BigDecimal("1200.00"), "Available");
+        FixedAsset fixedAsset = new FixedAsset(1, 1, "1", new Date(), new BigDecimal("1.00"), "Available");
 
         mockMvc.perform(put("/fixedAssets/1")
                         .contentType(MediaType.APPLICATION_JSON)

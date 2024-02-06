@@ -12,6 +12,9 @@ public class FixedAsset {
     private BigDecimal price;
     private String status;
 
+    public FixedAsset() {
+    }
+
     public FixedAsset(Integer assetId, Integer assetTypeId, String name, Date purchaseDate, BigDecimal price, String status) {
         this.assetId = assetId;
         this.assetTypeId = assetTypeId;

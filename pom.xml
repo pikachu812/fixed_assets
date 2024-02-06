@@ -5,8 +5,8 @@
     <groupId>com.example</groupId>
     <artifactId>fixedassets</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>fixedassets</name>
-    <description>fixedassets</description>
+    <name>fixed_assets</name>
+    <description>fixed_assets</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -69,7 +69,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.example.fixed_assets.FixedassetsApplication</mainClass>
+                    <mainClass>com.example.fixed_assets.FixedAssetsApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
                 <executions>

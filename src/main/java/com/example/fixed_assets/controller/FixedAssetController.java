@@ -17,7 +17,7 @@ import java.util.List;
  * @ Controller     注解表示该类是一个控制器，用于接收请求和返回视图，这个注解是SpringMVC的注解
  */
 @RestController
-@RequestMapping("/fixedAsset")
+@RequestMapping("/fixedAssets")
 public class FixedAssetController {
 
     @Autowired
