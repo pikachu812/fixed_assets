@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fixed_assets.dao.FixedAssetDao">
+
+    <!-- 插入固定资产 -->
+    <insert id="insertFixedAsset" parameterType="com.example.fixed_assets.entity.FixedAsset">
+        INSERT INTO fixed_asset (asset_type_id, name, purchase_date, price, status)
+        VALUES (#{assetTypeId}, #{name}, #{purchaseDate}, #{price}, #{status})
+    </insert>
+
+    <!-- 更新固定资产 -->
+    <update id="updateFixedAsset" parameterType="com.example.fixed_assets.entity.FixedAsset">
+        UPDATE fixed_asset
+        SET asset_type_id = #{assetTypeId},
+            name = #{name},
+            purchase_date = #{purchaseDate},
+            price = #{price},
+            status = #{status}
+        WHERE asset_id = #{assetId}
+    </update>
+
+    <!-- 删除固定资产 -->
+    <delete id="deleteFixedAsset" parameterType="int">
+        DELETE FROM fixed_asset WHERE asset_id = #{assetId}
+    </delete>
+
+    <!-- 通过 ID 选择固定资产 -->
+    <select id="selectFixedAssetById" parameterType="int" resultType="com.example.fixed_assets.entity.FixedAsset">
+        SELECT * FROM fixed_asset WHERE asset_id = #{assetId}
+    </select>
+
+    <!-- 选择所有固定资产 -->
+    <select id="selectAllFixedAssets" resultType="com.example.fixed_assets.entity.FixedAsset">
+        SELECT * FROM fixed_asset
+    </select>
+
+</mapper>
