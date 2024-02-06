@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.fixedassets.demos.web;
+package com.example.fixed_assets.entity;
 
 /**
  * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>

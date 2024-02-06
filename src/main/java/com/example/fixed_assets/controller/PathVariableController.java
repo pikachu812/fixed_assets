@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.fixedassets.demos.web;
+package com.example.fixed_assets.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.example.fixedassets.demos.web;
+package com.example.fixed_assets.controller;
 
+import com.example.fixed_assets.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;

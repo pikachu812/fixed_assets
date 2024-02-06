@@ -1,4 +1,4 @@
-package com.example.fixedassets;
+package com.example.fixed_assets;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
