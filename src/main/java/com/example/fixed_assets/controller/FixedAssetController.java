@@ -26,7 +26,7 @@ public class FixedAssetController {
     @PostMapping
     public ResponseEntity<?> addFixedAsset(@RequestBody FixedAsset fixedAsset) {
         fixedAssetService.addFixedAsset(fixedAsset);
-        return new ResponseEntity<>("Asset added successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>("Asset added successfully.", HttpStatus.CREATED);
     }
 
     @PutMapping("/{assetId}")

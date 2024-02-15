@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.reset;
@@ -91,6 +92,21 @@ public class FixedAssetControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(fixedAsset)));
 
+        verify(fixedAssetService).getFixedAssetById(1);
+    }
+
+    @Test
+    public void testGetAllFixedAssets() throws Exception {
+        FixedAsset fixedAsset1 = new FixedAsset(1, 1, "Laptop", new Date(), new BigDecimal("1200.00"), "Available");
+        FixedAsset fixedAsset2 = new FixedAsset(2, 2, "Printer", new Date(), new BigDecimal("300.00"), "Available");
+
+        given(fixedAssetService.getAllFixedAssets()).willReturn(List.of(fixedAsset1, fixedAsset2));
+
+        mockMvc.perform(get("/fixedAssets"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(List.of(fixedAsset1, fixedAsset2))));
+
         verify(fixedAssetService).getAllFixedAssets();
     }
+
 }
