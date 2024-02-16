@@ -16,10 +16,11 @@
 
 package com.example.fixed_assets.entity;
 
+@lombok.Data
 public class User {
 
-    private String name;
-
-    private Integer age;
-
+    private Integer userId;
+    private String username;
+    private String password;
+    private String role;
 }
