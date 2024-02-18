@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -56,7 +57,8 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    public ResponseEntity<List<User>> searchUsers(@RequestBody User user) {
+    @GetMapping("/details")
+    public ResponseEntity<List<User>> searchUsers(@RequestBody Map<String,Object> user) {
         List<User> users = userService.searchUsers(user);
         return ResponseEntity.ok(users);
     }

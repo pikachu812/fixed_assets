@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -44,8 +45,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(int id) {
-        return userDao.getUser(id);
+    public User getUser(int userId) {
+        return userDao.getUser(userId);
     }
 
     @Override
@@ -58,9 +59,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> searchUsers(User user) {
-        return userDao.searchUsers(user);
+    public List<User> searchUsers(Map<String, Object> params){
+        return userDao.findUserWithRoleAndPermissions(params);
     }
+
 
     private String md5(String input) {
         try {

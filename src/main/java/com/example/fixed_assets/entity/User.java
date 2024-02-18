@@ -16,11 +16,19 @@
 
 package com.example.fixed_assets.entity;
 
+import java.util.List;
+
+/**
+ * 用户实体类
+ */
 @lombok.Data
 public class User {
 
     private Integer userId;
     private String username;
     private String password;
-    private String role;
+    private int roleId; // 关联角色ID
+    private Role role; // 关联角色对象
+    private List<Permission> permissions; // 关联权限对象
+
 }

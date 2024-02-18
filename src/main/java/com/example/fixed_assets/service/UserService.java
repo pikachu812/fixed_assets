@@ -3,6 +3,7 @@ package com.example.fixed_assets.service;
 import com.example.fixed_assets.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -18,6 +19,8 @@ public interface UserService {
 
     User validateUser(String username, String password);
 
-    List<User> searchUsers(User user);
+    List<User> searchUsers(Map<String, Object> params);
+
+
 
 }

@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,7 +32,7 @@ public class UserServiceTest {
         testUser = new User();
         testUser.setUsername("test");
         testUser.setPassword("test");
-        testUser.setRole("test");
+        testUser.setRoleId(1);
     }
 
 
@@ -72,8 +74,11 @@ public class UserServiceTest {
 
     public void searchUsers() {
         logger.info(() -> "------------------>searchUsers");
-        List<User> users = userService.searchUsers(null);
+        Map<String, Object> params = new HashMap<>();
+        // 添加查询参数
+        List<User> users = userService.searchUsers(params);
         logger.info(() -> "users: " + users);
+        assert users != null && !users.isEmpty();
     }
 
     public void validateUser() {
@@ -86,6 +91,5 @@ public class UserServiceTest {
         logger.info(() -> "------------------>deleteUser");
         userService.deleteUser(testUser.getUserId());
     }
-
 
 }

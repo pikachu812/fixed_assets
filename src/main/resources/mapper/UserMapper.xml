@@ -5,11 +5,11 @@
         <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userId">
             select LAST_INSERT_ID()
         </selectKey>
-        INSERT INTO user (username, password, role) VALUES (#{username}, #{password}, #{role})
+        INSERT INTO user (username, password, role_id) VALUES (#{username}, #{password}, #{roleId})
     </insert>
 
     <update id="updateUser" parameterType="com.example.fixed_assets.entity.User">
-        UPDATE user SET username = #{username}, role = #{role} WHERE user_id = #{userId}
+        UPDATE user SET username = #{username}, role_id = #{roleId} WHERE user_id = #{userId}
     </update>
     <update id="updateUserPassword" parameterType="com.example.fixed_assets.entity.User">
         UPDATE user SET password = #{password} WHERE user_id = #{userId}
@@ -19,22 +19,65 @@
         DELETE FROM user WHERE user_id = #{userId}
     </delete>
 
-    <select id="getUser" parameterType="int" resultType="com.example.fixed_assets.entity.User">
-        SELECT * FROM user WHERE user_id = #{userId}
+    <select id="getUser" parameterType="int" resultMap="userRolePermissionMap">
+        SELECT u.*, r.role_name
+        FROM user u
+                 LEFT JOIN role r ON u.role_id = r.role_id
+        WHERE u.user_id = #{userId}
     </select>
 
-    <select id="findByUsername" resultType="com.example.fixed_assets.entity.User">
+    <select id="findByUsername" resultMap="userRolePermissionMap">
         SELECT * FROM user WHERE username = #{username}
     </select>
-    <select id="searchUsers" resultType="com.example.fixed_assets.entity.User">
+    <select id="searchUsers" resultMap="userRolePermissionMap">
         SELECT * FROM user
         <where>
             <if test="username != null">
                 OR username = #{username}
             </if>
             <if test="role != null">
-                OR role = #{role}
+                OR role_id = #{roleId}
             </if>
         </where>
     </select>
+    <select id="findUserWithRoleAndPermissions" parameterType="map" resultMap="userRolePermissionMap">
+        SELECT u.*, r.role_name, p.permission_name
+        FROM user u
+        LEFT JOIN role r ON u.role_id = r.role_id
+        LEFT JOIN role_permission rp ON r.role_id = rp.role_id
+        LEFT JOIN permission p ON rp.permission_id = p.permission_id
+        WHERE 1=1
+        <if test="userId != null">
+            AND u.user_id = #{userId}
+        </if>
+        <if test="username != null">
+            AND u.username = #{username}
+        </if>
+        <if test="roleName != null">
+            AND r.role_name = #{roleName}
+        </if>
+        <if test="permissionName != null">
+            AND p.permission_name = #{permissionName}
+        </if>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset}, #{limit}
+        </if>
+    </select>
+
+
+    <resultMap id="userRolePermissionMap" type="com.example.fixed_assets.entity.User">
+        <id column="user_id" property="userId" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <association property="role" javaType="com.example.fixed_assets.entity.Role">
+            <id column="role_id" property="roleId" />
+            <result column="role_name" property="roleName" />
+        </association>
+        <collection property="permissions" ofType="com.example.fixed_assets.entity.Permission">
+            <id column="permission_id" property="permissionId" />
+            <result column="permission_name" property="permissionName" />
+            <result column="description" property="description" />
+        </collection>
+    </resultMap>
+
 </mapper>
