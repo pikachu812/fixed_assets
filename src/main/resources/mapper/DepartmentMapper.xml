@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fixed_assets.dao.DepartmentDao">
+
+    <!-- 插入部门 -->
+    <insert id="insertDepartment" parameterType="com.example.fixed_assets.entity.Department" useGeneratedKeys="true" keyProperty="departmentId">
+        INSERT INTO department (name, description)
+        VALUES (#{name}, #{description})
+    </insert>
+
+    <!-- 更新部门 -->
+    <update id="updateDepartment" parameterType="com.example.fixed_assets.entity.Department">
+        UPDATE department
+        SET name = #{name}, description = #{description}
+        WHERE department_id = #{departmentId}
+    </update>
+
+    <!-- 删除部门 -->
+    <delete id="deleteDepartment" parameterType="java.lang.Integer">
+        DELETE FROM department WHERE department_id = #{departmentId}
+    </delete>
+
+    <!-- 通过ID选择部门 -->
+    <select id="selectDepartmentById" parameterType="java.lang.Integer" resultType="com.example.fixed_assets.entity.Department">
+        SELECT * FROM department WHERE department_id = #{departmentId}
+    </select>
+
+    <!-- 选择所有部门 -->
+    <select id="selectAllDepartments" resultType="com.example.fixed_assets.entity.Department">
+        SELECT * FROM department
+    </select>
+</mapper>

@@ -20,21 +20,21 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public void updateDepartment(Department department) {
-
+        departmentDao.updateDepartment(department);
     }
 
     @Override
     public void deleteDepartment(Integer departmentId) {
-
+        departmentDao.deleteDepartment(departmentId);
     }
 
     @Override
     public Department getDepartmentById(Integer departmentId) {
-        return null;
+        return departmentDao.selectDepartmentById(departmentId);
     }
 
     @Override
     public List<Department> getAllDepartments() {
-        return null;
+        return departmentDao.selectAllDepartments();
     }
 }
