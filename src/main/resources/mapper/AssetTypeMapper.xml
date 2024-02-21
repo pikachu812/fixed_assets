@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.fixed_assets.dao.AssetTypeDao">
-    <!-- SQL映射 -->
-    <!-- ... -->
+    <!-- 插入资产类型 -->
+    <insert id="insertAssetType" parameterType="com.example.fixed_assets.entity.AssetType" keyColumn="asset_type_id" keyProperty="assetTypeId" useGeneratedKeys="true">
+        INSERT INTO asset_type (type_name, description)
+        VALUES (#{typeName}, #{description})
+    </insert>
+
+    <!-- 更新资产类型 -->
+    <update id="updateAssetType" parameterType="com.example.fixed_assets.entity.AssetType">
+        UPDATE asset_type
+        SET type_name = #{typeName}, description = #{description}
+        WHERE asset_type_id = #{assetTypeId}
+    </update>
+
+    <!-- 删除资产类型 -->
+    <delete id="deleteAssetType" parameterType="java.lang.Integer">
+        DELETE FROM asset_type WHERE asset_type_id = #{assetTypeId}
+    </delete>
+
+    <!-- 通过ID选择资产类型 -->
+    <select id="selectAssetTypeById" parameterType="java.lang.Integer" resultType="com.example.fixed_assets.entity.AssetType">
+        SELECT * FROM asset_type WHERE asset_type_id = #{assetTypeId}
+    </select>
+
+    <!-- 选择所有资产类型 -->
+    <select id="selectAllAssetTypes" resultType="com.example.fixed_assets.entity.AssetType">
+        SELECT * FROM asset_type
+    </select>
 </mapper>
