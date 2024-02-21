@@ -3,7 +3,7 @@
 <mapper namespace="com.example.fixed_assets.dao.FixedAssetDao">
 
     <!-- 插入固定资产 -->
-    <insert id="insertFixedAsset" parameterType="com.example.fixed_assets.entity.FixedAsset">
+    <insert id="insertFixedAsset" parameterType="com.example.fixed_assets.entity.FixedAsset" keyColumn="asset_id" keyProperty="assetId" useGeneratedKeys="true">
         INSERT INTO fixed_asset (asset_type_id, name, purchase_date, price, status)
         VALUES (#{assetTypeId}, #{name}, #{purchaseDate}, #{price}, #{status})
     </insert>

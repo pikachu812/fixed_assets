@@ -14,16 +14,6 @@ public class FixedAsset {
     private Date purchaseDate;
     private BigDecimal price;
     private String status;
+    AssetType assetType;
 
-    public FixedAsset() {
-    }
-
-    public FixedAsset(Integer assetId, Integer assetTypeId, String name, Date purchaseDate, BigDecimal price, String status) {
-        this.assetId = assetId;
-        this.assetTypeId = assetTypeId;
-        this.name = name;
-        this.purchaseDate = purchaseDate;
-        this.price = price;
-        this.status = status;
-    }
 }
