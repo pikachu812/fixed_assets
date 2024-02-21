@@ -24,14 +24,34 @@
         DELETE FROM fixed_asset WHERE asset_id = #{assetId}
     </delete>
 
-    <!-- 通过 ID 选择固定资产 -->
-    <select id="selectFixedAssetById" parameterType="int" resultType="com.example.fixed_assets.entity.FixedAsset">
-        SELECT * FROM fixed_asset WHERE asset_id = #{assetId}
+
+    <select id="selectFixedAssetById" parameterType="int" resultMap="FixedAssetWithTypeResultMap">
+        SELECT fa.*, at.asset_type_id as "assetType.assetTypeId", at.type_name as "assetType.typeName", at.description as "assetType.description"
+        FROM fixed_asset fa
+                 LEFT JOIN asset_type at ON fa.asset_type_id = at.asset_type_id
+        WHERE fa.asset_id = #{assetId}
     </select>
 
-    <!-- 选择所有固定资产 -->
-    <select id="selectAllFixedAssets" resultType="com.example.fixed_assets.entity.FixedAsset">
-        SELECT * FROM fixed_asset
+
+    <select id="selectAllFixedAssets" resultMap="FixedAssetWithTypeResultMap">
+        SELECT fa.*, at.asset_type_id as "assetType.assetTypeId", at.type_name as "assetType.typeName", at.description as "assetType.description"
+        FROM fixed_asset fa
+                 LEFT JOIN asset_type at ON fa.asset_type_id = at.asset_type_id
     </select>
+
+    <!-- 结果映射 -->
+    <resultMap id="FixedAssetWithTypeResultMap" type="com.example.fixed_assets.entity.FixedAsset">
+        <id column="asset_id" property="assetId"/>
+        <result column="asset_type_id" property="assetTypeId"/>
+        <result column="name" property="name"/>
+        <result column="purchase_date" property="purchaseDate"/>
+        <result column="price" property="price"/>
+        <result column="status" property="status"/>
+        <association property="assetType" javaType="com.example.fixed_assets.entity.AssetType">
+            <id column="assetType.assetTypeId" property="assetTypeId"/>
+            <result column="assetType.typeName" property="typeName"/>
+            <result column="assetType.description" property="description"/>
+        </association>
+    </resultMap>
 
 </mapper>
