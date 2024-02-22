@@ -27,7 +27,13 @@
     </select>
 
     <select id="findByUsername" resultMap="userRolePermissionMap">
-        SELECT * FROM user WHERE username = #{username}
+        SELECT u.*, r.role_name, p.permission_name
+        FROM user u
+                 LEFT JOIN role r ON u.role_id = r.role_id
+                 LEFT JOIN role_permission rp ON r.role_id = rp.role_id
+                 LEFT JOIN permission p ON rp.permission_id = p.permission_id
+        WHERE u.username = #{username}
+        LIMIT 1
     </select>
     <select id="searchUsers" resultMap="userRolePermissionMap">
         SELECT * FROM user

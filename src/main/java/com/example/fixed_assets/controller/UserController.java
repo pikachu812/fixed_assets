@@ -2,6 +2,8 @@ package com.example.fixed_assets.controller;
 
 import com.example.fixed_assets.entity.User;
 import com.example.fixed_assets.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -22,12 +27,28 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * 登录
+     * @param requestUser 用户信息
+     * @param session session
+     * @return 如果登录成功，返回用户信息，否则返回错误信息
+     *         错误码：400
+     */
     @PostMapping("/login")
-    public ResponseEntity<?> login(String username, String password, HttpSession session) {
+    public ResponseEntity<?> login(@RequestBody User requestUser, HttpSession session) {
+
+
+        String username = requestUser.getUsername();
+        String password = requestUser.getPassword();
+
+        logger.info("username: " + username);
+        logger.info("password: " + password);
+
         User user = userService.validateUser(username, password);
         if (user != null) {
             session.setAttribute("user", user);
-            return ResponseEntity.ok("Login successfully.");
+            //返回用户信息，以json格式
+            return ResponseEntity.ok(user);
         }
         return ResponseEntity.badRequest().body("Invalid username or password.");
     }

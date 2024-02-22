@@ -40,6 +40,8 @@ import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 import { Lock, User } from '@element-plus/icons-vue';
+import service from "../utils/request";
+
 
 interface LoginInfo {
     username: string;
@@ -71,22 +73,53 @@ const login = ref<FormInstance>();
 const submitForm = (formEl: FormInstance | undefined) => {
     if (!formEl) return;
     formEl.validate((valid: boolean) => {
-        if (valid) {
-            ElMessage.success('登录成功');
-            localStorage.setItem('ms_username', param.username);
-            const keys = permiss.defaultList[param.username == 'admin' ? 'admin' : 'user'];
-            permiss.handleSet(keys);
-            localStorage.setItem('ms_keys', JSON.stringify(keys));
-            router.push('/');
-            if (checked.value) {
-                localStorage.setItem('login-param', JSON.stringify(param));
-            } else {
-                localStorage.removeItem('login-param');
-            }
-        } else {
+        if (!valid) {
+
             ElMessage.error('登录失败');
             return false;
+
         }
+        // 使用导入的 Axios 实例发送请求
+        service.post('/user/login', param) // 替换为你的后端登录接口
+            .then(response => {
+                // 处理响应
+                ElMessage.success('登录成功');
+                localStorage.setItem('ms_username', param.username);
+                const keys = permiss.defaultList[response.data.role.roleName];
+                permiss.handleSet(keys);
+                localStorage.setItem('ms_keys', JSON.stringify(keys));
+                router.push('/');
+                if (checked.value) {
+                    localStorage.setItem('login-param', JSON.stringify(param));
+                } else {
+                    localStorage.removeItem('login-param');
+                }
+
+                if (checked.value) {
+                    localStorage.setItem('login-param', JSON.stringify(param));
+                } else {
+                    localStorage.removeItem('login-param');
+                }
+            })
+            .catch(error => {
+                if (error.response) {
+                    if(error.response.status === 400){
+                        ElMessage.error('用户名或密码错误');
+                    }else{
+                        ElMessage.error('服务器错误');
+                    }
+                } else if (error.request) {
+                    // 请求已发出，但没有收到响应
+                    ElMessage.error('请求超时');
+                } else {
+                    // 处理错误
+                    ElMessage.error('登录失败');
+                }
+            });
+
+
+
+
     });
 };
 
