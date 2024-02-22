@@ -45,6 +45,7 @@ declare module '@vue/runtime-core' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTimePicker: typeof import('element-plus/es')['ElTimePicker']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    ElTree: typeof import('element-plus/es')['ElTree']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Header: typeof import('./src/components/header.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -53,5 +54,7 @@ declare module '@vue/runtime-core' {
     TableDetail: typeof import('./src/components/table-detail.vue')['default']
     TableEdit: typeof import('./src/components/table-edit.vue')['default']
     Tags: typeof import('./src/components/tags.vue')['default']
+    UserTableDetail: typeof import('./src/components/userTableDetail.vue')['default']
+    UserTableEdit: typeof import('./src/components/userTableEdit.vue')['default']
   }
 }

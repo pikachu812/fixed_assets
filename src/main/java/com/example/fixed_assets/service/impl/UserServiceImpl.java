@@ -26,6 +26,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user) {
 
+        if(user.getPassword() != null && !user.getPassword().isEmpty()){
+            user.setPassword(md5(user.getPassword()));
+            userDao.updateUserPassword(user);
+        }
+
         // 管理员修改用户信息时不修改密码
         // 用户修改自己的信息时不修改密码
         // 修改密码时需要通过其他接口实现
@@ -40,6 +45,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserPassword(User user) {
+
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be empty.");
+        }
         user.setPassword(md5(user.getPassword()));
         userDao.updateUserPassword(user);
     }

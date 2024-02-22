@@ -78,7 +78,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/details")
+    @PostMapping("/details")
     public ResponseEntity<List<User>> searchUsers(@RequestBody Map<String,Object> user) {
         List<User> users = userService.searchUsers(user);
         return ResponseEntity.ok(users);

@@ -63,6 +63,12 @@ const items = [
         permiss: '1',
     },
     {
+        icon: 'User',
+        index: '/userManagement',
+        title: '用户管理',
+        permiss: '1',
+    },
+    {
         icon: 'Calendar',
         index: '1',
         title: '表格相关',

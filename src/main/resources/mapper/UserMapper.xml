@@ -75,6 +75,7 @@
         <id column="user_id" property="userId" />
         <result column="username" property="username" />
         <result column="password" property="password" />
+        <result column="role_id" property="roleId" />
         <association property="role" javaType="com.example.fixed_assets.entity.Role">
             <id column="role_id" property="roleId" />
             <result column="role_name" property="roleName" />

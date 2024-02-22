@@ -6,7 +6,6 @@ const service: AxiosInstance = axios.create({
     headers: {
         'Content-Type': 'application/json'
     },
-    method: 'post'
 });
 
 service.interceptors.request.use(
