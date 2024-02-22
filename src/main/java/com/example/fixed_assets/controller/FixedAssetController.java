@@ -11,11 +11,13 @@ import java.util.List;
 
 /**
  * 资产管理控制器 <br><br>
+ * @ CrossOrigin     注解表示该类的所有方法都支持跨域请求<br><br>
  * @ RestController  注解表示该类的所有方法返回的数据都是直接写给浏览器（如果是对象转为json数据）
  *                   也就是说，这个类的所有方法都是直接返回数据，而不是返回视图<br><br>
  * @ RequestMapping 注解表示该类的所有方法都是以 /assets 开头的 <br><br>
  * @ Controller     注解表示该类是一个控制器，用于接收请求和返回视图，这个注解是SpringMVC的注解
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/fixedAssets")
 public class FixedAssetController {
