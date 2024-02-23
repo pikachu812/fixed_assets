@@ -26,6 +26,7 @@ CREATE TABLE `asset_allocation` (
   `allocation_id` int NOT NULL AUTO_INCREMENT,
   `asset_id` int DEFAULT NULL,
   `employee_id` int DEFAULT NULL,
+  `department` varchar(50) DEFAULT NULL,
   `allocation_date` date DEFAULT NULL,
   `return_date` date DEFAULT NULL,
   PRIMARY KEY (`allocation_id`),
@@ -56,7 +57,9 @@ CREATE TABLE `asset_depreciation` (
   `depreciation_id` int NOT NULL AUTO_INCREMENT,
   `asset_id` int DEFAULT NULL,
   `depreciation_date` date DEFAULT NULL,
-  `amount` decimal(10,2) DEFAULT NULL,
+  `depreciation_amount` decimal(10,2) DEFAULT NULL,
+  `accumulated_depreciation` decimal(10,2) DEFAULT NULL,
+  `book_value` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`depreciation_id`),
   KEY `asset_id` (`asset_id`),
   CONSTRAINT `asset_depreciation_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `fixed_asset` (`asset_id`)
@@ -83,7 +86,10 @@ CREATE TABLE `asset_inventory` (
   `inventory_id` int NOT NULL AUTO_INCREMENT,
   `asset_id` int DEFAULT NULL,
   `inventory_date` date DEFAULT NULL,
+  `department_id` int DEFAULT NULL,
   `status` varchar(50) DEFAULT NULL,
+  `book_quantity` int DEFAULT NULL,           -- Added field for book quantity
+  `book_value` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`inventory_id`),
   KEY `asset_id` (`asset_id`),
   CONSTRAINT `asset_inventory_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `fixed_asset` (`asset_id`)
