@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AssetsDisplay: typeof import('./src/components/assetsDisplay.vue')['default']
     copy: typeof import('./src/components/header copy.vue')['default']
     DepartmentEdit: typeof import('./src/components/departmentEdit.vue')['default']
     DepartmentTableEdit: typeof import('./src/components/DepartmentTableEdit.vue')['default']
@@ -46,6 +47,7 @@ declare module '@vue/runtime-core' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTableV2: typeof import('element-plus/es')['ElTableV2']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
