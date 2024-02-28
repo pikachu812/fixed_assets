@@ -10,4 +10,5 @@ public interface FixedAssetService {
     void removeFixedAsset(Integer assetId);
     FixedAsset getFixedAssetById(Integer assetId);
     List<FixedAsset> getAllFixedAssets();
+    List<FixedAsset> getFixedAssetsByCondition(FixedAsset query);
 }

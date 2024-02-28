@@ -56,4 +56,12 @@ public class FixedAssetController {
         return new ResponseEntity<>(fixedAssets, HttpStatus.OK);
     }
 
+
+    @PostMapping("/getFixedAssetsByCondition")
+    public ResponseEntity<List<FixedAsset>> getFixedAssetsByCondition(@RequestBody FixedAsset query) {
+        List<FixedAsset> fixedAssets = fixedAssetService.getFixedAssetsByCondition(query);
+        return new ResponseEntity<>(fixedAssets, HttpStatus.OK);
+    }
+
+
 }

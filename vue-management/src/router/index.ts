@@ -6,21 +6,11 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 const routes: RouteRecordRaw[] = [
-    {
-        path: '/front-page',
-        name: 'FrontPage',
-        meta: {
-            title: '前台首页',
-            // 假设普通用户登陆后只能访问前台
-            // role: 'user'
-        },
-        component: () => import('../views/frontPage.vue'),
-
-    },
-    {
-        path: '/',
-        redirect: '/dashboard',
-    },
+    // {
+    //     path: '/',
+    //     redirect: '/dashboard',
+    // },
+    
     {
         path: '/',
         name: 'Home',
@@ -167,6 +157,30 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "404" */ '../views/departmentManagement.vue'),
             },
+            {
+                path: '/userHome',
+                name: 'userHome',
+                meta: {
+                    title: '用户首页',
+                },
+                component: () => import(/* webpackChunkName: "404" */ '../views/userHome.vue'),
+            },
+            {
+                path: '/assetTypeManagement',
+                name: 'assetTypeManagement',
+                meta: {
+                    title: '固定资产类型管理',
+                },
+                component: () => import(/* webpackChunkName: "404" */ '../views/assetTypeManagement.vue'),
+            },
+            {
+                path: '/assetManagement',
+                name: 'assetManagement',
+                meta: {
+                    title: '固定资产信息管理',
+                },
+                component: () => import(/* webpackChunkName: "404" */ '../views/assetManagement.vue'),
+            }
         ],
     },
     {
@@ -192,25 +206,10 @@ const router = createRouter({
     routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//     NProgress.start();
-//     const role = localStorage.getItem('role'); // 假设在localStorage中存储用户角色信息
-//     if (!role && to.path !== '/login') {
-//         next('/login');
-//     } else if (role === 'admin' && to.path === '/') {
-//         // 如果是管理员访问根路径，则跳转到home.vue
-//         next('/dashboard');
-//     } else if (role === 'user' && to.path === '/') {
-//         // 如果是普通用户访问根路径，则跳转到frontPage.vue
-//         next('/front-page');
-//     } else {
-//         next();
-//     }
-// });
 
 router.beforeEach((to, from, next) => {
     NProgress.start();
-    const role = localStorage.getItem('ms_username');
+    const role = localStorage.getItem('role');
     const permiss = usePermissStore();
     if (!role && to.path !== '/login') {
         next('/login');
@@ -218,7 +217,18 @@ router.beforeEach((to, from, next) => {
         // 如果没有权限，则进入403
         next('/403');
     } else {
-        next();
+
+        if (role === 'admin' && to.path === '/') {
+            next('/dashboard');
+        }else if(role === 'user' && to.path === '/'){
+            next("/userHome");
+        }else {
+            next();
+        }
+
+        console.log('ROLE', role);
+        console.log('to', to);
+
     }
 });
 

@@ -37,4 +37,9 @@ public class AssetTypeServiceImpl implements AssetTypeService {
     public List<AssetType> getAllAssetTypes() {
         return assetTypeDao.selectAllAssetTypes();
     }
+
+    @Override
+    public List<AssetType> getAssetTypeByCondition(AssetType assetType) {
+        return assetTypeDao.selectAssetTypeByCondition(assetType);
+    }
 }

@@ -4,8 +4,8 @@
 
     <!-- 插入固定资产 -->
     <insert id="insertFixedAsset" parameterType="com.example.fixed_assets.entity.FixedAsset" keyColumn="asset_id" keyProperty="assetId" useGeneratedKeys="true">
-        INSERT INTO fixed_asset (asset_type_id, name, purchase_date, price, status)
-        VALUES (#{assetTypeId}, #{name}, #{purchaseDate}, #{price}, #{status})
+        INSERT INTO fixed_asset (asset_type_id, name, purchase_date, price,img_dir, status)
+        VALUES (#{assetTypeId}, #{name}, #{purchaseDate}, #{price},#{imgDir}, #{status})
     </insert>
 
     <!-- 更新固定资产 -->
@@ -15,6 +15,7 @@
             name = #{name},
             purchase_date = #{purchaseDate},
             price = #{price},
+            img_dir = #{imgDir},
             status = #{status}
         WHERE asset_id = #{assetId}
     </update>
@@ -38,6 +39,38 @@
         FROM fixed_asset fa
                  LEFT JOIN asset_type at ON fa.asset_type_id = at.asset_type_id
     </select>
+    <select id="getFixedAssetsByCondition" resultMap="FixedAssetWithTypeResultMap">
+            SELECT fa.*,
+            at.asset_type_id AS "assetType.assetTypeId",
+            at.type_name AS "assetType.typeName",
+            at.description AS "assetType.description"
+            FROM fixed_asset fa
+            LEFT JOIN asset_type at ON fa.asset_type_id = at.asset_type_id
+            <where>
+                <if test="assetId != null">
+                    AND fa.asset_id = #{assetId}
+                </if>
+                <if test="assetTypeId != null">
+                    AND fa.asset_type_id = #{assetTypeId}
+                </if>
+                <if test="name != null and name.trim() != ''">
+                    AND fa.name = #{name}
+                </if>
+                <if test="purchaseDate != null">
+                    AND fa.purchase_date = #{purchaseDate}
+                </if>
+                <if test="price != null">
+                    AND fa.price = #{price}
+                </if>
+                <if test="imgDir != null and imgDir.trim() != ''">
+                    AND fa.img_dir = #{imgDir}
+                </if>
+                <if test="status != null and status.trim() != ''">
+                    AND fa.status = #{status}
+                </if>
+                <!-- 添加其他需要的条件 -->
+            </where>
+    </select>
 
     <!-- 结果映射 -->
     <resultMap id="FixedAssetWithTypeResultMap" type="com.example.fixed_assets.entity.FixedAsset">
@@ -46,6 +79,7 @@
         <result column="name" property="name"/>
         <result column="purchase_date" property="purchaseDate"/>
         <result column="price" property="price"/>
+        <result column="img_dir" property="imgDir"/>
         <result column="status" property="status"/>
         <association property="assetType" javaType="com.example.fixed_assets.entity.AssetType">
             <id column="assetType.assetTypeId" property="assetTypeId"/>

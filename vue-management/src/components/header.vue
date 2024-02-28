@@ -9,11 +9,8 @@
     <div class="header-right">
       <div class="header-user-con">
         <!-- 新增跳转到前端首页的按钮 -->
-        <el-button
-          type="primary"
-          @click="router.push('/front-page')"
-          class="btn-front-page"
-          >跳转前台</el-button
+        <el-button type="primary" @click="router.push('/userHome')" class="btn-front-page"
+          >前台</el-button
         >
 
         <div class="btn-bell" @click="router.push('/tabs')">
@@ -75,6 +72,7 @@ onMounted(() => {
 const router = useRouter();
 const handleCommand = (command: string) => {
   if (command == "loginout") {
+    localStorage.removeItem("role");
     localStorage.removeItem("ms_username");
     router.push("/login");
   } else if (command == "user") {

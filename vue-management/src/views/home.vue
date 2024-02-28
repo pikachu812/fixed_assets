@@ -2,13 +2,24 @@
   <frontHeader v-permiss="15" />
   <v-header v-permiss="16" />
   <v-sidebar v-permiss="16" />
-  <div v-permiss="15">
+  <!-- <div v-permiss="15">
     <router-view v-slot="{ Component }">
-          <component :is="Component"></component>
+      <component :is="Component"></component>
+    </router-view>
+  </div> -->
 
+  <div class="content" v-permiss="15">
+    <router-view v-slot="{ Component }">
+      <transition name="move" mode="out-in">
+        <component :is="Component"></component>
+      </transition>
     </router-view>
   </div>
-  <div class="content-box" v-permiss="16" :class="{ 'content-collapse': sidebar.collapse }">
+  <div
+    class="content-box"
+    v-permiss="16"
+    :class="{ 'content-collapse': sidebar.collapse }"
+  >
     <v-tags></v-tags>
     <div class="content">
       <router-view v-slot="{ Component }">
@@ -27,7 +38,7 @@ import { useTagsStore } from "../store/tags";
 import vHeader from "../components/header.vue";
 import vSidebar from "../components/sidebar.vue";
 import vTags from "../components/tags.vue";
-import frontHeader from "../components/frontHeader.vue";
+
 const sidebar = useSidebarStore();
 const tags = useTagsStore();
 </script>

@@ -39,4 +39,9 @@ public class FixedAssetServiceImpl implements FixedAssetService {
         return fixedAssetDao.selectAllFixedAssets();
     }
 
+    @Override
+    public List<FixedAsset> getFixedAssetsByCondition(FixedAsset query) {
+        return fixedAssetDao.getFixedAssetsByCondition(query);
+    }
+
 }

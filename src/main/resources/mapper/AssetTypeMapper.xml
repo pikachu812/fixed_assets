@@ -28,4 +28,15 @@
     <select id="selectAllAssetTypes" resultType="com.example.fixed_assets.entity.AssetType">
         SELECT * FROM asset_type
     </select>
+    <select id="selectAssetTypeByCondition" resultType="com.example.fixed_assets.entity.AssetType">
+        SELECT * FROM asset_type
+        <where>
+            <if test="typeName != null and typeName != ''">
+                AND type_name LIKE CONCAT('%', #{typeName}, '%')
+            </if>
+            <if test="description != null and description != ''">
+                AND description LIKE CONCAT('%', #{description}, '%')
+            </if>
+        </where>
+    </select>
 </mapper>

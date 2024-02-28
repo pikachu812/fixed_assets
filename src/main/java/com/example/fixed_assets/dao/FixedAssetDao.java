@@ -12,5 +12,6 @@ public interface FixedAssetDao {
     void deleteFixedAsset(Integer assetId);
     FixedAsset selectFixedAssetById(Integer assetId);
     List<FixedAsset> selectAllFixedAssets();
+    List<FixedAsset> getFixedAssetsByCondition(FixedAsset query);
 }
 

@@ -10,4 +10,5 @@ public interface AssetTypeService {
     void deleteAssetType(Integer assetTypeId);
     AssetType getAssetTypeById(Integer assetTypeId);
     List<AssetType> getAllAssetTypes();
+    List<AssetType> getAssetTypeByCondition(AssetType assetType);
 }

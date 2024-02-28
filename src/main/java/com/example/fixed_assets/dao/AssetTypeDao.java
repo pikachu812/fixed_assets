@@ -13,4 +13,5 @@ public interface AssetTypeDao {
     void deleteAssetType(Integer assetTypeId);
     AssetType selectAssetTypeById(Integer assetTypeId);
     List<AssetType> selectAllAssetTypes();
+    List<AssetType> selectAssetTypeByCondition(AssetType assetType);
 }

@@ -92,14 +92,14 @@ const items = [
     permiss: "2",
     subs: [
       {
-        index: "/fixedAssetsTypeManagement",
+        index: "/assetTypeManagement",
         title: "固定资产类型管理",
-        permiss: "2",
+        permiss: "16",
       },
       {
-        index: "/import",
-        title: "导入Excel",
-        permiss: "2",
+        index: "/assetManagement",
+        title: "固定资产信息管理",
+        permiss: "16",
       },
       {
         index: "/export",
