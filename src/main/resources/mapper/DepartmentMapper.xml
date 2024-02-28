@@ -29,4 +29,14 @@
     <select id="selectAllDepartments" resultType="com.example.fixed_assets.entity.Department">
         SELECT * FROM department
     </select>
+    <select id="searchDepartments" resultType="com.example.fixed_assets.entity.Department">
+        SELECT * FROM department
+        <where>
+            <if test="name != null and name != ''">
+                OR name = #{name}
+            </if>
+        </where>
+    </select>
+
+
 </mapper>

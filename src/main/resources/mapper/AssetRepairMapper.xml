@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fixed_assets.dao.AssetRepairDao">
+
+    <!-- 添加维修记录 -->
+    <insert id="insertAssetRepair" parameterType="com.example.fixed_assets.entity.AssetRepair">
+        INSERT INTO asset_repair (asset_id, repair_date, cost, details)
+        VALUES (#{assetId}, #{repairDate}, #{cost}, #{details})
+    </insert>
+
+    <!-- 根据维修ID查询维修记录 -->
+    <select id="selectAssetRepairById" parameterType="long" resultType="com.example.fixed_assets.entity.AssetRepair">
+        SELECT * FROM asset_repair WHERE repair_id = #{repairId}
+    </select>
+
+    <!-- 查询所有维修记录 -->
+    <select id="selectAllAssetRepairs" resultType="com.example.fixed_assets.entity.AssetRepair">
+        SELECT * FROM asset_repair
+    </select>
+
+    <!-- 更新维修记录 -->
+    <update id="updateAssetRepair" parameterType="com.example.fixed_assets.entity.AssetRepair">
+        UPDATE asset_repair
+        SET asset_id = #{assetId},
+            repair_date = #{repairDate},
+            cost = #{cost},
+            details = #{details}
+        WHERE repair_id = #{repairId}
+    </update>
+
+    <!-- 根据维修ID删除维修记录 -->
+    <delete id="deleteAssetRepairById" parameterType="long">
+        DELETE FROM asset_repair WHERE repair_id = #{repairId}
+    </delete>
+
+</mapper>

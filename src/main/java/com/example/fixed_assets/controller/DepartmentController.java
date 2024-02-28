@@ -1,12 +1,14 @@
 package com.example.fixed_assets.controller;
 
 import com.example.fixed_assets.entity.Department;
+import com.example.fixed_assets.entity.User;
 import com.example.fixed_assets.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -20,19 +22,19 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<?> addDepartment(@RequestBody Department department) {
         departmentService.addDepartment(department);
         return ResponseEntity.ok("Department added successfully");
     }
 
-    @PutMapping
+    @PostMapping("/update")
     public ResponseEntity<?> updateDepartment(@RequestBody Department department) {
         departmentService.updateDepartment(department);
         return ResponseEntity.ok("Department updated successfully");
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteDepartment(@PathVariable("id") Integer departmentId) {
         departmentService.deleteDepartment(departmentId);
         return ResponseEntity.ok("Department deleted successfully");
@@ -47,6 +49,12 @@ public class DepartmentController {
     @GetMapping("/all")
     public ResponseEntity<List<Department>> getAllDepartments() {
         List<Department> departments = departmentService.getAllDepartments();
+        return ResponseEntity.ok(departments);
+    }
+
+    @PostMapping("/details")
+    public ResponseEntity<List<Department>> searchDepartments(@RequestBody Map<String,Object> department) {
+        List<Department> departments = departmentService.searchDepartments(department);
         return ResponseEntity.ok(departments);
     }
 }

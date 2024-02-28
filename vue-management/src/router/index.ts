@@ -1,10 +1,22 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import { usePermissStore } from '../store/permiss';
 import Home from '../views/home.vue';
+import frontPage from '../views/frontPage.vue';
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 const routes: RouteRecordRaw[] = [
+    {
+        path: '/front-page',
+        name: 'FrontPage',
+        meta: {
+            title: '前台首页',
+            // 假设普通用户登陆后只能访问前台
+            // role: 'user'
+        },
+        component: () => import('../views/frontPage.vue'),
+
+    },
     {
         path: '/',
         redirect: '/dashboard',
@@ -147,6 +159,14 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "404" */ '../views/userManagement.vue'),
             },
+            {
+                path: '/departmentManagement',
+                name: 'departmentManagement',
+                meta: {
+                    title: '部门管理',
+                },
+                component: () => import(/* webpackChunkName: "404" */ '../views/departmentManagement.vue'),
+            },
         ],
     },
     {
@@ -171,6 +191,22 @@ const router = createRouter({
     history: createWebHashHistory(),
     routes,
 });
+
+// router.beforeEach((to, from, next) => {
+//     NProgress.start();
+//     const role = localStorage.getItem('role'); // 假设在localStorage中存储用户角色信息
+//     if (!role && to.path !== '/login') {
+//         next('/login');
+//     } else if (role === 'admin' && to.path === '/') {
+//         // 如果是管理员访问根路径，则跳转到home.vue
+//         next('/dashboard');
+//     } else if (role === 'user' && to.path === '/') {
+//         // 如果是普通用户访问根路径，则跳转到frontPage.vue
+//         next('/front-page');
+//     } else {
+//         next();
+//     }
+// });
 
 router.beforeEach((to, from, next) => {
     NProgress.start();

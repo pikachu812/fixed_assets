@@ -131,16 +131,33 @@ const handlePageChange = (val: number) => {
 };
 
 // 删除操作
-const handleDelete = (index: number) => {
-	// 二次确认删除
-	ElMessageBox.confirm('确定要删除吗？', '提示', {
-		type: 'warning'
-	})
-		.then(() => {
-			ElMessage.success('删除成功');
-			tableData.value.splice(index, 1);
-		})
-		.catch(() => {});
+// const handleDelete = (index: number) => {
+// 	// 二次确认删除
+// 	ElMessageBox.confirm('确定要删除吗？', '提示', {
+// 		type: 'warning'
+// 	})
+// 		.then(() => {
+// 			ElMessage.success('删除成功');
+// 			tableData.value.splice(index, 1);
+// 		})
+// 		.catch(() => {});
+// };
+
+const handleDelete = async (index: number) => {
+    // 二次确认删除
+    try {
+        await ElMessageBox.confirm('确定要删除吗？', '提示', { type: 'warning' });
+        // 调用API删除用户
+        const userId = tableData.value[index].userId;
+        await service.delete('/user/delete/'+ userId);
+        ElMessage.success('删除成功');
+        tableData.value.splice(index, 1); // 从本地数据中移除
+    } catch (error) {
+        // 处理取消删除或API调用错误
+        if (error !== 'cancel') {
+            ElMessage.error('删除失败');
+        }
+    }
 };
 
 
@@ -162,6 +179,7 @@ const updateData = (row: TableItem) => {
 const closeDialog = () => {
 	visible.value = false;
 	idEdit.value = false;
+	getData();
 };
 
 const handleView = (row: TableItem) => {
