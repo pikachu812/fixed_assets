@@ -28,12 +28,12 @@
           width="100%"
           align="center"
         ></el-table-column>
-        <el-table-column prop="name" label="资产名称" align="center" width="200"></el-table-column>
+        <el-table-column prop="name" label="资产名称" align="center" width="180"></el-table-column>
         <el-table-column prop="purchaseDate" :formatter="formatDate"
-                         label="购置日期" align="center" width="200"></el-table-column>
+                         label="购置日期" align="center" width="140"></el-table-column>
         <el-table-column prop="price" label="价格" align="center" width="160"></el-table-column>
 
-        <el-table-column label="资产图片" align="center">
+        <el-table-column label="资产图片" align="center" width="140">
           <template #default="scope">
             <el-image
                 class="table-td-thumb"
@@ -45,14 +45,14 @@
             </el-image>
           </template>
         </el-table-column>
-        <el-table-column label="资产状态" align="center">
+        <el-table-column label="资产状态" align="center" width="120">
           <template #default="scope">
             <el-tag :type="statusToCss[scope.row.status] ? statusToCss[scope.row.status] : 'danger'">
               {{ scope.row.status}}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="250" align="center">
+        <el-table-column label="操作" align="center">
           <template #default="scope">
             <!-- <el-button type="warning" size="small" :icon="View" @click="handleView(scope.row)">
 							查看
@@ -125,8 +125,8 @@ interface TableItem {
 
 
 const statusToCss = {
-  "Available":"success",
-  "Repairing":"warning"
+  "闲置":"success",
+  "维修中":"warning"
 }
 
 const query = reactive({

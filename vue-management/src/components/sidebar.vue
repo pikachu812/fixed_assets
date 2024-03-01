@@ -102,8 +102,8 @@ const items = [
         permiss: "16",
       },
       {
-        index: "/export",
-        title: "导出Excel",
+        index: "/allocationManagement",
+        title: "固定资产领用管理",
         permiss: "2",
       },
     ],
