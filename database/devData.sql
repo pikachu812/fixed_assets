@@ -26,7 +26,6 @@ CREATE TABLE `asset_allocation` (
   `allocation_id` int NOT NULL AUTO_INCREMENT,
   `asset_id` int DEFAULT NULL,
   `employee_id` int DEFAULT NULL,
-  `department` varchar(50) DEFAULT NULL,
   `allocation_date` date DEFAULT NULL,
   `return_date` date DEFAULT NULL,
   PRIMARY KEY (`allocation_id`),
@@ -57,9 +56,7 @@ CREATE TABLE `asset_depreciation` (
   `depreciation_id` int NOT NULL AUTO_INCREMENT,
   `asset_id` int DEFAULT NULL,
   `depreciation_date` date DEFAULT NULL,
-  `depreciation_amount` decimal(10,2) DEFAULT NULL,
-  `accumulated_depreciation` decimal(10,2) DEFAULT NULL,
-  `book_value` decimal(10,2) DEFAULT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`depreciation_id`),
   KEY `asset_id` (`asset_id`),
   CONSTRAINT `asset_depreciation_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `fixed_asset` (`asset_id`)
@@ -86,10 +83,7 @@ CREATE TABLE `asset_inventory` (
   `inventory_id` int NOT NULL AUTO_INCREMENT,
   `asset_id` int DEFAULT NULL,
   `inventory_date` date DEFAULT NULL,
-  `department_id` int DEFAULT NULL,
   `status` varchar(50) DEFAULT NULL,
-  `book_quantity` int DEFAULT NULL,           -- Added field for book quantity
-  `book_value` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`inventory_id`),
   KEY `asset_id` (`asset_id`),
   CONSTRAINT `asset_inventory_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `fixed_asset` (`asset_id`)
@@ -357,7 +351,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `user_pk` (`username`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,7 +360,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (5,'test','098f6bcd4621d373cade4e832627b4f6',1);
+INSERT INTO `user` VALUES (5,'test','098f6bcd4621d373cade4e832627b4f6',1),(11,'test2','e10adc3949ba59abbe56e057f20f883e',2);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -379,4 +373,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-22 21:27:33
+-- Dump completed on 2024-03-01 21:05:39

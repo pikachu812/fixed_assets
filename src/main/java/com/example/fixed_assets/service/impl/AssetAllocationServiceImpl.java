@@ -1,5 +1,6 @@
 package com.example.fixed_assets.service.impl;
 
+import com.example.fixed_assets.dao.AssetAllocationDao;
 import com.example.fixed_assets.entity.AssetAllocation;
 import com.example.fixed_assets.service.AssetAllocationService;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,9 @@ import java.util.List;
 @Transactional
 public class AssetAllocationServiceImpl implements AssetAllocationService {
 
-    private final AssetAllocationMapper assetAllocationMapper;
+    private final AssetAllocationDao assetAllocationMapper;
 
-    public AssetAllocationServiceImpl(AssetAllocationMapper assetAllocationMapper) {
+    public AssetAllocationServiceImpl(AssetAllocationDao assetAllocationMapper) {
         this.assetAllocationMapper = assetAllocationMapper;
     }
 

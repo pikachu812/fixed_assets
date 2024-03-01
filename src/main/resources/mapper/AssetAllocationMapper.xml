@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fixed_assets.dao.AssetAllocationDao">
+    <insert id="insert"></insert>
+    <update id="update"></update>
+    <delete id="deleteById"></delete>
+    <select id="selectById" resultType="com.example.fixed_assets.entity.AssetAllocation"></select>
+    <select id="selectAll" resultType="com.example.fixed_assets.entity.AssetAllocation"></select>
+    <select id="selectByCondition" resultType="com.example.fixed_assets.entity.AssetAllocation"></select>
+</mapper>

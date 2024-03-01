@@ -97,7 +97,7 @@
       :close-on-click-modal="false"
       @close="closeDialog"
     >
-      <AssetTypeEdit :data="rowData" :edit="idEdit" :update="updateData" />
+      <AssetEdit :data="rowData" :edit="idEdit" :update="updateData" />
     </el-dialog>
     <!-- <el-dialog title="查看用户详情" v-model="visible1" width="700px" destroy-on-close>
 			<UserTableDetail :data="rowData" />
@@ -109,8 +109,7 @@
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { Delete, Edit, Search, CirclePlusFilled, View } from "@element-plus/icons-vue";
-import AssetTypeEdit from "../components/assetTypeEdit.vue";
-// import UserTableDetail from "../components/userTableDetail.vue";
+import AssetEdit from "../components/assetEdit.vue";
 import service from "../utils/request";
 interface TableItem {
   assetId: number;

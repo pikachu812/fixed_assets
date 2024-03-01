@@ -1,6 +1,6 @@
 package com.example.fixed_assets.controller;
 
-import com.example.fixed_assets.model.AssetAllocation;
+import com.example.fixed_assets.entity.AssetAllocation;
 import com.example.fixed_assets.service.AssetAllocationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
