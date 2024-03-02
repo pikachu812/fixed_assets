@@ -180,6 +180,14 @@ const routes: RouteRecordRaw[] = [
                     title: '固定资产信息管理',
                 },
                 component: () => import(/* webpackChunkName: "404" */ '../views/assetManagement.vue'),
+            },
+            {
+                path: '/assetAllocationManagement',
+                name: 'assetAllocationManagement',
+                meta: {
+                    title: '固定资产领用管理',
+                },
+                component: () => import(/* webpackChunkName: "404" */ '../views/assetAllocationManagement.vue'),
             }
         ],
     },

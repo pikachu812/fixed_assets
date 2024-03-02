@@ -2,8 +2,8 @@
 ## ER图
 ```mermaid
 erDiagram
-   Department ||--o{ Employee : "has"
-   Employee ||--o{ AssetAllocation : "uses"
+   Department ||--o{ com.example.fixed_assets.entity.Employee : "has"
+   com.example.fixed_assets.entity.Employee ||--o{ AssetAllocation : "uses"
    FixedAsset ||--o{ AssetAllocation : "is used in"
    FixedAsset ||--o{ AssetRepair : "is repaired in"
    FixedAsset ||--o{ AssetScrap : "is scrapped in"
@@ -20,7 +20,7 @@ erDiagram
       text description
    }
 
-   Employee {
+   com.example.fixed_assets.entity.Employee {
       int employee_id PK
       varchar name
       int department_id FK

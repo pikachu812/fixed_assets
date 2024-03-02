@@ -4,6 +4,7 @@ import com.example.fixed_assets.entity.FixedAsset;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface FixedAssetDao {
@@ -13,5 +14,7 @@ public interface FixedAssetDao {
     FixedAsset selectFixedAssetById(Integer assetId);
     List<FixedAsset> selectAllFixedAssets();
     List<FixedAsset> getFixedAssetsByCondition(FixedAsset query);
+
+    List<Map<String, Object>> getFixedAssetsGroupByAssetName();
 }
 

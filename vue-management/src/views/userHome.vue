@@ -34,7 +34,17 @@
       <el-row :gutter="20">
         <el-col :span="6" v-for="(asset, index) in filteredAssets" :key="index">
           <div class="asset-item">
-            <img :src="asset.image" alt="asset.name" class="asset-image" />
+              <el-image
+                  class="asset-image"
+                  style="width: 200px; height: 150px"
+                  :src="asset.imgDir"
+                  :zoom-rate="1.2"
+                  :max-scale="7"
+                  :min-scale="0.2"
+                  :preview-src-list="srcList"
+                  :initial-index="4"
+                  fit="cover"
+              />
             <div class="asset-info">
               <h3>{{ asset.name }}</h3>
               <p>数量：{{ asset.quantity }}</p>
@@ -54,6 +64,9 @@
         <el-form-item label="资产名称">
           <el-input v-model="selectedAsset.name" disabled></el-input>
         </el-form-item>
+          <el-form-item label="资产类别">
+              <el-input v-model="selectedAsset.assetType.typeName" disabled></el-input>
+          </el-form-item>
         <el-form-item label="数量">
           <el-input number v-model="selectedAsset.quantity"></el-input>
         </el-form-item>
@@ -69,6 +82,7 @@
 <script lang="tsx" setup>
 import { ref, watch, computed } from "vue";
 import { ElMessage } from "element-plus";
+import service from "../utils/request";
 
 const isModalVisible = ref(false);
 const selectedAsset = ref({});
@@ -77,45 +91,74 @@ const search = ref("");
 const sortKey = ref(""); // 排序依据
 const sortOrder = ref("asc"); // 排序方向，默认为升序
 
+
+interface TableItem {
+    assetId: number;
+    assetTypeId: number;
+    name: string;
+    purchaseDate: Date;
+    price: number;
+    imgDir: string;
+    status: string;
+    assetType: object;
+    quantity: number; // BigDecimal from Java can be represented as a number in TypeScript for simplicity, but be cautious of precision issues for very large or very small values
+}
+
+const assets = ref<TableItem[]>([]);
+
+const getData = async () => {
+    service.post("/fixedAssets/getFixedAssetsByCondition", {
+        assetId: null,
+        assetTypeId: null,
+        name: null,
+        purchaseDate: null,
+        price: null,
+        imgDir: null,
+        status: "闲置", // 只获取闲置状态的资产
+        assetType: null
+    }).then((res) => {
+
+        let result = res.data;
+
+        //按照名称统计资产数量
+        let map = new Map();
+        for (let i = 0; i < result.length; i++) {
+            let obj = result[i];
+            if (map.get(obj.name) == null) {
+                obj.quantity = 1;
+                map.set(obj.name, obj);
+            } else {
+                let old = map.get(obj.name);
+                old.quantity++;
+                map.set(obj.name, old);
+            }
+        }
+
+        // 将map转化为数组
+        let arr = [];
+        for (let [key, value] of map) {
+            arr.push(value);
+        }
+
+        console.log("arr", arr);
+
+        assets.value = arr;
+    });
+};
+getData();
+
 // 排序方向切换方法
 const toggleSortOrder = () => {
   sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
 };
 
-const assets = ref([
-  {
-    name: "Cozy House",
-    quantity: 1,
-    image: "https://cdn.pixabay.com/photo/2017/08/07/23/43/nature-2609259_1280.jpg",
-  },
-  {
-    name: "Wooden Table Set",
-    quantity: 2,
-    image: "https://cdn.pixabay.com/photo/2017/08/07/23/43/nature-2609259_1280.jpg",
-  },
-  {
-    name: "Laptop on Desk",
-    quantity: 5,
-    image: "https://cdn.pixabay.com/photo/2017/08/07/23/43/nature-2609259_1280.jpg",
-  },
-  {
-    name: "Green Forest",
-    quantity: 3,
-    image: "https://cdn.pixabay.com/photo/2017/08/07/23/43/nature-2609259_1280.jpg",
-  },
-  {
-    name: "Mountain Lake",
-    quantity: 2,
-    image: "https://cdn.pixabay.com/photo/2017/08/07/23/43/nature-2609259_1280.jpg",
-  },
-]);
 let searchTimeout = null; // 用于存储setTimeout的变量
 
 // 监听search变量的变化
 watch(search, (newValue, oldValue) => {
   clearTimeout(searchTimeout); // 取消之前的搜索操作
   searchTimeout = setTimeout(() => {
-    // 这里不需要执行特定的搜索操作，因为我们使用的是前端过滤器
+      getData();
   }, 1000);
 });
 

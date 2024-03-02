@@ -71,6 +71,12 @@
                 <!-- 添加其他需要的条件 -->
             </where>
     </select>
+    <select id="getFixedAssetsGroupByAssetName" resultType="java.util.Map">
+        SELECT fa.name, COUNT(fa.name) AS num
+        FROM fixed_asset fa
+        where fa.status = '闲置'
+        GROUP BY fa.name
+    </select>
 
     <!-- 结果映射 -->
     <resultMap id="FixedAssetWithTypeResultMap" type="com.example.fixed_assets.entity.FixedAsset">

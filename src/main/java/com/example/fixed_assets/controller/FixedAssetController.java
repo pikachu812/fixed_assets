@@ -81,6 +81,13 @@ public class FixedAssetController {
         return new ResponseEntity<>(fixedAssets, HttpStatus.OK);
     }
 
+    //以资产名称聚合查询，统计每种资产的数量
+    @PostMapping("/getFixedAssetsGroupByAssetName")
+    public ResponseEntity<List<Map<String, Object>>> getFixedAssetsGroupByAssetName() {
+        List<Map<String, Object>> fixedAssets = fixedAssetService.getFixedAssetsGroupByAssetName();
+        return new ResponseEntity<>(fixedAssets, HttpStatus.OK);
+    }
+
 
     @Value("${file.upload-dir}")
     private String uploadDir;

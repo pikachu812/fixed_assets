@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FixedAssetServiceImpl implements FixedAssetService {
@@ -42,6 +43,11 @@ public class FixedAssetServiceImpl implements FixedAssetService {
     @Override
     public List<FixedAsset> getFixedAssetsByCondition(FixedAsset query) {
         return fixedAssetDao.getFixedAssetsByCondition(query);
+    }
+
+    @Override
+    public List<Map<String, Object>> getFixedAssetsGroupByAssetName() {
+        return fixedAssetDao.getFixedAssetsGroupByAssetName();
     }
 
 }
