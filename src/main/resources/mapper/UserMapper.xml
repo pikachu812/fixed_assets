@@ -43,22 +43,24 @@
 
 
     <select id="getUser" parameterType="int" resultMap="userRolePermissionMap">
-        SELECT u.*, r.role_name, p.permission_name, e.name as employee_name, e.department_id as department_id
+        SELECT u.*, r.role_name, p.permission_name, e.name as employee_name, e.department_id as department_id,d.name as department_name
         FROM user u
                 LEFT JOIN role r ON u.role_id = r.role_id
                 LEFT JOIN role_permission rp ON r.role_id = rp.role_id
                 LEFT JOIN permission p ON rp.permission_id = p.permission_id
                 LEFT JOIN employee e ON u.employee_id = e.employee_id
+                LEFT JOIN department d ON e.department_id = d.department_id
         WHERE u.user_id = #{userId}
     </select>
 
     <select id="findByUsername" resultMap="userRolePermissionMap">
-        SELECT u.*, r.role_name, p.permission_name, e.name as employee_name, e.department_id as department_id
+        SELECT u.*, r.role_name, p.permission_name, e.name as employee_name, e.department_id as department_id,d.name as department_name
         FROM user u
                  LEFT JOIN role r ON u.role_id = r.role_id
                  LEFT JOIN role_permission rp ON r.role_id = rp.role_id
                  LEFT JOIN permission p ON rp.permission_id = p.permission_id
                  LEFT JOIN employee e ON u.employee_id = e.employee_id
+                 LEFT JOIN department d ON e.department_id = d.department_id
         WHERE u.username = #{username}
         LIMIT 1
     </select>
@@ -74,12 +76,13 @@
         </where>
     </select>
     <select id="findUserWithRoleAndPermissions" parameterType="map" resultMap="userRolePermissionMap">
-        SELECT u.*, r.role_name, p.permission_name,e.name as employee_name,e.department_id as department_id
+        SELECT u.*, r.role_name, p.permission_name,e.name as employee_name,e.department_id as department_id,d.name as department_name
         FROM user u
         LEFT JOIN role r ON u.role_id = r.role_id
         LEFT JOIN role_permission rp ON r.role_id = rp.role_id
         LEFT JOIN permission p ON rp.permission_id = p.permission_id
         LEFT JOIN employee e ON u.employee_id = e.employee_id
+        LEFT JOIN department d ON e.department_id = d.department_id
         WHERE 1=1
         <if test="userId != null">
             AND u.user_id = #{userId}
@@ -113,6 +116,10 @@
             <id column="employee_id" property="employeeId" />
             <result column="employee_name" property="name" />
             <result column="department_id" property="departmentId" />
+            <association property="department" javaType="com.example.fixed_assets.entity.Department">
+                <id column="department_id" property="departmentId" />
+                <result column="department_name" property="name" />
+            </association>
         </association>
         <collection property="permissions" ofType="com.example.fixed_assets.entity.Permission">
             <id column="permission_id" property="permissionId" />

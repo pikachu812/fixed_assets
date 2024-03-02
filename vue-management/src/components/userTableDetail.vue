@@ -12,6 +12,14 @@
             <template #label> 用户角色 </template>
             {{ data.role.roleName}}
         </el-descriptions-item>
+        <el-descriptions-item v-if="data.employeeId !== null">
+            <template #label> 职工姓名 </template>
+            {{ data.employee.name}}
+        </el-descriptions-item>
+        <el-descriptions-item v-if="data.employeeId !== null">
+            <template #label> 职工部门 </template>
+            {{ data.employee.department.name}}
+        </el-descriptions-item>
         <el-descriptions-item label="用户权限">
             <el-tree :data="treeData" node-key="permissionId" ref="tree"></el-tree>
         </el-descriptions-item>

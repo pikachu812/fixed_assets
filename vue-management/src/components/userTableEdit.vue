@@ -27,9 +27,9 @@
             >
                 <el-option
                     v-for="item in options"
-                    :key="item.name"
+                    :key="item.departmentId"
                     :label="item.name"
-                    :value="item.departmentId"
+                    :value="parseInt(item.departmentId)"
                 />
             </el-select>
         </el-form-item>
@@ -128,13 +128,18 @@ const remoteMethod = (query: string) => {
             options.value = res.data
         }
 
-        console.log(options.value)
+
+        console.log("options", options.value);
+        console.log(typeof form.value.employee.departmentId);
+
     }).catch((err) => {
         loading.value = false
         options.value = []
     })
 
 }
+
+remoteMethod("");
 
 const saveEdit = (formEl: FormInstance | undefined) => {
     if (!formEl) return;
