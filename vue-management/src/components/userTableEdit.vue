@@ -9,6 +9,31 @@
             </el-select>
         </el-form-item>
 
+        <el-form-item v-if="form.role.roleName === 'user'" label="职工姓名" prop="employee.name">
+            <el-input v-model="form.employee.name"></el-input>
+        </el-form-item>
+
+        <el-form-item v-if="form.role.roleName === 'user'" label="部门" prop="employee.departmentId">
+            <el-select
+                v-model="form.employee.departmentId"
+                filterable
+                remote
+                reserve-keyword
+                placeholder="请输入一个关键字"
+                remote-show-suffix
+                :remote-method="remoteMethod"
+                :loading="loading"
+                style="width: 240px"
+            >
+                <el-option
+                    v-for="item in options"
+                    :key="item.name"
+                    :label="item.name"
+                    :value="item.departmentId"
+                />
+            </el-select>
+        </el-form-item>
+
         <el-form-item label="密码" prop="password">
             <el-input v-model="form.password"></el-input>
             <span style="color: #999; font-size: 12px;">（留空表示不修改密码）</span>
@@ -24,6 +49,12 @@
 import { ElMessage, FormInstance, FormRules, UploadProps } from 'element-plus';
 import { ref } from 'vue';
 import service from "../utils/request";
+
+interface ListItem {
+    departmentId: number;
+    name: string;
+    description: string;
+}
 
 const roleList = [
     {
@@ -59,6 +90,17 @@ const defaultData = {
     role: {
         roleId: '',
         roleName: ''
+    },
+    employeeId: '',
+    employee: {
+        employeeId: '',
+        name: '',
+        departmentId: '',
+        department: {
+            departmentId: '',
+            name: '',
+            description: ''
+        }
     }
 
 };
@@ -67,6 +109,33 @@ const form = ref({ ...(props.edit ? props.data : defaultData) });
 
 
 const formRef = ref<FormInstance>();
+const loading = ref(false)
+const options = ref<ListItem[]>([])
+
+
+const remoteMethod = (query: string) => {
+
+    loading.value = true
+    service.get("/department/all", ).then((res) => {
+        loading.value = false
+
+        if (query) {
+            options.value = res.data.filter((item) => {
+                return item.name.toLowerCase().includes(query.toLowerCase())
+            })
+
+        } else {
+            options.value = res.data
+        }
+
+        console.log(options.value)
+    }).catch((err) => {
+        loading.value = false
+        options.value = []
+    })
+
+}
+
 const saveEdit = (formEl: FormInstance | undefined) => {
     if (!formEl) return;
 

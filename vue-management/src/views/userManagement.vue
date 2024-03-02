@@ -25,18 +25,14 @@
 							type="primary"
 							size="small"
 							:icon="Edit"
-							@click="handleEdit(scope.$index, scope.row)"
-							v-permiss="15"
-						>
+							@click="handleEdit(scope.$index, scope.row)">
 							编辑
 						</el-button>
 						<el-button
 							type="danger"
 							size="small"
 							:icon="Delete"
-							@click="handleDelete(scope.$index)"
-							v-permiss="16"
-						>
+							@click="handleDelete(scope.$index)">
 							删除
 						</el-button>
 					</template>

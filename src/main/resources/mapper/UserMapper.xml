@@ -7,33 +7,58 @@
         <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userId">
             select LAST_INSERT_ID()
         </selectKey>
-        INSERT INTO user (username, password, role_id) VALUES (#{username}, #{password}, #{roleId})
+        INSERT INTO user (username, password, role_id,employee_id) VALUES (#{username}, #{password}, #{roleId},#{employeeId})
+    </insert>
+    <insert id="addEmployee" useGeneratedKeys="true" keyProperty="employeeId" parameterType="com.example.fixed_assets.entity.Employee">
+
+        INSERT INTO employee (name, department_id) VALUES (#{name}, #{departmentId})
+
     </insert>
 
     <update id="updateUser" parameterType="com.example.fixed_assets.entity.User">
-        UPDATE user SET username = #{username}, role_id = #{roleId} WHERE user_id = #{userId}
+        UPDATE user SET username = #{username}, role_id = #{roleId}, employee_id = #{employeeId} WHERE user_id = #{userId}
     </update>
     <update id="updateUserPassword" parameterType="com.example.fixed_assets.entity.User">
         UPDATE user SET password = #{password} WHERE user_id = #{userId}
+    </update>
+    <update id="updateEmployee">
+        UPDATE employee
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="departmentId != null and departmentId != ''">
+                department_id = #{departmentId}
+            </if>
+        </set>
+        WHERE employee_id = #{employeeId}
     </update>
 
     <delete id="deleteUser" parameterType="int">
         DELETE FROM user WHERE user_id = #{userId}
     </delete>
+    <delete id="deleteEmployee" parameterType="int">
+        DELETE FROM employee WHERE employee_id = #{employeeId}
+    </delete>
+
 
     <select id="getUser" parameterType="int" resultMap="userRolePermissionMap">
-        SELECT u.*, r.role_name
+        SELECT u.*, r.role_name, p.permission_name, e.name as employee_name, e.department_id as department_id
         FROM user u
-                 LEFT JOIN role r ON u.role_id = r.role_id
+                LEFT JOIN role r ON u.role_id = r.role_id
+                LEFT JOIN role_permission rp ON r.role_id = rp.role_id
+                LEFT JOIN permission p ON rp.permission_id = p.permission_id
+                LEFT JOIN employee e ON u.employee_id = e.employee_id
         WHERE u.user_id = #{userId}
     </select>
 
     <select id="findByUsername" resultMap="userRolePermissionMap">
-        SELECT u.*, r.role_name, p.permission_name
+        SELECT u.*, r.role_name, p.permission_name, e.name as employee_name, e.department_id as department_id
         FROM user u
                  LEFT JOIN role r ON u.role_id = r.role_id
                  LEFT JOIN role_permission rp ON r.role_id = rp.role_id
                  LEFT JOIN permission p ON rp.permission_id = p.permission_id
+                 LEFT JOIN employee e ON u.employee_id = e.employee_id
         WHERE u.username = #{username}
         LIMIT 1
     </select>
@@ -49,11 +74,12 @@
         </where>
     </select>
     <select id="findUserWithRoleAndPermissions" parameterType="map" resultMap="userRolePermissionMap">
-        SELECT u.*, r.role_name, p.permission_name
+        SELECT u.*, r.role_name, p.permission_name,e.name as employee_name,e.department_id as department_id
         FROM user u
         LEFT JOIN role r ON u.role_id = r.role_id
         LEFT JOIN role_permission rp ON r.role_id = rp.role_id
         LEFT JOIN permission p ON rp.permission_id = p.permission_id
+        LEFT JOIN employee e ON u.employee_id = e.employee_id
         WHERE 1=1
         <if test="userId != null">
             AND u.user_id = #{userId}
@@ -73,22 +99,27 @@
     </select>
 
 
-
-
     <resultMap id="userRolePermissionMap" type="com.example.fixed_assets.entity.User">
         <id column="user_id" property="userId" />
         <result column="username" property="username" />
         <result column="password" property="password" />
         <result column="role_id" property="roleId" />
+        <result column="employee_id" property="employeeId" />
         <association property="role" javaType="com.example.fixed_assets.entity.Role">
             <id column="role_id" property="roleId" />
             <result column="role_name" property="roleName" />
+        </association>
+        <association property="employee" javaType="com.example.fixed_assets.entity.Employee">
+            <id column="employee_id" property="employeeId" />
+            <result column="employee_name" property="name" />
+            <result column="department_id" property="departmentId" />
         </association>
         <collection property="permissions" ofType="com.example.fixed_assets.entity.Permission">
             <id column="permission_id" property="permissionId" />
             <result column="permission_name" property="permissionName" />
             <result column="description" property="description" />
         </collection>
+
     </resultMap>
 
 </mapper>

@@ -68,7 +68,7 @@
               <el-input v-model="selectedAsset.assetType.typeName" disabled></el-input>
           </el-form-item>
         <el-form-item label="数量">
-          <el-input number v-model="selectedAsset.quantity"></el-input>
+            <el-input-number v-model="selectedAsset.quantity" :min="1" :max="maxVal"/>
         </el-form-item>
         <!-- 可以添加更多的表单项 -->
       </el-form>
@@ -90,6 +90,7 @@ const selectedAsset = ref({});
 const search = ref("");
 const sortKey = ref(""); // 排序依据
 const sortOrder = ref("asc"); // 排序方向，默认为升序
+const maxVal = ref(0);
 
 
 interface TableItem {
@@ -184,7 +185,9 @@ const filteredAssets = computed(() => {
   return result;
 });
 const handleUseButtonClick = (asset) => {
-  selectedAsset.value = asset;
+    //selectedAsset的值是asset的拷贝
+    selectedAsset.value = JSON.parse(JSON.stringify(asset));
+  maxVal.value = asset.quantity;
   isModalVisible.value = true;
 };
 

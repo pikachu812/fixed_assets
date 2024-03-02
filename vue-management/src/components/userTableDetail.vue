@@ -33,8 +33,6 @@ const treeData = ref([]);
 
 // 转换权限数据为树形结构
 const convertToTreeData = (permissions) => {
-
-
     return permissions.map(permission => ({
         id: permission.permissionId,
         label: permission.permissionName,

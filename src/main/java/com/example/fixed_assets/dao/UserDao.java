@@ -1,5 +1,6 @@
 package com.example.fixed_assets.dao;
 
+import com.example.fixed_assets.entity.Employee;
 import com.example.fixed_assets.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -44,6 +45,9 @@ public interface UserDao {
      */
     List<User> findUserWithRoleAndPermissions(Map<String,Object> map);
 
+    void deleteEmployee(int employeeId);
 
+    void addEmployee(Employee employee);
 
+    void updateEmployee(Employee employee);
 }
