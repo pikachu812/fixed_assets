@@ -3,13 +3,13 @@ import axios, { AxiosInstance, AxiosError, AxiosResponse, InternalAxiosRequestCo
 // 定义全局可访问的常量baseUrl
 export const baseUrl: string = 'http://localhost:8080';
 
-
 const service: AxiosInstance = axios.create({
     baseURL: baseUrl,
     timeout: 5000,
     headers: {
         'Content-Type': 'application/json'
     },
+    withCredentials: true
 });
 
 service.interceptors.request.use(

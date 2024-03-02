@@ -1,16 +1,25 @@
 package com.example.fixed_assets.controller;
 
 import com.example.fixed_assets.entity.AssetAllocation;
+import com.example.fixed_assets.entity.User;
 import com.example.fixed_assets.service.AssetAllocationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/assetAllocation")
 public class AssetAllocationController {
 
+
+    final Logger logger = LoggerFactory.getLogger(AssetAllocationController.class);
     private final AssetAllocationService assetAllocationService;
 
     public AssetAllocationController(AssetAllocationService assetAllocationService) {
@@ -27,10 +36,23 @@ public class AssetAllocationController {
         return ResponseEntity.ok(assetAllocationService.getAllAssetAllocations());
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Void> createAssetAllocation(@RequestBody AssetAllocation assetAllocation) {
-        assetAllocationService.saveAssetAllocation(assetAllocation);
-        return ResponseEntity.ok().build();
+    @PostMapping("/allocation")
+    public ResponseEntity<?> createAssetAllocation(@RequestBody Map<String, Object> map, HttpSession session) {
+
+
+        //获取当前登录用户
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            return ResponseEntity.badRequest().body("请先重新登录.");
+        }
+        map.put("user", user);
+
+        logger.info("map: " + map);
+//        assetAllocationService.saveAssetAllocation(assetAllocation);
+
+
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
     @PutMapping("/")

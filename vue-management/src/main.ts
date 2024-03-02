@@ -6,6 +6,8 @@ import router from './router';
 import { usePermissStore } from './store/permiss';
 import 'element-plus/dist/index.css';
 import './assets/css/icon.css';
+import axios from 'axios';
+axios.defaults.withCredentials = true; // 全局设置
 
 const app = createApp(App);
 app.use(createPinia());
