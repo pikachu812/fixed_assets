@@ -40,13 +40,22 @@
         <el-form-item label="资产图片" prop="imgDir">
             <el-upload
                 class="avatar-uploader"
-                action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+                :action="baseUrl+ '/fixedAssets/upload'"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
             >
-<!--                TODO 上传图片的操作-->
-                <img v-if="form.imgDir" :src="imgDir" class="avatar" />
+
+                <el-image
+                    v-if="form.imgDir !== undefined"
+                    style="width: 150px; height: 150px"
+                    :src="form.imgDir"
+                    :zoom-rate="1.2"
+                    :max-scale="7"
+                    :min-scale="0.2"
+                    :initial-index="4"
+                    fit="cover"
+                />
                 <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
             </el-upload>
         </el-form-item>
@@ -76,6 +85,8 @@ import {ElMessage, FormInstance} from 'element-plus';
 import {ref} from 'vue';
 import type { UploadProps } from 'element-plus'
 import service from "../utils/request";
+//导入全局常量baseUrl
+import {baseUrl} from "../utils/request";
 
 
 const props = defineProps({
@@ -104,6 +115,17 @@ const defaultData = {
     assetType: null
 };
 
+
+interface FormData {
+    assetId: string | null;
+    assetTypeId: string | null;
+    name: string | null;
+    purchaseDate: string | null;
+    price: number | null;
+    imgDir: string | null;
+    status: string | null;
+    assetType: string | null;
+}
 interface ListItem {
     assetTypeId: number;
     typeName: string;
@@ -112,22 +134,26 @@ interface ListItem {
 
 const statusOptions = [
     {
-        value: 'Available',
-        label: 'Available',
+        value: '闲置',
+        label: '闲置',
     },
     {
-        value: 'Repairing',
-        label: 'Repairing',
+        value: '维修中',
+        label: '维修中',
     },
     {
-        value: 'Other',
-        label: 'Other',
+        value: '使用中',
+        label: '使用中',
+    },
+    {
+        value: '报废',
+        label: '报废',
     }
 ]
 
 
 const loading = ref(false)
-const form = ref({...(props.edit ? props.data : defaultData)});
+const form = ref<FormData>({...(props.edit ? props.data as FormData : defaultData)});
 const list = ref<ListItem[]>([])
 const options = ref<ListItem[]>([])
 const value = ref<string[]>([])
@@ -163,7 +189,12 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
     response,
     uploadFile
 ) => {
-    form.imgSrc = URL.createObjectURL(uploadFile.raw!)
+
+    console.log(response);
+
+    form.value.imgDir = baseUrl + '/fixedAssets/files/' + response.fileName;
+    ElMessage.success('上传成功');
+    console.log(form.value.imgDir);
 }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
@@ -182,10 +213,18 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 
 const saveEdit = (formEl: FormInstance | undefined) => {
     if (!formEl) return;
+
+    console.log(form.value);
+
     formEl.validate((valid) => {
         if (!valid) return false;
-        const action = props.edit ? '/asset/update/' + form.value.assetTypeId : '/assetType/add';
+        const action = props.edit ? '/fixedAssets/update/' + form.value.assetId : '/fixedAssets/add';
+
+        console.log(action);
+
         service.post(action, form.value).then((res) => {
+            console.log("res");
+            console.log(res);
             ElMessage.success('操作成功');
             props.update(); // 通知父组件更新列表
         }).catch((err) => {

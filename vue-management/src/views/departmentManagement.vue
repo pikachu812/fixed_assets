@@ -158,7 +158,6 @@ const handleEdit = (index: number, row: TableItem) => {
   // 当处理编辑操作时，会将当前行的数据传递给子组件
   idx = index;
   rowData.value = row;
-  rowData.value.password = "";
   idEdit.value = true;
   visible.value = true;
 };
