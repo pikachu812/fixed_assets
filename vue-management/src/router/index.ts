@@ -10,7 +10,7 @@ const routes: RouteRecordRaw[] = [
     //     path: '/',
     //     redirect: '/dashboard',
     // },
-    
+
     {
         path: '/',
         name: 'Home',
@@ -165,6 +165,7 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "404" */ '../views/userHome.vue'),
             },
+            // 固定资产基本信息管理
             {
                 path: '/assetTypeManagement',
                 name: 'assetTypeManagement',
@@ -187,7 +188,43 @@ const routes: RouteRecordRaw[] = [
                 meta: {
                     title: '固定资产领用管理',
                 },
-                component: () => import(/* webpackChunkName: "404" */ '../views/assetAllocationManagement.vue'),
+                component: () => import(/* webpackChunkName: "404" */ '../views/assetRepairManagement.vue'),
+            },
+
+            // 固定资产维修＆报废
+            {
+                path: '/assetRepairManagement',
+                name: 'assetRepairManagement',
+                meta: {
+                    title: '固定资产维修管理',
+                },
+                component: () => import(/* webpackChunkName: "404" */ '../views/assetRepairManagement.vue'),
+            },
+            {
+                path: '/assetDepreciationManagement',
+                name: 'assetDepreciationManagement',
+                meta: {
+                    title: '固定资产报废管理',
+                },
+                component: () => import( '../views/assetScrapManagement.vue'),
+            },
+
+            // 固定资产折旧＆盘点
+            {
+                path: '/assetDepreciation',
+                name: 'assetDepreciation',
+                meta: {
+                    title: '固定资产折旧',
+                },
+                component: () => import('../views/assetDepreciation.vue'),
+            },
+            {
+                path: '/assetInventory',
+                name: 'assetInventory',
+                meta: {
+                    title: '固定资产盘点',
+                },
+                component: () => import( '../views/assetInventory.vue'),
             }
         ],
     },

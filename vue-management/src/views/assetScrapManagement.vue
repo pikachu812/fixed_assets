@@ -1,4 +1,4 @@
-<template>
+assetManagement.vue<template>
     <div>
         <div class="container">
             <div class="search-box">

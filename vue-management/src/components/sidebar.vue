@@ -84,7 +84,6 @@ const items = [
       },
     ],
   },
-
   {
     icon: "Calendar",
     index: "1",
@@ -93,109 +92,147 @@ const items = [
     subs: [
       {
         index: "/assetTypeManagement",
-        title: "固定资产类型管理",
+        title: "类型管理",
         permiss: "16",
       },
       {
         index: "/assetManagement",
-        title: "固定资产信息管理",
+        title: "信息管理",
         permiss: "16",
       },
       {
         index: "/assetAllocationManagement",
-        title: "固定资产领用管理",
+        title: "领用管理",
         permiss: "2",
       },
     ],
   },
+  // 第三项
   {
-    icon: "Calendar",
+    icon: "Magnet",
     index: "1",
-    title: "表格相关",
+    title: "固定资产维修报废",
     permiss: "2",
     subs: [
       {
-        index: "/table",
-        title: "常用表格",
-        permiss: "2",
+        index: "/assetRepairManagement",
+        title: "维修管理",
+        permiss: "16",
       },
       {
-        index: "/import",
-        title: "导入Excel",
-        permiss: "2",
-      },
-      {
-        index: "/export",
-        title: "导出Excel",
-        permiss: "2",
+        index: "/assetScrapManagement",
+        title: "报废管理",
+        permiss: "16",
       },
     ],
   },
+    // 第四项  折旧＆盘点
   {
-    icon: "DocumentCopy",
-    index: "/tabs",
-    title: "tab选项卡",
-    permiss: "3",
-  },
-  {
-    icon: "Edit",
-    index: "3",
-    title: "表单相关",
-    permiss: "4",
+    icon: "DataLine",
+    index: "1",
+    title: "固定资产折旧盘点",
+    permiss: "2",
     subs: [
       {
-        index: "/form",
-        title: "基本表单",
-        permiss: "5",
+        index: "/assetDepreciation",
+        title: "固定资产折旧",
+        permiss: "16",
       },
       {
-        index: "/upload",
-        title: "文件上传",
-        permiss: "6",
-      },
-      {
-        index: "4",
-        title: "三级菜单",
-        permiss: "7",
-        subs: [
-          {
-            index: "/editor",
-            title: "富文本编辑器",
-            permiss: "8",
-          },
-          {
-            index: "/markdown",
-            title: "markdown编辑器",
-            permiss: "9",
-          },
-        ],
+        index: "/assetInventory",
+        title: "固定资产盘点",
+        permiss: "16",
       },
     ],
   },
-  {
-    icon: "Setting",
-    index: "/icon",
-    title: "自定义图标",
-    permiss: "10",
-  },
-  {
-    icon: "PieChart",
-    index: "/charts",
-    title: "schart图表",
-    permiss: "11",
-  },
-  {
-    icon: "Warning",
-    index: "/permission",
-    title: "权限管理",
-    permiss: "13",
-  },
-  {
-    icon: "CoffeeCup",
-    index: "/donate",
-    title: "支持作者",
-    permiss: "14",
-  },
+  // {
+  //   icon: "Calendar",
+  //   index: "1",
+  //   title: "表格相关",
+  //   permiss: "2",
+  //   subs: [
+  //     {
+  //       index: "/table",
+  //       title: "常用表格",
+  //       permiss: "2",
+  //     },
+  //     {
+  //       index: "/import",
+  //       title: "导入Excel",
+  //       permiss: "2",
+  //     },
+  //     {
+  //       index: "/export",
+  //       title: "导出Excel",
+  //       permiss: "2",
+  //     },
+  //   ],
+  // },
+  // {
+  //   icon: "DocumentCopy",
+  //   index: "/tabs",
+  //   title: "tab选项卡",
+  //   permiss: "3",
+  // },
+  // {
+  //   icon: "Edit",
+  //   index: "3",
+  //   title: "表单相关",
+  //   permiss: "4",
+  //   subs: [
+  //     {
+  //       index: "/form",
+  //       title: "基本表单",
+  //       permiss: "5",
+  //     },
+  //     {
+  //       index: "/upload",
+  //       title: "文件上传",
+  //       permiss: "6",
+  //     },
+  //     {
+  //       index: "4",
+  //       title: "三级菜单",
+  //       permiss: "7",
+  //       subs: [
+  //         {
+  //           index: "/editor",
+  //           title: "富文本编辑器",
+  //           permiss: "8",
+  //         },
+  //         {
+  //           index: "/markdown",
+  //           title: "markdown编辑器",
+  //           permiss: "9",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   icon: "Setting",
+  //   index: "/icon",
+  //   title: "自定义图标",
+  //   permiss: "10",
+  // },
+  // {
+  //   icon: "PieChart",
+  //   index: "/charts",
+  //   title: "schart图表",
+  //   permiss: "11",
+  // },
+  // {
+  //   icon: "Warning",
+  //   index: "/permission",
+  //   title: "权限管理",
+  //   permiss: "13",
+  // },
+  // {
+  //   icon: "CoffeeCup",
+  //   index: "/donate",
+  //   title: "支持作者",
+  //   permiss: "14",
+  // },
 ];
 
 const route = useRoute();
