@@ -32,7 +32,7 @@
                 <el-table-column prop="name" label="资产名称" align="center" width="180"></el-table-column>
                 <el-table-column prop="purchaseDate" :formatter="formatDate"
                                  label="购置日期" align="center" width="140"></el-table-column>
-                <el-table-column prop="price" label="价格" align="center" width="160"></el-table-column>
+                <el-table-column prop="price" label="价格￥" align="center" width="160"></el-table-column>
 
                 <el-table-column label="资产图片" align="center" width="140">
                     <template #default="scope">

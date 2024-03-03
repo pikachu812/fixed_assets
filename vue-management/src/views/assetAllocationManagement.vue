@@ -43,7 +43,7 @@
               @click="handleEdit(scope.$index, scope.row)"
               v-permiss="16"
             >
-              编辑
+              审核
             </el-button>
             <el-button
               type="danger"
@@ -69,7 +69,7 @@
       </div>
     </div>
     <el-dialog
-      :title="idEdit ? '编辑类型' : '新增类型'"
+      :title="idEdit ? '审核领用' : ' '"
       v-model="visible"
       width="500px"
       destroy-on-close
@@ -99,11 +99,13 @@ interface TableItem {
 }
 
 const query = reactive({
-  assetTypeId: null,
-  typeName: null,
-  description: null,
-  offset: null,
-  limit: null,
+  assetAllocationId: null,
+  assetId: null,
+  userId: null,
+  department: null,
+  allocationDate: null,
+  returnDate: null,
+  allocationDescription: null,
 });
 const tableData = ref<TableItem[]>([]);
 const pageTotal = ref(0);
@@ -121,7 +123,7 @@ const visible1 = ref(false);
 
 // 获取表格数据
 const getData = async () => {
-  service.post("/assetType/getAssetTypeByCondition", query).then((res) => {
+  service.post("/assetAllocation", query).then((res) => {    //邱秋3/2改的，不知道对不对
     console.log(res);
     tableData.value = res.data;
     pageTotal.value = res.data.length;
@@ -144,8 +146,8 @@ const handleDelete = async (index: number) => {
   try {
     await ElMessageBox.confirm("确定要删除吗？", "提示", { type: "warning" });
     // 调用API删除部门
-    const assetTypeId = tableData.value[index].assetTypeId;
-    await service.delete("/assetType/delete/" + assetTypeId);
+    const assetAllocationId = tableData.value[index].assetTypeId;
+    await service.delete("/assetAllocation/delete/" + assetAllocationId);
     ElMessage.success("删除成功");
     tableData.value.splice(index, 1); // 从本地数据中移除
   } catch (error) {

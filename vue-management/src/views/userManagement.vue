@@ -1,4 +1,4 @@
-<template>
+x<template>
 	<div>
 		<div class="container">
 			<div class="search-box">

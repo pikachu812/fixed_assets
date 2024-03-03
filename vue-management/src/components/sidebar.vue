@@ -102,7 +102,7 @@ const items = [
         permiss: "16",
       },
       {
-        index: "/allocationManagement",
+        index: "/assetAllocationManagement",
         title: "固定资产领用管理",
         permiss: "2",
       },
