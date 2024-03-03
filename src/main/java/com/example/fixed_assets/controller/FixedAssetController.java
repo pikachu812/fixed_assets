@@ -32,7 +32,7 @@ import java.util.Objects;
  * @ RequestMapping 注解表示该类的所有方法都是以 /assets 开头的 <br><br>
  * @ Controller     注解表示该类是一个控制器，用于接收请求和返回视图，这个注解是SpringMVC的注解
  */
-@CrossOrigin
+@CrossOrigin(origins = {"http://127.0.0.1:5173", "http://localhost:5173"}, maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("/fixedAssets")
 public class FixedAssetController {

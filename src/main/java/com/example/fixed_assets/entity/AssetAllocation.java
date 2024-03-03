@@ -6,7 +6,7 @@ import java.util.Date;
 public class AssetAllocation {
     private Integer allocationId;
     private Integer assetId;
-    private Integer employeeId;
+    private Integer userId;
     private String department;
     private Date allocationDate;
     private Date returnDate;

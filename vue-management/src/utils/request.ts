@@ -1,7 +1,8 @@
 import axios, { AxiosInstance, AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 // 定义全局可访问的常量baseUrl
-export const baseUrl: string = 'http://localhost:8080';
+export const baseUrl: string = 'http://127.0.0.1:8080';
+
 
 const service: AxiosInstance = axios.create({
     baseURL: baseUrl,

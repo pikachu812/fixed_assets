@@ -71,6 +71,20 @@
                 <el-form-item label="数量">
                     <el-input-number v-model="selectedAsset.quantity" :min="1" :max="maxVal"/>
                 </el-form-item>
+                <el-form-item label="返还日期">
+                    <el-date-picker
+                        type="date"
+                        placeholder="选择日期"
+                        v-model="selectedAsset.returnDate"
+                        style="width: 100%"
+                    ></el-date-picker>
+                </el-form-item>
+                <el-form-item label="领用说明">
+                    <el-input
+                        type="textarea"
+                        v-model="selectedAsset.allocationDescription"
+                    ></el-input>
+                </el-form-item>
                 <!-- 可以添加更多的表单项 -->
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -95,6 +109,8 @@ interface TableItem {
     status: string;
     assetType: object;
     quantity: number; // BigDecimal from Java can be represented as a number in TypeScript for simplicity, but be cautious of precision issues for very large or very small values
+    returnDate: Date;
+    allocationDescription: string;
 }
 
 const isModalVisible = ref(false);
@@ -199,12 +215,16 @@ const submitUseForm = () => {
     console.log("提交领用请求", selectedAsset.value);
 
 
-    service.post("/assetAllocation/allocation", selectedAsset.value).then((res) => {
+    service.post("/assetAllocation/allocation", selectedAsset.value,{
+        withCredentials: true,
+    }).then((res) => {
         console.log("领用成功", res);
         // 假设请求成功
         isModalVisible.value = false; // 关闭模态框
         // 这里可以添加成功提示，比如使用Element UI的Message组件
         ElMessage.success("领用成功");
+
+        getData();
     }).catch((err) => {
         console.error("领用失败", err);
         // 获取请求失败后端返回的错误信息并弹窗提示

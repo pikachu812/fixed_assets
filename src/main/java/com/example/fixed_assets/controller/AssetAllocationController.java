@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 
+@CrossOrigin(origins = {"http://127.0.0.1:5173", "http://localhost:5173"}, maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("/assetAllocation")
 public class AssetAllocationController {
@@ -46,11 +47,23 @@ public class AssetAllocationController {
         if (user == null) {
             return ResponseEntity.badRequest().body("请先重新登录.");
         }
+
+
+        if(user.getRoleId() == 1){
+            return ResponseEntity.badRequest().body("管理员不可进行领用操作.");
+        }
+
+
         map.put("user", user);
 
         logger.info("map: " + map);
-//        assetAllocationService.saveAssetAllocation(assetAllocation);
 
+
+        try {
+            assetAllocationService.saveAssetAllocation(map);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
         return new ResponseEntity<>("success", HttpStatus.OK);
     }

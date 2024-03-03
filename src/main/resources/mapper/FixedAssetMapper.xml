@@ -77,6 +77,16 @@
         where fa.status = '闲置'
         GROUP BY fa.name
     </select>
+    <select id="selectSomeByName" resultMap="FixedAssetWithTypeResultMap">
+        SELECT fa.*,
+               at.asset_type_id AS "assetType.assetTypeId",
+               at.type_name AS "assetType.typeName",
+               at.description AS "assetType.description"
+        FROM fixed_asset fa
+                 LEFT JOIN asset_type at ON fa.asset_type_id = at.asset_type_id
+        WHERE fa.name = #{name}
+        LIMIT #{num}
+    </select>
 
     <!-- 结果映射 -->
     <resultMap id="FixedAssetWithTypeResultMap" type="com.example.fixed_assets.entity.FixedAsset">

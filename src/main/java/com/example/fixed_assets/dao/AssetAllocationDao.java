@@ -18,4 +18,5 @@ public interface AssetAllocationDao {
     void deleteById(Integer allocationId);
 
 
+    void insertAsList(List<AssetAllocation> allocationList);
 }
