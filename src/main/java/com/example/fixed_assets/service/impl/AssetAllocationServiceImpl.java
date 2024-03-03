@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.crypto.Data;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -53,9 +52,14 @@ public class AssetAllocationServiceImpl implements AssetAllocationService {
 
         int num = map.get("quantity") == null ? 0 : (int) map.get("quantity");
         String name = (String) map.get("name");
+
+        if (map.get("allocationDescription") == null || ((String)map.get("allocationDescription")).isEmpty()) {
+            throw new RuntimeException("领用描述不能为空");
+        }
+
         String allocationDescription = (String) map.get("allocationDescription");
 
-
+        logger.info("Service");
 
         String date = (String) map.get("returnDate");
 
@@ -79,15 +83,11 @@ public class AssetAllocationServiceImpl implements AssetAllocationService {
             throw new RuntimeException("资产名称不能为空");
         }
 
-
-
         if(user.getEmployee().getDepartment().getName() == null || user.getEmployee().getDepartment().getName().isEmpty()){
             throw new RuntimeException("部门不能为空");
         }
 
-        if (allocationDescription == null || allocationDescription.isEmpty()) {
-            throw new RuntimeException("领用描述不能为空");
-        }
+
         logger.info("num: " + num);
         logger.info("name: " + name);
         logger.info("allocationDescription: " + allocationDescription);

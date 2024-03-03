@@ -62,6 +62,7 @@ public class AssetAllocationController {
         try {
             assetAllocationService.saveAssetAllocation(map);
         } catch (Exception e) {
+            logger.error(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
