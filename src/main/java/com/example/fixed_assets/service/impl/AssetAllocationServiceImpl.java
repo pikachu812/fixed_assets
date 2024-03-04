@@ -187,4 +187,11 @@ public class AssetAllocationServiceImpl implements AssetAllocationService {
 
         assetAllocationDao.rejectAssetAllocation(allocationId,reason);
     }
+
+    @Override
+    public Object getMyAssetAllocation(Map<String, Object> map, Integer userId) {
+
+        map.put("userId",userId);
+        return assetAllocationDao.selectByMap(map);
+    }
 }

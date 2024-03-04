@@ -108,6 +108,9 @@
             <if test="status != null and status != ''">
                 OR aa.status = #{status}
             </if>
+            <if test="userId != null">
+                AND aa.user_id = #{userId}
+            </if>
         </where>
 
 

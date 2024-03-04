@@ -20,4 +20,6 @@ public interface AssetAllocationService {
     void passAssetAllocation(Integer allocationId);
 
     void rejectAssetAllocation(Integer allocationId, String reason);
+
+    Object getMyAssetAllocation(Map<String, Object> map, Integer userId);
 }

@@ -225,6 +225,14 @@ const routes: RouteRecordRaw[] = [
                     title: '固定资产盘点',
                 },
                 component: () => import( '../views/assetInventory.vue'),
+            },
+            {
+                path: '/assetAllocationList',
+                name: 'assetAllocationList',
+                meta: {
+                    title: '个人固定申领列表',
+                },
+                component: () => import( '../views/assetAllocationList.vue'),
             }
         ],
     },

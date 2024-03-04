@@ -38,6 +38,20 @@ public class AssetAllocationController {
     }
 
 
+    @PostMapping("/myAllocation")
+    public ResponseEntity<?> getMyAssetAllocation(@RequestBody Map<String, Object> map,HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.badRequest().body("请先重新登录.");
+        }
+
+        if (user.getRoleId() == 1) {
+            return ResponseEntity.badRequest().body("您没有权限进行此操作.");
+        }
+
+        return ResponseEntity.ok(assetAllocationService.getMyAssetAllocation(map,user.getUserId()));
+    }
+
     @PostMapping("/search")
     public ResponseEntity<List<AssetAllocation>> searchAssetAllocation(@RequestBody Map<String, Object> map) {
         return ResponseEntity.ok(assetAllocationService.searchAssetAllocation(map));

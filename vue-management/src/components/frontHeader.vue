@@ -10,8 +10,9 @@
   >
 
     <div class="flex-grow" />
-    <el-menu-item index="1">主页</el-menu-item>
-    <el-sub-menu index="2">
+    <el-menu-item index="/userHome" key="/userHome">主页</el-menu-item>
+      <el-menu-item index="/assetAllocationList" key="/assetAllocationList">固定资产申领列表</el-menu-item>
+    <el-sub-menu index="3">
       <template #title>我的</template>
       <el-menu-item index="/userManagement" key="/userManagement">个人中心</el-menu-item>
       <el-menu-item divided @click="loginout">退出登录</el-menu-item>
