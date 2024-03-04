@@ -1,11 +1,8 @@
 <template>
     <el-form  ref="formRef" :model="form" label-width="100px">
-        <el-form-item label="资产名称" prop="name">
-            <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="资产类别" prop="assetTypeId">
+        <el-form-item label="资产名称" prop="assetId">
             <el-select
-                v-model="form.assetTypeId"
+                v-model="form.assetId"
                 filterable
                 remote
                 reserve-keyword
@@ -17,15 +14,26 @@
             >
                 <el-option
                     v-for="item in options"
-                    :key="item.value"
-                    :label="item.typeName"
-                    :value="item.assetTypeId"
-                />
+                    :key="item.assetId"
+                    :label="item.name"
+                    :value="item.assetId"
+                    :disabled="item.status !== '闲置'"
+                >
+
+                    <span style="float: left">{{ item.name }}</span>
+                    <span
+                        style="float: right;
+                        color: var(--el-text-color-secondary);
+                        font-size: 13px;"
+                    >{{ item.status }}</span
+                    >
+
+                </el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="维修日期" prop="purchaseDate">
+        <el-form-item label="维修日期" prop="repairDate">
             <el-date-picker
-                v-model="form.purchaseDate"
+                v-model="form.repairDate"
                 type="date"
                 placeholder="请选择维修日期"
                 style="width: 100%"
@@ -38,6 +46,12 @@
             <el-input-number v-model="form.cost" :precision="2" :step="0.01" :min="0.00" />
 
         </el-form-item>
+<!--        维修明细-->
+        <el-form-item label="维修明细" prop="details">
+            <el-input v-model="form.details" type="textarea" maxlength="100" show-word-limit></el-input>
+        </el-form-item>
+
+
 <!--        <el-form-item label="资产图片" prop="imgDir">-->
 <!--            <el-upload-->
 <!--                class="avatar-uploader"-->
@@ -89,10 +103,8 @@
 <script lang="ts" setup>
 import {ElMessage, FormInstance} from 'element-plus';
 import {ref} from 'vue';
-import type { UploadProps } from 'element-plus'
 import service from "../utils/request";
 //导入全局常量baseUrl
-import {baseUrl} from "../utils/request";
 
 
 const props = defineProps({
@@ -110,52 +122,34 @@ const props = defineProps({
     }
 });
 
+
 const defaultData = {
+    repairId: null,
     assetId: null,
-    assetTypeId: null,
-    name: null,
-    purchaseDate: null,
-    price: null,
-    imgDir: null,
-    status: null,
-    assetType: null
+    repairDate: null,
+    cost: null,
+    details: null,
 };
 
 
 interface FormData {
-    assetId: string | null;
-    assetTypeId: string | null;
-    name: string | null;
-    purchaseDate: string | null;
-    price: number | null;
-    imgDir: string | null;
-    status: string | null;
-    assetType: string | null;
+    repairId: number | null;
+    assetId: number | null;
+    repairDate: string | null;
+    cost: number | null;
+    details: string | null;
 }
 interface ListItem {
+    assetId: number;
     assetTypeId: number;
-    typeName: string;
-    description: string;
+    name: string;
+    purchaseDate: Date;
+    price: number;
+    status: string;
+    imgDir: string;
 }
 
-const statusOptions = [
-    {
-        value: '闲置',
-        label: '闲置',
-    },
-    {
-        value: '维修中',
-        label: '维修中',
-    },
-    {
-        value: '使用中',
-        label: '使用中',
-    },
-    {
-        value: '报废',
-        label: '报废',
-    }
-]
+
 
 
 const loading = ref(false)
@@ -168,15 +162,13 @@ const formRef = ref<FormInstance>();
 const remoteMethod = (query: string) => {
 
     loading.value = true
-    service.post("/assetType/getAssetTypeByCondition", {
-        typeName: null,
-        description: null,
+    service.post("/fixedAssets/getFixedAssetsByCondition", {
     }).then((res) => {
         loading.value = false
 
         if (query) {
             options.value = res.data.filter((item) => {
-                return item.typeName.toLowerCase().includes(query.toLowerCase())
+                return item.assetName.toLowerCase().includes(query.toLowerCase())
             })
 
         } else {
@@ -189,32 +181,6 @@ const remoteMethod = (query: string) => {
         options.value = []
     })
 
-}
-
-const handleAvatarSuccess: UploadProps['onSuccess'] = (
-    response,
-    uploadFile
-) => {
-
-    console.log(response);
-
-    form.value.imgDir = baseUrl + '/fixedAssets/files/' + response.fileName;
-    ElMessage.success('上传成功');
-    console.log(form.value.imgDir);
-}
-
-const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-    if (rawFile.type !== 'image/jpeg'
-        && rawFile.type !== 'image/png'
-        && rawFile.type !== 'image/jpg'
-        && rawFile.type !== 'image/gif') {
-        ElMessage.error('请上传图片格式!')
-        return false
-    } else if (rawFile.size / 1024 / 1024 > 50) {
-        ElMessage.error('图片大小不能超过 50MB!')
-        return false
-    }
-    return true
 }
 
 const saveEdit = (formEl: FormInstance | undefined) => {

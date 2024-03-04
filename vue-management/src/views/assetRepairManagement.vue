@@ -91,7 +91,7 @@
     <el-dialog
         :title="idEdit ? '编辑资产' : '新增资产'"
         v-model="visible"
-        width="500px"
+        width="70%"
         destroy-on-close
         :close-on-click-modal="false"
         @close="closeDialog"
