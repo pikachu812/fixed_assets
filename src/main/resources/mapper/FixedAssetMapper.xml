@@ -84,7 +84,7 @@
                at.description AS "assetType.description"
         FROM fixed_asset fa
                  LEFT JOIN asset_type at ON fa.asset_type_id = at.asset_type_id
-        WHERE fa.name = #{name}
+        WHERE fa.name = #{name} and fa.status = '闲置'
         LIMIT #{num}
     </select>
 

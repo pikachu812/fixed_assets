@@ -102,7 +102,6 @@ public class AssetAllocationServiceImpl implements AssetAllocationService {
         // 获取num个name名称的资产
         List<FixedAsset> fixedAssets = fixedAssetDao.selectSomeByName(name,num);
 
-
         List<AssetAllocation> allocationList = new ArrayList<>();
         AssetAllocation tmp;
 
