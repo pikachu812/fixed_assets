@@ -22,4 +22,6 @@ public interface AssetAllocationService {
     void rejectAssetAllocation(Integer allocationId, String reason);
 
     Object getMyAssetAllocation(Map<String, Object> map, Integer userId);
+
+    void returnAssetAllocation(Integer allocationId);
 }

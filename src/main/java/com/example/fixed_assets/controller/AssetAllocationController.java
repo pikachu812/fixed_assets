@@ -83,6 +83,19 @@ public class AssetAllocationController {
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
+    @PostMapping("/return/{allocationId}")
+    public ResponseEntity<?> returnAssetAllocation(@PathVariable Integer allocationId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.badRequest().body("请先重新登录.");
+        }
+        if (user.getRoleId() == 1) {
+            return ResponseEntity.badRequest().body("您没有权限进行此操作.");
+        }
+        assetAllocationService.returnAssetAllocation(allocationId);
+        return new ResponseEntity<>("success", HttpStatus.OK);
+    }
+
 
     @PostMapping("/allocation")
     public ResponseEntity<?> createAssetAllocation(@RequestBody Map<String, Object> map, HttpSession session) {

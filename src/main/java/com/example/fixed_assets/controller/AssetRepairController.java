@@ -10,7 +10,7 @@ import java.util.List;
 
 @CrossOrigin(origins = {"http://127.0.0.1:5173", "http://localhost:5173"}, maxAge = 3600, allowCredentials = "true")
 @RestController
-@RequestMapping("/api/assetRepair")
+@RequestMapping("/assetRepair")
 public class AssetRepairController {
 
     private final AssetRepairService assetRepairService;
@@ -21,10 +21,30 @@ public class AssetRepairController {
     }
 
     // 添加维修记录
-    @PostMapping("/")
+    @PostMapping("/add")
     public ResponseEntity<AssetRepair> addAssetRepair(@RequestBody AssetRepair assetRepair) {
         assetRepairService.addAssetRepair(assetRepair);
         return ResponseEntity.ok(assetRepair);
+    }
+
+    // 更新维修记录
+    @PostMapping("/update/{repairId}")
+    public ResponseEntity<?> updateAssetRepair(
+            @PathVariable Integer repairId,
+            @RequestBody AssetRepair assetRepair
+    ) {
+
+        assetRepair.setRepairId(repairId);
+        assetRepairService.updateAssetRepair(assetRepair);
+        return ResponseEntity.ok("更新成功");
+    }
+
+    @PostMapping("/repair/{repairId}")
+    public ResponseEntity<?> repairAsset(
+            @PathVariable Long repairId
+    ) {
+        assetRepairService.repairAsset(repairId);
+        return ResponseEntity.ok("维修成功");
     }
 
     // 通过ID获取维修记录
@@ -40,18 +60,18 @@ public class AssetRepairController {
         return ResponseEntity.ok(assetRepairService.getAllAssetRepairs());
     }
 
-    // 更新维修记录
-    @PutMapping("/")
-    public ResponseEntity<AssetRepair> updateAssetRepair(@RequestBody AssetRepair assetRepair) {
-        if (assetRepairService.updateAssetRepair(assetRepair) > 0) {
-            return ResponseEntity.ok(assetRepair);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<AssetRepair>> searchAssetRepair(@RequestBody AssetRepair assetRepair) {
+        return ResponseEntity.ok(assetRepairService.searchAssetRepair(assetRepair));
     }
 
+
+
+
+
     // 通过ID删除维修记录
-    @DeleteMapping("/{repairId}")
+    @DeleteMapping("/delete/{repairId}")
     public ResponseEntity<Void> deleteAssetRepairById(@PathVariable Long repairId) {
         if (assetRepairService.deleteAssetRepairById(repairId) > 0) {
             return ResponseEntity.ok().build();

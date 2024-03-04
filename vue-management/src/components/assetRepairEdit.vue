@@ -20,13 +20,17 @@
                     :disabled="item.status !== '闲置'"
                 >
 
-                    <span style="float: left">{{ item.name }}</span>
+                    <span style="float: left">{{item.assetId}}.{{ item.name }}</span>
+
                     <span
                         style="float: right;
                         color: var(--el-text-color-secondary);
                         font-size: 13px;"
-                    >{{ item.status }}</span
                     >
+                        <el-tag :type="statusToCss[item.status] ? statusToCss[item.status] : 'danger'">
+                            {{ item.status }}
+                        </el-tag>
+                    </span>
 
                 </el-option>
             </el-select>
@@ -46,8 +50,8 @@
             <el-input-number v-model="form.cost" :precision="2" :step="0.01" :min="0.00" />
 
         </el-form-item>
-<!--        维修明细-->
-        <el-form-item label="维修明细" prop="details">
+<!--        损坏原因-->
+        <el-form-item label="损坏原因" prop="details">
             <el-input v-model="form.details" type="textarea" maxlength="100" show-word-limit></el-input>
         </el-form-item>
 
@@ -150,7 +154,12 @@ interface ListItem {
 }
 
 
-
+const statusToCss = {
+    "闲置": "success",
+    "维修中": "warning",
+    "使用中": "info",
+    "报废": "danger"
+}
 
 const loading = ref(false)
 const form = ref<FormData>({...(props.edit ? props.data as FormData : defaultData)});
@@ -168,7 +177,7 @@ const remoteMethod = (query: string) => {
 
         if (query) {
             options.value = res.data.filter((item) => {
-                return item.assetName.toLowerCase().includes(query.toLowerCase())
+                return item.name.toLowerCase().includes(query.toLowerCase())
             })
 
         } else {
@@ -183,6 +192,8 @@ const remoteMethod = (query: string) => {
 
 }
 
+remoteMethod('');
+
 const saveEdit = (formEl: FormInstance | undefined) => {
     if (!formEl) return;
 
@@ -190,7 +201,7 @@ const saveEdit = (formEl: FormInstance | undefined) => {
 
     formEl.validate((valid) => {
         if (!valid) return false;
-        const action = props.edit ? '/fixedAssets/update/' + form.value.assetId : '/fixedAssets/add';
+        const action = props.edit ? '/assetRepair/update/' + form.value.repairId : '/assetRepair/add';
 
         console.log(action);
 

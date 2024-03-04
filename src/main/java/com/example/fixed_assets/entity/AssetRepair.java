@@ -9,6 +9,9 @@ public class AssetRepair {
     private Integer assetId;
     private Date repairDate;
     private Double cost;
+    private String status;
     private String details;
+
+    private FixedAsset fixedAsset;
 
 }

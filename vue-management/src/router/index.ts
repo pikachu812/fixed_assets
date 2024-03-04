@@ -201,8 +201,8 @@ const routes: RouteRecordRaw[] = [
                 component: () => import(/* webpackChunkName: "404" */ '../views/assetRepairManagement.vue'),
             },
             {
-                path: '/assetDepreciationManagement',
-                name: 'assetDepreciationManagement',
+                path: '/assetScrapManagement',
+                name: 'assetScrapManagement',
                 meta: {
                     title: '固定资产报废管理',
                 },

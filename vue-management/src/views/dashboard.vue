@@ -12,11 +12,11 @@
 					</div>
 					<div class="user-info-list">
 						上次登录时间：
-						<span>2022-10-01</span>
+						<span>2024-03-01</span>
 					</div>
 					<div class="user-info-list">
 						上次登录地点：
-						<span>东莞</span>
+						<span>上海</span>
 					</div>
 				</el-card>
 				<el-card shadow="hover" style="height: 252px">
@@ -65,7 +65,7 @@
 								<el-icon class="grid-con-icon"><Goods /></el-icon>
 								<div class="grid-cont-right">
 									<div class="grid-num">5000</div>
-									<div>商品数量</div>
+									<div>固定资产数量</div>
 								</div>
 							</div>
 						</el-card>

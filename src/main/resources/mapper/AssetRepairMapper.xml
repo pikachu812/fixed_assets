@@ -3,6 +3,35 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.fixed_assets.dao.AssetRepairDao">
 
+
+    <resultMap id="AssetTypeResultMap" type="com.example.fixed_assets.entity.AssetType">
+        <id column="asset_type_id" property="assetTypeId"/>
+        <result column="type_name" property="typeName"/>
+        <result column="description" property="description"/>
+    </resultMap>
+
+    <resultMap id="FixedAssetResultMap" type="com.example.fixed_assets.entity.FixedAsset">
+        <id column="asset_id" property="assetId"/>
+        <result column="asset_type_id" property="assetTypeId"/>
+        <result column="name" property="name"/>
+        <result column="purchase_date" property="purchaseDate"/>
+        <result column="price" property="price"/>
+        <result column="img_dir" property="imgDir"/>
+        <result column="status" property="status"/>
+        <association property="assetType" resultMap="AssetTypeResultMap"/>
+    </resultMap>
+
+    <resultMap id="AssetRepairResultMap" type="com.example.fixed_assets.entity.AssetRepair">
+        <id column="repair_id" property="repairId"/>
+        <result column="asset_id" property="assetId"/>
+        <result column="repair_date" property="repairDate"/>
+        <result column="cost" property="cost"/>
+        <result column="status" property="status"/>
+        <result column="details" property="details"/>
+        <association property="fixedAsset" resultMap="FixedAssetResultMap"/>
+    </resultMap>
+
+
     <!-- 添加维修记录 -->
     <insert id="insertAssetRepair" parameterType="com.example.fixed_assets.entity.AssetRepair">
         INSERT INTO asset_repair (asset_id, repair_date, cost, details)
@@ -14,9 +43,32 @@
         SELECT * FROM asset_repair WHERE repair_id = #{repairId}
     </select>
 
-    <!-- 查询所有维修记录 -->
-    <select id="selectAllAssetRepairs" resultType="com.example.fixed_assets.entity.AssetRepair">
-        SELECT * FROM asset_repair
+    <select id="searchAssetRepair" resultMap="AssetRepairResultMap">
+        SELECT
+        ar.repair_id, ar.asset_id, ar.repair_date, ar.cost, ar.status, ar.details,
+        fa.asset_id, fa.asset_type_id, fa.name, fa.purchase_date, fa.price, fa.img_dir, fa.status,
+        at.asset_type_id, at.type_name, at.description
+        FROM asset_repair ar
+        JOIN fixed_asset fa ON ar.asset_id = fa.asset_id
+        LEFT JOIN asset_type at ON fa.asset_type_id = at.asset_type_id
+        <where>
+            <if test="fixedAsset.name != null and fixedAsset.name != ''">
+                OR fa.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="fixedAsset.assetType.typeName != null and fixedAsset.assetType.typeName != ''">
+                OR at.type_name LIKE CONCAT('%', #{fixedAsset.assetType.typeName}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAllAssetRepairs" resultMap="AssetRepairResultMap">
+        SELECT
+        ar.repair_id, ar.asset_id, ar.repair_date, ar.cost, ar.status, ar.details,
+        fa.asset_id, fa.asset_type_id, fa.name, fa.purchase_date, fa.price, fa.img_dir, fa.status,
+        at.asset_type_id, at.type_name, at.description
+        FROM asset_repair ar
+        JOIN fixed_asset fa ON ar.asset_id = fa.asset_id
+        LEFT JOIN asset_type at ON fa.asset_type_id = at.asset_type_id
     </select>
 
     <!-- 更新维修记录 -->
@@ -25,7 +77,8 @@
         SET asset_id = #{assetId},
             repair_date = #{repairDate},
             cost = #{cost},
-            details = #{details}
+            details = #{details},
+            status = #{status}
         WHERE repair_id = #{repairId}
     </update>
 

@@ -92,36 +92,36 @@ const items = [
     subs: [
       {
         index: "/assetTypeManagement",
-        title: "类型管理",
+        title: "固定资产类型管理",
         permiss: "16",
       },
       {
         index: "/assetManagement",
-        title: "信息管理",
+        title: "固定资产信息管理",
         permiss: "16",
       },
       {
         index: "/assetAllocationManagement",
-        title: "领用管理",
+        title: "固定资产领用管理",
         permiss: "2",
       },
     ],
   },
-  // 第三项
+  // 第三项 维修＆报废
   {
     icon: "Magnet",
     index: "3",
-    title: "固定资产维修报废",
+    title: "固定资产 维修 / 报废",
     permiss: "2",
     subs: [
       {
         index: "/assetRepairManagement",
-        title: "维修管理",
+        title: "固定资产维修管理",
         permiss: "16",
       },
       {
         index: "/assetScrapManagement",
-        title: "报废管理",
+        title: "固定资产报废管理",
         permiss: "16",
       },
     ],
@@ -130,7 +130,7 @@ const items = [
   {
     icon: "DataLine",
     index: "4",
-    title: "固定资产折旧盘点",
+    title: "固定资产 折旧 / 盘点",
     permiss: "2",
     subs: [
       {
@@ -144,6 +144,13 @@ const items = [
         permiss: "16",
       },
     ],
+
+  },
+  {
+    icon: "PieChart",
+    index: "/charts",
+    title: "数据统计",
+    permiss: "1",
   },
   // {
   //   icon: "Calendar",

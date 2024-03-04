@@ -193,4 +193,17 @@ public class AssetAllocationServiceImpl implements AssetAllocationService {
         map.put("userId",userId);
         return assetAllocationDao.selectByMap(map);
     }
+
+    @Override
+    public void returnAssetAllocation(Integer allocationId) {
+
+            AssetAllocation assetAllocation = assetAllocationDao.selectById(allocationId);
+
+            FixedAsset fixedAsset = fixedAssetDao.selectFixedAssetById(assetAllocation.getAssetId());
+
+            fixedAsset.setStatus("闲置");
+
+            fixedAssetDao.updateFixedAsset(fixedAsset);
+
+    }
 }
