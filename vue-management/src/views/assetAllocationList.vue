@@ -33,7 +33,21 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="allocationDescription" label="申请理由" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                    <template #default="scope">
 
+                        <el-button
+                            v-if="scope.row.status === '审核通过' && scope.row.fixedAsset.status === '使用中'"
+                            type="primary"
+                            size="small"
+                            :icon="Edit"
+                            @click="giveBack(scope.$index, scope.row)"
+                        >
+                            归还
+                        </el-button>
+
+                    </template>
+                </el-table-column>
 
             </el-table>
             <div class="pagination">
@@ -179,6 +193,21 @@ const handleSearch = () => {
 // 分页导航
 const handlePageChange = (val: number) => {
     getData();
+};
+
+const giveBack = (index: number, row: TableItem) => {
+    ElMessageBox.confirm("确定要归还吗？", "提示", {type: "warning"}).then(() => {
+
+        service.post("/assetAllocation/return/" + row.allocationId, {}).then((res) => {    //邱秋3/2改的，不知道对不对
+            ElMessage.success("归还成功");
+            getData();
+        }).catch(() => {
+            ElMessage.error("归还失败");
+        });
+
+    }).catch(() => {
+        ElMessage.error("取消");
+    });
 };
 
 const detail = (row: TableItem) => {

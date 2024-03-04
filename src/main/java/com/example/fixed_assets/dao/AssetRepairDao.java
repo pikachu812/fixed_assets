@@ -22,4 +22,6 @@ public interface AssetRepairDao {
 
     // 根据维修ID删除维修记录
     int deleteAssetRepairById(@Param("repairId") Long repairId);
+
+    List<AssetRepair> searchAssetRepair(AssetRepair assetRepair);
 }
