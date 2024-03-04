@@ -30,6 +30,8 @@ CREATE TABLE `asset_allocation` (
   `allocation_date` date DEFAULT NULL,
   `return_date` date DEFAULT NULL,
   `allocation_description` varchar(200) DEFAULT NULL,
+  `status` varchar(50) DEFAULT '待审核',
+  `reason` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`allocation_id`),
   KEY `asset_id` (`asset_id`),
   KEY `user_id` (`user_id`),
@@ -44,7 +46,7 @@ CREATE TABLE `asset_allocation` (
 
 LOCK TABLES `asset_allocation` WRITE;
 /*!40000 ALTER TABLE `asset_allocation` DISABLE KEYS */;
-INSERT INTO `asset_allocation` VALUES (2,2,13,'人事部','2024-03-03','2024-03-14','demo'),(3,3,13,'人事部','2024-03-03','2024-03-14','demo');
+INSERT INTO `asset_allocation` VALUES (2,2,13,'人事部','2024-03-03','2024-03-14','demo','审核通过',NULL),(3,3,13,'人事部','2024-03-03','2024-03-14','demo','审核不通过','信息不完整');
 /*!40000 ALTER TABLE `asset_allocation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,7 +268,7 @@ CREATE TABLE `fixed_asset` (
 
 LOCK TABLES `fixed_asset` WRITE;
 /*!40000 ALTER TABLE `fixed_asset` DISABLE KEYS */;
-INSERT INTO `fixed_asset` VALUES (2,1,'Laptop','2023-02-12',1200.00,'使用中','https://cdn.pixabay.com/photo/2017/08/07/23/43/nature-2609259_1280.jpg'),(3,1,'Laptop','2023-02-12',1200.00,'使用中','https://cdn.pixabay.com/photo/2017/08/07/23/43/nature-2609259_1280.jpg'),(9,12,'手抓饭','2024-03-03',0.03,'闲置','http://localhost:8080/fixedAssets/files/1709356057992-485.jpg');
+INSERT INTO `fixed_asset` VALUES (2,1,'Laptop','2023-02-12',1200.00,'使用中','https://cdn.pixabay.com/photo/2017/08/07/23/43/nature-2609259_1280.jpg'),(3,1,'Laptop','2023-02-11',1200.00,'闲置','https://cdn.pixabay.com/photo/2017/08/07/23/43/nature-2609259_1280.jpg'),(9,12,'手抓饭','2024-03-03',0.03,'闲置','http://localhost:8080/fixedAssets/files/1709356057992-485.jpg');
 /*!40000 ALTER TABLE `fixed_asset` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -387,4 +389,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-03 17:00:11
+-- Dump completed on 2024-03-04 17:08:55
