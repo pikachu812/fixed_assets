@@ -2,6 +2,47 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.fixed_assets.dao.AssetAllocationDao">
+
+
+    <resultMap id="AssetAllocationResultMap" type="com.example.fixed_assets.entity.AssetAllocation">
+        <id property="allocationId" column="allocation_id"/>
+        <result property="assetId" column="asset_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="department" column="department"/>
+        <result property="allocationDate" column="allocation_date"/>
+        <result property="returnDate" column="return_date"/>
+        <result property="allocationDescription" column="allocation_description"/>
+        <result property="status" column="status"/>
+        <result property="reason" column="reason"/>
+        <association property="user" javaType="com.example.fixed_assets.entity.User">
+            <id property="userId" column="user_id"/>
+            <result property="username" column="username"/>
+            <result property="roleId" column="role_id"/>
+            <result property="employeeId" column="employee_id"/>
+            <association property="employee" javaType="com.example.fixed_assets.entity.Employee">
+                <id property="employeeId" column="employee_id"/>
+                <result property="name" column="employee_name"/>
+                <result property="departmentId" column="department_id"/>
+                <association property="department" javaType="com.example.fixed_assets.entity.Department">
+                    <id property="departmentId" column="department_id"/>
+                    <result property="name" column="department_name"/>
+                    <result property="description" column="department_description"/>
+                </association>
+            </association>
+        </association>
+
+        <association property="fixedAsset" javaType="com.example.fixed_assets.entity.FixedAsset">
+            <id property="assetId" column="asset_id"/>
+            <result property="name" column="asset_name"/>
+            <result property="purchaseDate" column="purchase_date"/>
+            <result property="price" column="price"/>
+            <result property="status" column="status"/>
+            <result property="imgDir" column="img_dir"/>
+        </association>
+    </resultMap>
+
+
+
     <insert id="insert"></insert>
     <insert id="insertAsList" parameterType="java.util.List">
         INSERT INTO asset_allocation (asset_id, user_id, department, allocation_date, return_date, allocation_description)
@@ -11,8 +52,66 @@
         </foreach>
     </insert>
     <update id="update"></update>
+    <update id="passAssetAllocation">
+        UPDATE asset_allocation
+        SET status = '审核通过'
+        WHERE allocation_id = #{allocationId}
+    </update>
+    <update id="rejectAssetAllocation">
+        UPDATE asset_allocation
+        SET status = '审核不通过', reason = #{reason}
+        WHERE allocation_id = #{allocationId}
+    </update>
+
+
     <delete id="deleteById"></delete>
-    <select id="selectById" resultType="com.example.fixed_assets.entity.AssetAllocation"></select>
+    <select id="selectById" resultMap="AssetAllocationResultMap" parameterType="int">
+        SELECT aa.allocation_id, aa.asset_id, aa.user_id, aa.department, aa.allocation_date, aa.return_date, aa.allocation_description,aa.status,aa.reason,
+               u.user_id, u.username, u.password, u.role_id, u.employee_id,
+               e.employee_id, e.name AS employee_name, e.department_id,
+               d.department_id, d.name AS department_name, d.description AS department_description,
+               fa.asset_id, fa.asset_type_id, fa.name AS asset_name, fa.purchase_date, fa.price, fa.status, fa.img_dir
+        FROM asset_allocation aa
+                 JOIN user u ON aa.user_id = u.user_id
+                 JOIN fixed_asset fa ON aa.asset_id = fa.asset_id
+                 JOIN employee e ON u.employee_id = e.employee_id
+                 JOIN department d ON e.department_id = d.department_id
+        WHERE aa.allocation_id = #{allocationId}
+    </select>
     <select id="selectAll" resultType="com.example.fixed_assets.entity.AssetAllocation"></select>
     <select id="selectByCondition" resultType="com.example.fixed_assets.entity.AssetAllocation"></select>
+    <select id="selectByMap" resultMap="AssetAllocationResultMap" parameterType="map">
+
+        SELECT aa.allocation_id, aa.asset_id, aa.user_id, aa.department, aa.allocation_date, aa.return_date, aa.allocation_description,aa.status,aa.reason,
+        u.user_id, u.username, u.password, u.role_id, u.employee_id,
+        e.employee_id, e.name AS employee_name, e.department_id,
+        d.department_id, d.name AS department_name, d.description AS department_description,
+        fa.asset_id, fa.asset_type_id, fa.name AS asset_name, fa.purchase_date, fa.price, fa.status, fa.img_dir
+        FROM asset_allocation aa
+                 JOIN user u ON aa.user_id = u.user_id
+                 JOIN fixed_asset fa ON aa.asset_id = fa.asset_id
+                 JOIN employee e ON u.employee_id = e.employee_id
+                 JOIN department d ON e.department_id = d.department_id
+        <where>
+            <if test="assetName != null and assetName != ''">
+                OR fa.name LIKE CONCAT('%', #{assetName}, '%')
+            </if>
+            <if test="employeeName != null and employeeName != ''">
+                OR e.name LIKE CONCAT('%', #{employeeName}, '%')
+            </if>
+            <if test="departmentName != null and departmentName != ''">
+                OR d.name LIKE CONCAT('%', #{departmentName}, '%')
+            </if>
+            <if test="allocationDescription != null and allocationDescription != ''">
+                OR aa.allocation_description LIKE CONCAT('%', #{allocationDescription}, '%')
+            </if>
+            <if test="status != null and status != ''">
+                OR aa.status = #{status}
+            </if>
+        </where>
+
+
+
+
+    </select>
 </mapper>

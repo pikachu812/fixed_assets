@@ -136,4 +136,55 @@ public class AssetAllocationServiceImpl implements AssetAllocationService {
     public void deleteAssetAllocationById(Integer allocationId) {
         assetAllocationDao.deleteById(allocationId);
     }
+
+    @Override
+    public List<AssetAllocation> searchAssetAllocation(Map<String, Object> map) {
+
+        //map的格式：
+        //{
+        //    assetName: query.value,
+        //    employeeName: query.value,
+        //    departmentName: query.value,
+        //    allocationDescription: query.value
+        //}
+
+
+        String search="";
+
+        for(String key: map.keySet()){
+            if(map.get(key) != null && !((String)map.get(key)).isEmpty()){
+                search += key + " like '%" + map.get(key) + "%' \n";
+            }
+        }
+
+        logger.info("search: " + search);
+
+        List<AssetAllocation> assetAllocations = assetAllocationDao.selectByMap(map);
+
+
+
+        return assetAllocations;
+    }
+
+    @Override
+    public void passAssetAllocation(Integer allocationId) {
+
+        assetAllocationDao.passAssetAllocation(allocationId);
+
+    }
+
+    @Override
+    @Transactional
+    public void rejectAssetAllocation(Integer allocationId,String reason) {
+
+        AssetAllocation assetAllocation = assetAllocationDao.selectById(allocationId);
+
+        FixedAsset fixedAsset = fixedAssetDao.selectFixedAssetById(assetAllocation.getAssetId());
+
+        fixedAsset.setStatus("闲置");
+
+        fixedAssetDao.updateFixedAsset(fixedAsset);
+
+        assetAllocationDao.rejectAssetAllocation(allocationId,reason);
+    }
 }

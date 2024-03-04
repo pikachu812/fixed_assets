@@ -2,12 +2,14 @@ package com.example.fixed_assets.dao;
 
 import com.example.fixed_assets.entity.AssetAllocation;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AssetAllocationDao {
-    AssetAllocation selectById(Integer allocationId);
+    AssetAllocation selectById(@Param("allocationId") Integer allocationId);
 
     List<AssetAllocation> selectAll();
 
@@ -21,4 +23,11 @@ public interface AssetAllocationDao {
 
 
     void insertAsList(List<AssetAllocation> allocationList);
+
+    List<AssetAllocation> selectByMap(Map<String, Object> map);
+
+    void passAssetAllocation(Integer allocationId);
+
+    void rejectAssetAllocation(@Param("allocationId") Integer allocationId,
+                                @Param("reason") String reason);
 }

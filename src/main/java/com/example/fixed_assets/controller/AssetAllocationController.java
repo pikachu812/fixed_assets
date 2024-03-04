@@ -37,6 +37,39 @@ public class AssetAllocationController {
         return ResponseEntity.ok(assetAllocationService.getAllAssetAllocations());
     }
 
+
+    @PostMapping("/search")
+    public ResponseEntity<List<AssetAllocation>> searchAssetAllocation(@RequestBody Map<String, Object> map) {
+        return ResponseEntity.ok(assetAllocationService.searchAssetAllocation(map));
+    }
+
+    @PostMapping("/pass/{allocationId}")
+    public ResponseEntity<?> passAssetAllocation(@PathVariable Integer allocationId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.badRequest().body("请先重新登录.");
+        }
+        if (user.getRoleId() != 1) {
+            return ResponseEntity.badRequest().body("您没有权限进行此操作.");
+        }
+        assetAllocationService.passAssetAllocation(allocationId);
+        return new ResponseEntity<>("success", HttpStatus.OK);
+    }
+
+    @PostMapping("/reject/{allocationId}")
+    public ResponseEntity<?> rejectAssetAllocation(@PathVariable Integer allocationId, @RequestBody Map<String, Object> map, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.badRequest().body("请先重新登录.");
+        }
+        if (user.getRoleId() != 1) {
+            return ResponseEntity.badRequest().body("您没有权限进行此操作.");
+        }
+        assetAllocationService.rejectAssetAllocation(allocationId, (String) map.get("reason"));
+        return new ResponseEntity<>("success", HttpStatus.OK);
+    }
+
+
     @PostMapping("/allocation")
     public ResponseEntity<?> createAssetAllocation(@RequestBody Map<String, Object> map, HttpSession session) {
 

@@ -188,7 +188,7 @@ const routes: RouteRecordRaw[] = [
                 meta: {
                     title: '固定资产领用管理',
                 },
-                component: () => import(/* webpackChunkName: "404" */ '../views/assetRepairManagement.vue'),
+                component: () => import(/* webpackChunkName: "404" */ '../views/assetAllocationManagement.vue'),
             },
 
             // 固定资产维修＆报废

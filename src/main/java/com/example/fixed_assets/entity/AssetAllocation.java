@@ -10,6 +10,11 @@ public class AssetAllocation {
     private String department;
     private Date allocationDate;
     private Date returnDate;
+    private String status;
+    private String reason;
     private String allocationDescription;
+
+    private User user;
+    private FixedAsset fixedAsset;
 
 }
