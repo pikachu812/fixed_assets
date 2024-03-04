@@ -68,7 +68,7 @@ const items = [
   },
   {
     icon: "User",
-    index: "",
+    index: "1",
     title: "基本信息管理",
     permiss: "1",
     subs: [
@@ -86,7 +86,7 @@ const items = [
   },
   {
     icon: "Calendar",
-    index: "1",
+    index: "2",
     title: "固定资产管理",
     permiss: "2",
     subs: [
@@ -110,7 +110,7 @@ const items = [
   // 第三项
   {
     icon: "Magnet",
-    index: "1",
+    index: "3",
     title: "固定资产维修报废",
     permiss: "2",
     subs: [
@@ -129,7 +129,7 @@ const items = [
     // 第四项  折旧＆盘点
   {
     icon: "DataLine",
-    index: "1",
+    index: "4",
     title: "固定资产折旧盘点",
     permiss: "2",
     subs: [
