@@ -36,6 +36,7 @@
                 <el-table-column prop="name" label="资产名称" align="center" width="160%"></el-table-column>
                 <el-table-column prop="purchaseDate" :formatter="formatDate"
                                  label="购置日期" align="center" width="120%"></el-table-column>
+                <el-table-column prop="usefulYear" label="使用年限" align="center" width="120%"></el-table-column>
                 <el-table-column prop="price" label="价格￥" align="center" width="120%"></el-table-column>
 
                 <el-table-column label="资产图片" align="center" width="120%">

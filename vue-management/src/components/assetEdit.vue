@@ -37,6 +37,12 @@
             <el-input-number v-model="form.price" :precision="2" :step="0.01" :min="0.00" />
 
         </el-form-item>
+        <el-form-item
+            label="使用年限"
+            prop="price">
+            <el-input-number v-model="form.usefulYear" :precision="0" :step="1" :min="0" />
+
+        </el-form-item>
         <el-form-item label="资产图片" prop="imgDir">
             <el-upload
                 class="avatar-uploader"
@@ -87,6 +93,7 @@ import type { UploadProps } from 'element-plus'
 import service from "../utils/request";
 //导入全局常量baseUrl
 import {baseUrl} from "../utils/request";
+import {AssetType, FixedAsset} from "../interface/interface";
 
 
 const props = defineProps({
@@ -112,25 +119,13 @@ const defaultData = {
     price: null,
     imgDir: null,
     status: null,
+    usefulYear: null,
     assetType: null
 };
 
 
-interface FormData {
-    assetId: string | null;
-    assetTypeId: string | null;
-    name: string | null;
-    purchaseDate: string | null;
-    price: number | null;
-    imgDir: string | null;
-    status: string | null;
-    assetType: string | null;
-}
-interface ListItem {
-    assetTypeId: number;
-    typeName: string;
-    description: string;
-}
+interface FormData extends FixedAsset{}
+interface ListItem extends AssetType{}
 
 const statusOptions = [
     {
@@ -184,6 +179,8 @@ const remoteMethod = (query: string) => {
     })
 
 }
+
+remoteMethod('');
 
 const handleAvatarSuccess: UploadProps['onSuccess'] = (
     response,

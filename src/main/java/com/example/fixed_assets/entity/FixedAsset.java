@@ -15,6 +15,7 @@ public class FixedAsset {
     private BigDecimal price;
     private String imgDir;
     private String status;
+    private Integer usefulYear;
 
     private AssetType assetType;
 
