@@ -16,30 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `role_permission`
+-- Table structure for table `department`
 --
 
-DROP TABLE IF EXISTS `role_permission`;
+DROP TABLE IF EXISTS `department`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `role_permission` (
-  `role_id` int NOT NULL,
-  `permission_id` int NOT NULL,
-  PRIMARY KEY (`role_id`,`permission_id`),
-  KEY `permission_id` (`permission_id`),
-  CONSTRAINT `role_permission_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`),
-  CONSTRAINT `role_permission_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`permission_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `department` (
+  `department_id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` text,
+  PRIMARY KEY (`department_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `role_permission`
+-- Dumping data for table `department`
 --
 
-LOCK TABLES `role_permission` WRITE;
-/*!40000 ALTER TABLE `role_permission` DISABLE KEYS */;
-INSERT INTO `role_permission` VALUES (1,1),(1,2),(2,2),(1,3),(1,4);
-/*!40000 ALTER TABLE `role_permission` ENABLE KEYS */;
+LOCK TABLES `department` WRITE;
+/*!40000 ALTER TABLE `department` DISABLE KEYS */;
+INSERT INTO `department` VALUES (2,'人事部','负责人事调动、入职等'),(3,'财务部','固定资产审核、盘点'),(8,'市场营销部','负责市场研究、品牌管理、广告、促销活动和其他营销策略的制定与实施，以提升公司产品或服务的市场份额和品牌知名度。'),(9,'研发部','负责新产品或服务的研究和开发，创新技术，以及改进现有产品。');
+/*!40000 ALTER TABLE `department` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -51,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-01 21:26:04
+-- Dump completed on 2024-03-05 21:04:39

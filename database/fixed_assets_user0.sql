@@ -16,27 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `role`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `role`;
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `role` (
-  `role_id` int NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(50) NOT NULL,
-  PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `user` (
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role_id` int DEFAULT NULL,
+  `employee_id` int DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_pk` (`username`),
+  KEY `role_id` (`role_id`),
+  KEY `user_ibfk_2` (`employee_id`),
+  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`),
+  CONSTRAINT `user_ibfk_2` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `role`
+-- Dumping data for table `user`
 --
 
-LOCK TABLES `role` WRITE;
-/*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'admin'),(2,'user');
-/*!40000 ALTER TABLE `role` ENABLE KEYS */;
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (5,'test','202cb962ac59075b964b07152d234b70',1,NULL),(12,'老王','202cb962ac59075b964b07152d234b70',1,NULL),(13,'user','202cb962ac59075b964b07152d234b70',2,6),(18,'wyz','2a75448b4a4ddab6226a207e7a3a8447',2,5);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -48,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-01 21:26:04
+-- Dump completed on 2024-03-05 21:04:39

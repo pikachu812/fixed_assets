@@ -16,34 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `fixed_asset`
+-- Table structure for table `employee`
 --
 
-DROP TABLE IF EXISTS `fixed_asset`;
+DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `fixed_asset` (
-  `asset_id` int NOT NULL AUTO_INCREMENT,
-  `asset_type_id` int DEFAULT NULL,
+CREATE TABLE `employee` (
+  `employee_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  `purchase_date` date DEFAULT NULL,
-  `price` decimal(10,2) DEFAULT NULL,
-  `status` varchar(50) DEFAULT NULL,
-  `img_dir` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`asset_id`),
-  KEY `asset_type_id` (`asset_type_id`),
-  CONSTRAINT `fixed_asset_ibfk_1` FOREIGN KEY (`asset_type_id`) REFERENCES `asset_type` (`asset_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `department_id` int DEFAULT NULL,
+  PRIMARY KEY (`employee_id`),
+  KEY `department_id` (`department_id`),
+  CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `department` (`department_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `fixed_asset`
+-- Dumping data for table `employee`
 --
 
-LOCK TABLES `fixed_asset` WRITE;
-/*!40000 ALTER TABLE `fixed_asset` DISABLE KEYS */;
-INSERT INTO `fixed_asset` VALUES (2,1,'Laptop','2023-02-15',1200.00,'闲置','https://cdn.pixabay.com/photo/2017/08/07/23/43/nature-2609259_1280.jpg'),(3,1,'Laptop','2023-02-15',1200.00,'维修中','https://cdn.pixabay.com/photo/2017/08/07/23/43/nature-2609259_1280.jpg');
-/*!40000 ALTER TABLE `fixed_asset` ENABLE KEYS */;
+LOCK TABLES `employee` WRITE;
+/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
+INSERT INTO `employee` VALUES (5,'wyz',2),(6,'wyz2',2);
+/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-01 21:26:05
+-- Dump completed on 2024-03-05 21:04:39

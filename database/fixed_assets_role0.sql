@@ -16,31 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `asset_repair`
+-- Table structure for table `role`
 --
 
-DROP TABLE IF EXISTS `asset_repair`;
+DROP TABLE IF EXISTS `role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asset_repair` (
-  `repair_id` int NOT NULL AUTO_INCREMENT,
-  `asset_id` int DEFAULT NULL,
-  `repair_date` date DEFAULT NULL,
-  `cost` decimal(10,2) DEFAULT NULL,
-  `details` text,
-  PRIMARY KEY (`repair_id`),
-  KEY `asset_id` (`asset_id`),
-  CONSTRAINT `asset_repair_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `fixed_asset` (`asset_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `role` (
+  `role_id` int NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `asset_repair`
+-- Dumping data for table `role`
 --
 
-LOCK TABLES `asset_repair` WRITE;
-/*!40000 ALTER TABLE `asset_repair` DISABLE KEYS */;
-/*!40000 ALTER TABLE `asset_repair` ENABLE KEYS */;
+LOCK TABLES `role` WRITE;
+/*!40000 ALTER TABLE `role` DISABLE KEYS */;
+INSERT INTO `role` VALUES (1,'admin'),(2,'user');
+/*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-01 21:26:04
+-- Dump completed on 2024-03-05 21:04:39

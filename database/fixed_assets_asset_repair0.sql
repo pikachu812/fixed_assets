@@ -16,32 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `asset_depreciation`
+-- Table structure for table `asset_repair`
 --
 
-DROP TABLE IF EXISTS `asset_depreciation`;
+DROP TABLE IF EXISTS `asset_repair`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asset_depreciation` (
-  `depreciation_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `asset_repair` (
+  `repair_id` int NOT NULL AUTO_INCREMENT,
   `asset_id` int DEFAULT NULL,
-  `depreciation_date` date DEFAULT NULL,
-  `depreciation_amount` decimal(10,2) DEFAULT NULL,
-  `accumulated_depreciation` decimal(10,2) DEFAULT NULL,
-  `book_value` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`depreciation_id`),
+  `repair_date` date DEFAULT NULL,
+  `status` varchar(20) DEFAULT '待维修' COMMENT '当前维修记录状态',
+  `cost` decimal(10,2) DEFAULT NULL,
+  `details` text,
+  PRIMARY KEY (`repair_id`),
   KEY `asset_id` (`asset_id`),
-  CONSTRAINT `asset_depreciation_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `fixed_asset` (`asset_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `asset_repair_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `fixed_asset` (`asset_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `asset_depreciation`
+-- Dumping data for table `asset_repair`
 --
 
-LOCK TABLES `asset_depreciation` WRITE;
-/*!40000 ALTER TABLE `asset_depreciation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `asset_depreciation` ENABLE KEYS */;
+LOCK TABLES `asset_repair` WRITE;
+/*!40000 ALTER TABLE `asset_repair` DISABLE KEYS */;
+INSERT INTO `asset_repair` VALUES (1,9,'2024-03-05','待维修',300.00,'日常使用磨损');
+/*!40000 ALTER TABLE `asset_repair` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-01 21:26:05
+-- Dump completed on 2024-03-05 21:04:38

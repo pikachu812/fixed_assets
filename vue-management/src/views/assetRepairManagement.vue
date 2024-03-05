@@ -67,7 +67,7 @@
                     <template #default="scope">
                         <el-button
                             v-if="scope.row.status === '待维修'"
-                            type="warning"
+                            type="success"
                             size="small"
                             :icon="WarnTriangleFilled"
                             @click="handleRepair(scope.row)">

@@ -4,7 +4,7 @@
             <div class="search-box">
                 <el-input
                     v-model="query"
-                    placeholder="资产名称"
+                    placeholder="请输入关键词"
                     class="search-input mr10"
                     clearable
                 ></el-input>

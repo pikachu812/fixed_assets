@@ -16,29 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `employee`
+-- Table structure for table `asset_depreciation`
 --
 
-DROP TABLE IF EXISTS `employee`;
+DROP TABLE IF EXISTS `asset_depreciation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `employee` (
-  `employee_id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  `department_id` int DEFAULT NULL,
-  PRIMARY KEY (`employee_id`),
-  KEY `department_id` (`department_id`),
-  CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `department` (`department_id`)
+CREATE TABLE `asset_depreciation` (
+  `depreciation_id` int NOT NULL AUTO_INCREMENT,
+  `asset_id` int DEFAULT NULL,
+  `depreciation_date` date DEFAULT NULL,
+  `depreciation_amount` decimal(10,2) DEFAULT NULL,
+  `accumulated_depreciation` decimal(10,2) DEFAULT NULL,
+  `book_value` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`depreciation_id`),
+  KEY `asset_id` (`asset_id`),
+  CONSTRAINT `asset_depreciation_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `fixed_asset` (`asset_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `employee`
+-- Dumping data for table `asset_depreciation`
 --
 
-LOCK TABLES `employee` WRITE;
-/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
+LOCK TABLES `asset_depreciation` WRITE;
+/*!40000 ALTER TABLE `asset_depreciation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `asset_depreciation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-01 21:26:04
+-- Dump completed on 2024-03-05 21:04:39
