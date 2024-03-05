@@ -25,6 +25,10 @@
                                  width="120%"></el-table-column>
                 <el-table-column prop="user.employee.department.name" label="部门名称" align="center"
                                  width="120%"></el-table-column>
+                <el-table-column prop="allocationDate" :formatter="formatDate"
+                                 label="领用日期" align="center" width="120%"></el-table-column>
+                <el-table-column prop="returnDate" :formatter="formatDate"
+                                 label="返回日期" align="center" width="120%"></el-table-column>
                 <el-table-column prop="allocationDescription" label="申请理由" align="center"></el-table-column>
 
                 <el-table-column label="审核操作" width="250" align="center">
@@ -94,15 +98,12 @@
 import {ref, reactive} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {Close, Delete, Edit, Search, CirclePlusFilled, Check, View} from "@element-plus/icons-vue";
-import AssetTypeEdit from "../components/assetTypeEdit.vue";
-// import UserTableDetail from "../components/userTableDetail.vue";
 import service from "../utils/request";
 import {AssetAllocation} from "../interface/interface";
 
 
 
-interface TableItem extends AssetAllocation{
-}
+interface TableItem extends AssetAllocation{}
 
 const query = ref('');
 const reason = ref('');
@@ -143,6 +144,7 @@ const rowData = ref<TableItem>({
         price: null,
         imgDir: null,
         status: null,
+        usefulYear: null,
         assetType: {
             assetTypeId: null,
             typeName: null,
@@ -152,7 +154,13 @@ const rowData = ref<TableItem>({
     allocationDate: null,
     returnDate: null,
 });
-const visible1 = ref(false);
+const formatDate = (row, column, cellValue, index) => {
+    // 假设cellValue是一个标准的日期字符串或者Date对象
+    // 你可以根据需要调整日期格式
+    const date = new Date(cellValue);
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
 
 // 获取表格数据
 const getData = async () => {

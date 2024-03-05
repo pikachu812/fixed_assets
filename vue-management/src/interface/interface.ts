@@ -44,6 +44,7 @@ interface FixedAsset {
     price: number; // 或 string 类型，如果您希望保持原始格式
     imgDir: string;
     status: string;
+    usefulYear: number;
     assetType: AssetType;
 }
 

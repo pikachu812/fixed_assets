@@ -4,8 +4,8 @@
 
     <!-- 插入固定资产 -->
     <insert id="insertFixedAsset" parameterType="com.example.fixed_assets.entity.FixedAsset" keyColumn="asset_id" keyProperty="assetId" useGeneratedKeys="true">
-        INSERT INTO fixed_asset (asset_type_id, name, purchase_date, price,img_dir, status)
-        VALUES (#{assetTypeId}, #{name}, #{purchaseDate}, #{price},#{imgDir}, #{status})
+        INSERT INTO fixed_asset (asset_type_id, name, purchase_date, price,img_dir, status, useful_year)
+        VALUES (#{assetTypeId}, #{name}, #{purchaseDate}, #{price},#{imgDir}, #{status}, #{usefulYear})
     </insert>
 
     <!-- 更新固定资产 -->
@@ -16,7 +16,8 @@
             purchase_date = #{purchaseDate},
             price = #{price},
             img_dir = #{imgDir},
-            status = #{status}
+            status = #{status},
+            useful_year = #{usefulYear}
         WHERE asset_id = #{assetId}
     </update>
 
@@ -98,6 +99,7 @@
         <result column="price" property="price"/>
         <result column="img_dir" property="imgDir"/>
         <result column="status" property="status"/>
+        <result column="useful_year" property="usefulYear"/>
         <association property="assetType" javaType="com.example.fixed_assets.entity.AssetType">
             <id column="assetType.assetTypeId" property="assetTypeId"/>
             <result column="assetType.typeName" property="typeName"/>
