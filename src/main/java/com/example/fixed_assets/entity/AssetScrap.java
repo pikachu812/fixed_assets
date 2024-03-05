@@ -9,7 +9,6 @@ public class AssetScrap {
     private Integer assetId;
     private Date scrapDate;
     private String reason;
-
     private FixedAsset fixedAsset;
 
 }

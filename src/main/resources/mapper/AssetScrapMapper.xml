@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fixed_assets.dao.AssetScrapDao">
+
+
+    <resultMap id="AssetTypeResultMap" type="com.example.fixed_assets.entity.AssetType">
+        <id column="asset_type_id" property="assetTypeId"/>
+        <result column="type_name" property="typeName"/>
+        <result column="description" property="description"/>
+    </resultMap>
+
+    <resultMap id="FixedAssetResultMap" type="com.example.fixed_assets.entity.FixedAsset">
+        <id column="asset_id" property="assetId"/>
+        <result column="asset_type_id" property="assetTypeId"/>
+        <result column="name" property="name"/>
+        <result column="purchase_date" property="purchaseDate"/>
+        <result column="price" property="price"/>
+        <result column="img_dir" property="imgDir"/>
+        <result column="status" property="status"/>
+        <association property="assetType" resultMap="AssetTypeResultMap"/>
+    </resultMap>
+
+    <resultMap id="AssetScrapResultMap" type="com.example.fixed_assets.entity.AssetScrap">
+        <id column="scrap_id" property="scrapId"/>
+        <result column="asset_id" property="assetId"/>
+        <result column="scrap_date" property="scrapDate"/>
+        <result column="reason" property="reason"/>
+        <association property="fixedAsset" resultMap="FixedAssetResultMap"/>
+    </resultMap>
+
+
+    <insert id="insertAssetScrap" parameterType="com.example.fixed_assets.entity.AssetScrap">
+        INSERT INTO asset_scrap (asset_id, scrap_date, reason)
+        VALUES (#{assetId}, #{scrapDate}, #{reason})
+    </insert>
+
+    <!-- 更新维修记录 -->
+    <update id="updateAssetScrap" parameterType="com.example.fixed_assets.entity.AssetScrap">
+        UPDATE asset_scrap
+        SET asset_id = #{assetId},
+            scrap_date = #{scrapDate},
+            reason = #{reason}
+        WHERE scrap_id = #{scrapId}
+    </update>
+    <!-- 根据维修ID删除维修记录 -->
+    <delete id="deleteAssetScrapById" parameterType="long">
+        DELETE FROM asset_scrap WHERE scrap_id = #{scrapId}
+    </delete>
+    <select id="searchAssetScrap" resultMap="AssetScrapResultMap">
+        SELECT `as`.*,
+            fa.asset_id, fa.asset_type_id, fa.name, fa.purchase_date, fa.price, fa.img_dir, fa.status,
+            at.asset_type_id, at.type_name, at.description
+        FROM asset_scrap `as`
+        LEFT JOIN fixed_asset fa on fa.asset_id = `as`.asset_id
+        LEFT JOIN asset_type at on at.asset_type_id = fa.asset_type_id
+        <where>
+            <if test="fixedAsset.name != null and fixedAsset.name != ''">
+                OR fa.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="fixedAsset.assetType.typeName != null and fixedAsset.assetType.typeName != ''">
+                OR at.type_name LIKE CONCAT('%', #{fixedAsset.assetType.typeName}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

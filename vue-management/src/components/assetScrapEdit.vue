@@ -20,7 +20,7 @@
                     :disabled="item.status !== '闲置'"
                 >
 
-                    <span style="float: left">{{item.assetId}}.{{ item.name }}</span>
+                    <span style="float: left">{{ item.assetId }}-{{ item.name }}</span>
 
                     <span
                         style="float: right;
@@ -35,69 +35,19 @@
                 </el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="维修日期" prop="repairDate">
+        <el-form-item label="报废日期" prop="scrapDate">
             <el-date-picker
-                v-model="form.repairDate"
+                v-model="form.scrapDate"
                 type="date"
-                placeholder="请选择维修日期"
+                placeholder="请选择报废日期"
                 style="width: 100%"
             />
         </el-form-item>
-<!--    注意cost和price的区别  -->
-        <el-form-item
-            label="维修费用"
-            prop="cost">
-            <el-input-number v-model="form.cost" :precision="2" :step="0.01" :min="0.00" />
-
-        </el-form-item>
-<!--        维修明细-->
-        <el-form-item label="维修明细" prop="details">
-            <el-input v-model="form.details" type="textarea" maxlength="100" show-word-limit></el-input>
+        <el-form-item label="报废原因" prop="details">
+            <el-input v-model="form.reason" type="textarea" maxlength="100" show-word-limit></el-input>
         </el-form-item>
 
 
-<!--        <el-form-item label="资产图片" prop="imgDir">-->
-<!--            <el-upload-->
-<!--                class="avatar-uploader"-->
-<!--                :action="baseUrl+ '/fixedAssets/upload'"-->
-<!--                :show-file-list="false"-->
-<!--                :on-success="handleAvatarSuccess"-->
-<!--                :before-upload="beforeAvatarUpload"-->
-<!--            >-->
-
-<!--                <el-image-->
-<!--                    v-if="form.imgDir !== undefined"-->
-<!--                    style="width: 150px; height: 150px"-->
-<!--                    :src="form.imgDir"-->
-<!--                    :zoom-rate="1.2"-->
-<!--                    :max-scale="7"-->
-<!--                    :min-scale="0.2"-->
-<!--                    :initial-index="4"-->
-<!--                    fit="cover"-->
-<!--                />-->
-<!--                <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>-->
-<!--            </el-upload>-->
-<!--        </el-form-item>-->
-
-<!--   自动修改状态？   -->
-
-
-
-<!--        <el-form-item label="资产状态" prop="description">-->
-<!--            <el-select-->
-<!--                v-model="form.status"-->
-<!--                placeholder="Select"-->
-<!--                size="large"-->
-<!--                style="width: 240px"-->
-<!--            >-->
-<!--                <el-option-->
-<!--                    v-for="item in statusOptions"-->
-<!--                    :key="item.value"-->
-<!--                    :label="item.label"-->
-<!--                    :value="item.value"-->
-<!--                />-->
-<!--            </el-select>-->
-<!--        </el-form-item>-->
         <el-form-item>
             <el-button type="primary" @click="saveEdit(formRef)">保存</el-button>
         </el-form-item>
@@ -108,6 +58,7 @@
 import {ElMessage, FormInstance} from 'element-plus';
 import {ref} from 'vue';
 import service from "../utils/request";
+import {AssetScrap, FixedAsset} from "../interface/interface";
 
 
 const props = defineProps({
@@ -127,30 +78,29 @@ const props = defineProps({
 
 
 const defaultData = {
-    repairId: null,
+    scrapId: 0,
     assetId: null,
-    repairDate: null,
-    cost: null,
-    details: null,
+    scrapDate: null,
+    reason: '',
+    fixedAsset: {
+        assetId: 0,
+        assetTypeId: 0,
+        name: "",
+        purchaseDate: null,
+        price: 0,
+        imgDir: "",
+        status: "",
+        assetType: {
+            assetTypeId: 0,
+            typeName: "",
+            description: ""
+        }
+    }
 };
 
 
-interface FormData {
-    repairId: number | null;
-    assetId: number | null;
-    repairDate: string | null;
-    cost: number | null;
-    details: string | null;
-}
-interface ListItem {
-    assetId: number;
-    assetTypeId: number;
-    name: string;
-    purchaseDate: Date;
-    price: number;
-    status: string;
-    imgDir: string;
-}
+interface FormData extends AssetScrap{}
+interface ListItem extends FixedAsset{}
 
 
 const statusToCss = {
@@ -200,7 +150,7 @@ const saveEdit = (formEl: FormInstance | undefined) => {
 
     formEl.validate((valid) => {
         if (!valid) return false;
-        const action = props.edit ? '/assetRepair/update/' + form.value.repairId : '/assetRepair/add';
+        const action = props.edit ? '/assetScrap/update/' + form.value.scrapId : '/assetScrap/add';
 
         console.log(action);
 
