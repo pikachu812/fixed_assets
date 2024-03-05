@@ -16,8 +16,8 @@
     </router-view>
   </div>
   <div
+      v-permiss="16"
     class="content-box"
-    v-permiss="16"
     :class="{ 'content-collapse': sidebar.collapse }"
   >
     <v-tags></v-tags>

@@ -22,5 +22,5 @@ public interface UserService {
     List<User> searchUsers(Map<String, Object> params);
 
 
-
+    boolean updatePassword(Integer userId, String oldPassword, String newPassword);
 }

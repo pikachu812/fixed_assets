@@ -72,6 +72,34 @@ public class UserController {
         return ResponseEntity.ok("User deleted successfully.");
     }
 
+    @GetMapping("/my")
+    public ResponseEntity<?> getMyUser(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        //如果用户未登录，返回错误信息
+        if (user == null) {
+            return ResponseEntity.badRequest().body("请重新登录！");
+        }
+
+        user = userService.getUser(user.getUserId());
+
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("updatePassword")
+    public ResponseEntity<?> updatePassword(@RequestBody Map<String, String> map, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.badRequest().body("请重新登录！");
+        }
+        String oldPassword = map.get("old");
+        String newPassword = map.get("new");
+        if (userService.updatePassword(user.getUserId(), oldPassword, newPassword)) {
+            return ResponseEntity.ok("密码修改成功！");
+        }
+        return ResponseEntity.badRequest().body("原密码错误！");
+    }
+
     @GetMapping("/get/{id}")
     public ResponseEntity<User> getUser(@PathVariable int id) {
         User user = userService.getUser(id);

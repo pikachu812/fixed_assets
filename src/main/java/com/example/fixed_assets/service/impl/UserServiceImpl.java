@@ -159,6 +159,19 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
+    @Override
+    public boolean updatePassword(Integer userId, String oldPassword, String newPassword) {
+
+        User user = userDao.getUser(userId);
+        if (user.getPassword().equals(md5(oldPassword))) {
+            user.setPassword(md5(newPassword));
+            userDao.updateUserPassword(user);
+            return true;
+        }
+
+        return false;
+    }
+
 
     private String md5(String input) {
         try {
