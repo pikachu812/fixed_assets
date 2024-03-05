@@ -50,8 +50,8 @@
             <el-input-number v-model="form.cost" :precision="2" :step="0.01" :min="0.00" />
 
         </el-form-item>
-<!--        维修明细-->
-        <el-form-item label="维修明细" prop="details">
+<!--        损坏原因-->
+        <el-form-item label="损坏原因" prop="details">
             <el-input v-model="form.details" type="textarea" maxlength="100" show-word-limit></el-input>
         </el-form-item>
 
