@@ -93,12 +93,9 @@ import { Delete, Edit, Search, CirclePlusFilled, View } from "@element-plus/icon
 import DepartmentEdit from "../components/departmentEdit.vue";
 // import UserTableDetail from "../components/userTableDetail.vue";
 import service from "../utils/request";
+import {Department} from "../interface/interface";
 
-interface TableItem {
-  departmentId: number;
-  name: string;
-  description: string;
-}
+interface TableItem extends Department{}
 
 const query = reactive({
   departmentId: null,
@@ -114,8 +111,10 @@ const pageIndex = ref(1);
 const visible = ref(false);
 let idx: number = -1;
 const idEdit = ref(false);
-const rowData = ref({
-  password: null,
+const rowData = ref<TableItem>({
+  departmentId: null,
+  name: null,
+  description: null,
 });
 const visible1 = ref(false);
 

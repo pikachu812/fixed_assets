@@ -8,9 +8,11 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AllocationEdit: typeof import('./src/components/allocationEdit.vue')['default']
-    AssetDepreciationEdit: typeof import('./src/components/assetDepreciationEdit.vue')['default']
+    AssetDepreciationEdit: typeof import('./src/components/assetScrapEdit.vue')['default']
     AssetEdit: typeof import('./src/components/assetEdit.vue')['default']
+    AssetInventoryEdit: typeof import('./src/components/assetScrapEdit.vue')['default']
     AssetRepairEdit: typeof import('./src/components/assetRepairEdit.vue')['default']
+    AssetScrapEdit: typeof import('./src/components/assetScrapEdit.vue')['default']
     AssetsDisplay: typeof import('./src/components/assetsDisplay.vue')['default']
     AssetTypeEdit: typeof import('./src/components/assetTypeEdit.vue')['default']
     DepartmentEdit: typeof import('./src/components/departmentEdit.vue')['default']

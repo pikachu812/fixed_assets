@@ -108,7 +108,6 @@
 import {ElMessage, FormInstance} from 'element-plus';
 import {ref} from 'vue';
 import service from "../utils/request";
-//导入全局常量baseUrl
 
 
 const props = defineProps({

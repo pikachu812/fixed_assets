@@ -77,8 +77,9 @@ import {Delete, Edit, Search, CirclePlusFilled, View} from '@element-plus/icons-
 import UserTableEdit from "../components/userTableEdit.vue";
 import UserTableDetail from "../components/userTableDetail.vue";
 import service from "../utils/request";
+import {User} from "../interface/interface";
 
-interface TableItem {
+interface TableItem extends User{
   userId: number;
   username: string;
   password: string;

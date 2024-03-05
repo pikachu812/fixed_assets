@@ -98,16 +98,9 @@
 import {ref, watch, computed} from "vue";
 import {ElMessage} from "element-plus";
 import service from "../utils/request";
+import {AssetType, FixedAsset} from "../interface/interface";
 
-interface TableItem {
-    assetId: number;
-    assetTypeId: number;
-    name: string;
-    purchaseDate: Date;
-    price: number;
-    imgDir: string;
-    status: string;
-    assetType: object;
+interface TableItem extends FixedAsset{
     quantity: number; // BigDecimal from Java can be represented as a number in TypeScript for simplicity, but be cautious of precision issues for very large or very small values
     returnDate: Date;
     allocationDescription: string;

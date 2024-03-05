@@ -201,12 +201,12 @@ const routes: RouteRecordRaw[] = [
                 component: () => import(/* webpackChunkName: "404" */ '../views/assetRepairManagement.vue'),
             },
             {
-                path: '/assetDepreciationManagement',
-                name: 'assetDepreciationManagement',
+                path: '/assetScrapManagement',
+                name: 'assetScrapManagement',
                 meta: {
                     title: '固定资产报废管理',
                 },
-                component: () => import( '../views/assetDepreciationManagement.vue'),
+                component: () => import( '../views/assetScrapManagement.vue'),
             },
 
             // 固定资产折旧＆盘点

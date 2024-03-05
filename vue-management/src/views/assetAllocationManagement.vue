@@ -97,47 +97,11 @@ import {Close, Delete, Edit, Search, CirclePlusFilled, Check, View} from "@eleme
 import AssetTypeEdit from "../components/assetTypeEdit.vue";
 // import UserTableDetail from "../components/userTableDetail.vue";
 import service from "../utils/request";
+import {AssetAllocation} from "../interface/interface";
 
-interface Department {
-    departmentId: number | null;
-    name: string | null;
-    description: string | null;
-}
 
-interface Employee {
-    employeeId: number | null;
-    name: string | null;
-    departmentId: number | null;
-    department: Department;
-}
 
-interface User {
-    userId: number | null;
-    username: string | null;
-    roleId: number | null;
-    employeeId: number | null;
-    employee: Employee;
-}
-
-interface FixedAsset {
-    assetId?: number | null;
-    assetTypeId?: number | null;
-    name: string | null;
-    purchaseDate: string | null;
-    price: number | null;
-    imgDir: string | null;
-    status: string | null;
-}
-
-interface TableItem {
-    allocationId: number | null;
-    allocationDescription: string | null;
-    status: string | null;
-    reason: string | null;
-    user: User;
-    fixedAsset: FixedAsset;
-    allocationDate: string | null;
-    returnDate: string | null;
+interface TableItem extends AssetAllocation{
 }
 
 const query = ref('');
@@ -179,6 +143,11 @@ const rowData = ref<TableItem>({
         price: null,
         imgDir: null,
         status: null,
+        assetType: {
+            assetTypeId: null,
+            typeName: null,
+            description: null,
+        },
     },
     allocationDate: null,
     returnDate: null,

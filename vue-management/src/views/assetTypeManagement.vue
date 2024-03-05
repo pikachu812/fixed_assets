@@ -95,11 +95,9 @@ import { Delete, Edit, Search, CirclePlusFilled, View } from "@element-plus/icon
 import AssetTypeEdit from "../components/assetTypeEdit.vue";
 // import UserTableDetail from "../components/userTableDetail.vue";
 import service from "../utils/request";
+import {AssetType} from "../interface/interface";
 
-interface TableItem {
-  assetTypeId: number;
-  typeName: string;
-  description: string;
+interface TableItem extends AssetType{
 }
 
 const query = reactive({
@@ -116,7 +114,7 @@ const pageIndex = ref(1);
 const visible = ref(false);
 let idx: number = -1;
 const idEdit = ref(false);
-const rowData = ref({
+const rowData = ref<TableItem>({
   assetTypeId: null,
   typeName: null,
   description: null,

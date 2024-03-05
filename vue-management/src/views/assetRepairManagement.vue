@@ -125,43 +125,14 @@
 import {ref, reactive} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {Delete, Edit, Search, CirclePlusFilled, WarnTriangleFilled} from "@element-plus/icons-vue";
-import AssetEdit from "../components/assetEdit.vue";
 import service from "../utils/request";
 import AssetRepairEdit from "../components/assetRepairEdit.vue";
-
-interface AssetType {
-    assetTypeId: number;
-    typeName: string;
-    description: string | null;
-}
-
-interface FixedAsset {
-    assetId: number;
-    assetTypeId: number;
-    name: string;
-    purchaseDate: string; // 或 Date 类型，取决于您如何处理日期
-    price: number; // 或 string 类型，如果您希望保持原始格式
-    imgDir: string;
-    status: string;
-    assetType: AssetType;
-}
-
-interface AssetRepair {
-    repairId: number;
-    assetId: number;
-    repairDate: string; // 或 Date 类型，取决于您如何处理日期
-    cost: number; // 或 string 类型，如果您希望保持原始格式
-    status: string;
-    details: string | null;
-    fixedAsset: FixedAsset;
-}
+import {AssetRepair} from "../interface/interface";
 
 // 如果 TableItem 仅用于展示 AssetRepair 数据，则可以直接使用 AssetRepair 接口
 // 否则，如果 TableItem 是一个更通用的接口，它可以继承或包含 AssetRepair
 interface TableItem extends AssetRepair {
 }
-
-
 
 const statusToCss = {
     "闲置": "success",
@@ -189,7 +160,7 @@ const rowData = ref<TableItem>({
         assetId: null,
         assetTypeId: null,
         name: "",
-        purchaseDate: "",
+        purchaseDate: null,
         price: 0,
         imgDir: "",
         status: "",

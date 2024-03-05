@@ -116,16 +116,9 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import {Delete, Edit, Search, CirclePlusFilled, View} from "@element-plus/icons-vue";
 import AssetEdit from "../components/assetEdit.vue";
 import service from "../utils/request";
+import {FixedAsset} from "../interface/interface";
 
-interface TableItem {
-    assetId: number;
-    assetTypeId: number;
-    name: string;
-    purchaseDate: Date; // TypeScript uses the Date object for dates
-    price: number; // BigDecimal from Java can be represented as a number in TypeScript for simplicity, but be cautious of precision issues for very large or very small values
-    imgDir: string;
-    status: string;
-    assetType: object; // Optional property, assuming AssetType is another interface you have defined
+interface TableItem extends FixedAsset{
 }
 
 

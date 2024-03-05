@@ -120,7 +120,7 @@ const items = [
         permiss: "16",
       },
       {
-        index: "/assetDepreciationManagement",
+        index: "/assetScrapManagement",
         title: "报废管理",
         permiss: "16",
       },
