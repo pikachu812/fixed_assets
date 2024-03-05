@@ -27,7 +27,11 @@
           label="类型编号"
           width="100%"
           align="center"
-        ></el-table-column>
+        >
+            <template #default="scope">
+                {{ formatAssetTypeId(scope.row.assetTypeId) }}
+            </template>
+        </el-table-column>
         <el-table-column prop="typeName" label="类型名称" align="center" width="250"></el-table-column>
         <el-table-column prop="description" label="描述" align="center"></el-table-column>
 
@@ -129,6 +133,10 @@ const getData = async () => {
   });
 };
 getData();
+
+const formatAssetTypeId = (assetTypeId) => {
+    return `LX${assetTypeId.toString().padStart(4, '0')}`;
+};
 
 // 查询操作
 const handleSearch = () => {

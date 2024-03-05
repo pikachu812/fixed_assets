@@ -20,14 +20,18 @@
         ref="multipleTable"
         header-cell-class-name="table-header"
       >
-        <el-table-column label="序号" type="index" align="center" width="60%" />
+<!--        <el-table-column label="序号" type="index" align="center" width="60%" />-->
 
         <el-table-column
           prop="departmentId"
           label="部门编号"
           width="100%"
           align="center"
-        ></el-table-column>
+        >
+            <template #default="scope">
+                {{ formatDepartmentId(scope.row.departmentId) }}
+            </template>
+        </el-table-column>
         <el-table-column prop="name" label="部门名称" align="center"></el-table-column>
         <el-table-column prop="description" label="描述" align="center"></el-table-column>
 
@@ -114,6 +118,10 @@ const rowData = ref({
   password: null,
 });
 const visible1 = ref(false);
+
+const formatDepartmentId = (departmentId) => {
+    return `BM${departmentId.toString().padStart(4, '0')}`;
+};
 
 // 获取表格数据
 const getData = async () => {

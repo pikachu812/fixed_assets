@@ -29,9 +29,13 @@
                 <el-table-column
                     prop="assetId"
                     label="资产编号"
-                    width="90%"
+                    width="100%"
                     align="center"
-                ></el-table-column>
+                >
+                    <template #default="scope">
+                        {{ formatAssetId(scope.row.fixedAsset.assetId) }}
+                    </template>
+                </el-table-column>
                 <el-table-column prop="fixedAsset.name" label="资产名称" align="center" width="160%"></el-table-column>
                 <el-table-column prop="repairDate" :formatter="formatDate"
                                  label="维修日期" align="center" width="120%"></el-table-column>
@@ -205,6 +209,11 @@ const formatDate = (row, column, cellValue, index) => {
     const date = new Date(cellValue);
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
+
+const formatAssetId = (assetId) => {
+    return `ZC${assetId.toString().padStart(6, '0')}`;
+};
+
 
 // 获取表格数据
 const getData = async () => {

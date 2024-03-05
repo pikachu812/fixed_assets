@@ -8,7 +8,11 @@ x
         <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>
       </div>
       <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
-        <el-table-column prop="userId" label="ID" width="55" align="center"></el-table-column>
+        <el-table-column prop="userId" label="ID" width="100%" align="center">
+            <template #default="scope">
+                {{ formatUserId(scope.row.userId) }}
+            </template>
+        </el-table-column>
         <el-table-column prop="username" label="用户名" align="center"></el-table-column>
         <el-table-column label="用户角色" align="center">
           <template #default="scope">
@@ -103,6 +107,9 @@ const rowData = ref({
 });
 const visible1 = ref(false);
 
+const formatUserId = (userId) => {
+    return `${userId.toString().padStart(6, '0')}`;
+};
 
 // 获取表格数据
 const getData = async () => {

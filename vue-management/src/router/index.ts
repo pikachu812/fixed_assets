@@ -206,7 +206,7 @@ const routes: RouteRecordRaw[] = [
                 meta: {
                     title: '固定资产报废管理',
                 },
-                component: () => import( '../views/assetScrapManagement.vue'),
+                component: () => import( '../views/assetDepreciationManagement.vue'),
             },
 
             // 固定资产折旧＆盘点

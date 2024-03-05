@@ -3,8 +3,8 @@
         <div class="container">
             <div class="search-box">
                 <el-input
-                    v-model="query.name"
-                    placeholder="资产名称"
+                    v-model="query"
+                    placeholder="请输入资产名称或类型"
                     class="search-input mr10"
                     clearable
                 ></el-input>
@@ -14,6 +14,9 @@
                 </el-button
                 >
             </div>
+
+
+            <!--      表格部分 -->
             <el-table
                 :data="tableData"
                 border
@@ -21,47 +24,51 @@
                 ref="multipleTable"
                 header-cell-class-name="table-header"
             >
-                <el-table-column label="序号" type="index" align="center" width="60%"/>
+                <!--        <el-table-column label="序号" type="index" align="center" width="60%"/>-->
 
                 <el-table-column
                     prop="assetId"
                     label="资产编号"
-                    width="100%"
+                    width="90%"
                     align="center"
-                >
-                    <template #default="scope">
-                        {{ formatAssetId(scope.row.assetId) }}
-                    </template>
-                </el-table-column>
-                <el-table-column prop="name" label="资产名称" align="center" width="160%"></el-table-column>
-                <el-table-column prop="purchaseDate" :formatter="formatDate"
-                                 label="购置日期" align="center" width="120%"></el-table-column>
-                <el-table-column prop="price" label="价格￥" align="center" width="120%"></el-table-column>
+                ></el-table-column>
+                <el-table-column prop="fixedAsset.name" label="资产名称" align="center" width="160%"></el-table-column>
+                <el-table-column prop="repairDate" :formatter="formatDate"
+                                 label="维修日期" align="center" width="120%"></el-table-column>
 
                 <el-table-column label="资产图片" align="center" width="120%">
                     <template #default="scope">
                         <el-image
                             class="table-td-thumb"
-                            :src="scope.row?.imgDir"
+                            :src="scope.row?.fixedAsset.imgDir"
                             :z-index="10"
-                            :preview-src-list="[scope.row.imgDir]"
+                            :preview-src-list="[scope.row.fixedAsset.imgDir]"
                             preview-teleported
                         >
                         </el-image>
                     </template>
                 </el-table-column>
-                <el-table-column label="资产状态" align="center" width="120%">
+                <el-table-column prop="cost" label="维修费用￥" align="center" width="100%"></el-table-column>
+                <el-table-column prop="details" label="维修状态" align="center" width="160%">
                     <template #default="scope">
-                        <el-tag :type="statusToCss[scope.row.status] ? statusToCss[scope.row.status] : 'danger'">
+                        <el-tag :type="scope.row.status === '待维修' ? 'danger' : 'success'">
                             {{ scope.row.status }}
                         </el-tag>
                     </template>
+
                 </el-table-column>
-                <el-table-column label="操作" align="center" >
+                <el-table-column prop="details" label="损坏原因" align="center" width="160%"></el-table-column>
+
+                <el-table-column label="操作" align="center">
                     <template #default="scope">
-                        <!-- <el-button type="warning" size="small" :icon="View" @click="handleView(scope.row)">
-                                        查看
-                                    </el-button> -->
+                        <el-button
+                            v-if="scope.row.status === '待维修'"
+                            type="warning"
+                            size="small"
+                            :icon="WarnTriangleFilled"
+                            @click="handleRepair(scope.row)">
+                          维修
+                        </el-button>
                         <el-button
                             type="primary"
                             size="small"
@@ -95,14 +102,14 @@
             </div>
         </div>
         <el-dialog
-            :title="idEdit ? '编辑资产' : '新增资产'"
+            :title="idEdit ? '编辑资产' : '新增维修记录'"
             v-model="visible"
-            width="500px"
+            width="70%"
             destroy-on-close
             :close-on-click-modal="false"
             @close="closeDialog"
         >
-            <AssetEdit :data="rowData" :edit="idEdit" :update="updateData"/>
+            <AssetRepairEdit :data="rowData" :edit="idEdit" :update="updateData"/>
         </el-dialog>
         <!-- <el-dialog title="查看用户详情" v-model="visible1" width="700px" destroy-on-close>
                 <UserTableDetail :data="rowData" />
@@ -113,20 +120,43 @@
 <script setup lang="ts" name="basetable">
 import {ref, reactive} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {Delete, Edit, Search, CirclePlusFilled, View} from "@element-plus/icons-vue";
+import {Delete, Edit, Search, CirclePlusFilled, WarnTriangleFilled} from "@element-plus/icons-vue";
 import AssetEdit from "../components/assetEdit.vue";
 import service from "../utils/request";
+import AssetRepairEdit from "../components/assetRepairEdit.vue";
 
-interface TableItem {
+interface AssetType {
+    assetTypeId: number;
+    typeName: string;
+    description: string | null;
+}
+
+interface FixedAsset {
     assetId: number;
     assetTypeId: number;
     name: string;
-    purchaseDate: Date; // TypeScript uses the Date object for dates
-    price: number; // BigDecimal from Java can be represented as a number in TypeScript for simplicity, but be cautious of precision issues for very large or very small values
+    purchaseDate: string; // 或 Date 类型，取决于您如何处理日期
+    price: number; // 或 string 类型，如果您希望保持原始格式
     imgDir: string;
     status: string;
-    assetType: object; // Optional property, assuming AssetType is another interface you have defined
+    assetType: AssetType;
 }
+
+interface AssetRepair {
+    repairId: number;
+    assetId: number;
+    repairDate: string; // 或 Date 类型，取决于您如何处理日期
+    cost: number; // 或 string 类型，如果您希望保持原始格式
+    status: string;
+    details: string | null;
+    fixedAsset: FixedAsset;
+}
+
+// 如果 TableItem 仅用于展示 AssetRepair 数据，则可以直接使用 AssetRepair 接口
+// 否则，如果 TableItem 是一个更通用的接口，它可以继承或包含 AssetRepair
+interface TableItem extends AssetRepair {
+}
+
 
 
 const statusToCss = {
@@ -136,16 +166,7 @@ const statusToCss = {
     "报废": "danger"
 }
 
-const query = reactive({
-    assetId: null,
-    assetTypeId: null,
-    name: null,
-    purchaseDate: null,
-    price: null,
-    imgDir: null,
-    status: null,
-    assetType: null
-});
+const query = ref('');
 const tableData = ref<TableItem[]>([]);
 const pageTotal = ref(0);
 const pageSize = 10;
@@ -153,15 +174,28 @@ const pageIndex = ref(1);
 const visible = ref(false);
 let idx: number = -1;
 const idEdit = ref(false);
-const rowData = ref({
+const rowData = ref<TableItem>({
+    repairId: null,
     assetId: null,
-    assetTypeId: null,
-    name: null,
-    purchaseDate: null,
-    price: null,
-    imgDir: null,
+    repairDate: null,
+    cost: null,
     status: null,
-    assetType: null
+    details: null,
+    fixedAsset: {
+        assetId: null,
+        assetTypeId: null,
+        name: "",
+        purchaseDate: "",
+        price: 0,
+        imgDir: "",
+        status: "",
+        assetType: {
+            assetTypeId: 0,
+            typeName: "",
+            description: ""
+        }
+    }
+
 });
 const visible1 = ref(false);
 
@@ -172,14 +206,16 @@ const formatDate = (row, column, cellValue, index) => {
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
 
-const formatAssetId = (assetId) => {
-    return `ZC${assetId.toString().padStart(6, '0')}`;
-};
-
-
 // 获取表格数据
 const getData = async () => {
-    service.post("/fixedAssets/getFixedAssetsByCondition", query).then((res) => {
+    service.post("/assetRepair/search", {
+        fixedAsset: {
+            name: query.value,
+            assetType: {
+                typeName: query.value
+            }
+        }
+    }).then((res) => {
         console.log("res", res);
         console.log(res);
         tableData.value = res.data;
@@ -198,15 +234,37 @@ const handlePageChange = (val: number) => {
     getData();
 };
 
+const handleRepair = (row: TableItem) => {
+    console.log(row);
+    ElMessageBox.confirm("确定维修完成了吗？", "提示", {type: "warning"}).then(() => {
+        service.post("/assetRepair/repair/"+row.repairId, {
+
+        }).then((res) => {
+            ElMessage.success("维修成功");
+            getData();
+        }).catch((err) => {
+            ElMessage.error("维修失败");
+        });
+    }).catch(() => {
+        ElMessage.info("取消维修");
+    });
+};
+
 const handleDelete = async (index: number) => {
     // 二次确认删除
     try {
         await ElMessageBox.confirm("确定要删除吗？", "提示", {type: "warning"});
         // 调用API删除部门
-        const assetId = tableData.value[index].assetId;
-        await service.delete("/fixedAssets/delete/" + assetId);
-        ElMessage.success("删除成功");
-        tableData.value.splice(index, 1); // 从本地数据中移除
+        const repairId = tableData.value[index].repairId;
+        await service.delete("/assetRepair/delete/" + repairId).then(
+            (res) => {
+                ElMessage.success("删除成功");
+                getData();
+            }
+        ).catch((err) => {
+            ElMessage.error("删除失败");
+        });
+
     } catch (error) {
         // 处理取消删除或API调用错误
         if (error !== "cancel") {
