@@ -48,25 +48,25 @@
             LEFT JOIN asset_type at ON fa.asset_type_id = at.asset_type_id
             <where>
                 <if test="assetId != null">
-                    AND fa.asset_id = #{assetId}
+                    OR fa.asset_id = #{assetId}
                 </if>
                 <if test="assetTypeId != null">
-                    AND fa.asset_type_id = #{assetTypeId}
+                    OR fa.asset_type_id = #{assetTypeId}
                 </if>
                 <if test="name != null and name.trim() != ''">
-                    AND fa.name = #{name}
+                    OR fa.name LIKE CONCAT('%', #{name}, '%')
                 </if>
                 <if test="purchaseDate != null">
-                    AND fa.purchase_date = #{purchaseDate}
+                    OR fa.purchase_date = #{purchaseDate}
                 </if>
                 <if test="price != null">
-                    AND fa.price = #{price}
+                    OR fa.price = #{price}
                 </if>
                 <if test="imgDir != null and imgDir.trim() != ''">
-                    AND fa.img_dir = #{imgDir}
+                    OR fa.img_dir = #{imgDir}
                 </if>
                 <if test="status != null and status.trim() != ''">
-                    AND fa.status = #{status}
+                    OR fa.status = #{status}
                 </if>
                 <!-- 添加其他需要的条件 -->
             </where>
@@ -84,7 +84,8 @@
                at.description AS "assetType.description"
         FROM fixed_asset fa
                  LEFT JOIN asset_type at ON fa.asset_type_id = at.asset_type_id
-        WHERE fa.name = #{name} and fa.status = '闲置'
+        WHERE fa.name LIKE CONCAT('%', #{name}, '%')
+          and fa.status = '闲置'
         LIMIT #{num}
     </select>
 

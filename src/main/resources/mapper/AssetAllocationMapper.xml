@@ -88,10 +88,10 @@
         d.department_id, d.name AS department_name, d.description AS department_description,
         fa.asset_id, fa.asset_type_id, fa.name AS asset_name, fa.purchase_date, fa.price, fa.status as asset_status, fa.img_dir
         FROM asset_allocation aa
-                 JOIN user u ON aa.user_id = u.user_id
-                 JOIN fixed_asset fa ON aa.asset_id = fa.asset_id
-                 JOIN employee e ON u.employee_id = e.employee_id
-                 JOIN department d ON e.department_id = d.department_id
+                 LEFT JOIN user u ON aa.user_id = u.user_id
+                 LEFT JOIN fixed_asset fa ON aa.asset_id = fa.asset_id
+                 LEFT JOIN employee e ON u.employee_id = e.employee_id
+                 LEFT JOIN department d ON e.department_id = d.department_id
         <where>
             <if test="assetName != null and assetName != ''">
                 OR fa.name LIKE CONCAT('%', #{assetName}, '%')
@@ -106,7 +106,7 @@
                 OR aa.allocation_description LIKE CONCAT('%', #{allocationDescription}, '%')
             </if>
             <if test="status != null and status != ''">
-                OR aa.status = #{status}
+                AND aa.status = #{status}
             </if>
             <if test="userId != null">
                 AND aa.user_id = #{userId}
