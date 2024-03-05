@@ -86,7 +86,7 @@
             </div>
         </div>
         <el-dialog
-            :title="idEdit ? '编辑资产' : '新增维修记录'"
+            :title="idEdit ? '编辑报废记录' : '新增报废记录'"
             v-model="visible"
             width="70%"
             destroy-on-close
@@ -139,7 +139,7 @@ const rowData = ref<TableItem>({
         assetId: null,
         assetTypeId: null,
         name: "",
-        purchaseDate: "",
+        purchaseDate: null,
         price: 0,
         imgDir: "",
         status: "",
@@ -153,7 +153,7 @@ const rowData = ref<TableItem>({
 });
 const visible1 = ref(false);
 
-const formatDate = (row, column, cellValue, index) => {
+const formatDate = (row: any, column: any, cellValue: string | number | Date, index: any) => {
     // 假设cellValue是一个标准的日期字符串或者Date对象
     // 你可以根据需要调整日期格式
     const date = new Date(cellValue);

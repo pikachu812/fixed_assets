@@ -5,7 +5,7 @@
         </el-form-item>
         <el-form-item label="用户角色" prop="state">
             <el-select v-model="form.role.roleName" class="m-2" placeholder="Select" size="large" style="width: 240px">
-                <el-option v-for="item in roleList" :key="item.value" :label="item.label" :value="item.value" />
+                <el-option v-for="item in roleList" :key="item.value" :label="item.label" :value="item.value"/>
             </el-select>
         </el-form-item>
 
@@ -46,14 +46,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ElMessage, FormInstance, FormRules, UploadProps } from 'element-plus';
-import { ref } from 'vue';
+import {ElMessage, FormInstance, FormRules, UploadProps} from 'element-plus';
+import {ref} from 'vue';
 import service from "../utils/request";
+import {Department} from "../interface/interface";
 
-interface ListItem {
-    departmentId: number;
-    name: string;
-    description: string;
+interface ListItem extends Department {
 }
 
 const roleList = [
@@ -105,7 +103,7 @@ const defaultData = {
 
 };
 
-const form = ref({ ...(props.edit ? props.data : defaultData) });
+const form = ref({...(props.edit ? props.data : defaultData)});
 
 
 const formRef = ref<FormInstance>();
@@ -116,7 +114,7 @@ const options = ref<ListItem[]>([])
 const remoteMethod = (query: string) => {
 
     loading.value = true
-    service.get("/department/all", ).then((res) => {
+    service.get("/department/all",).then((res) => {
         loading.value = false
 
         if (query) {
@@ -190,10 +188,8 @@ const saveEdit = (formEl: FormInstance | undefined) => {
             });
 
 
-
         });
     }
-
 
 
 };

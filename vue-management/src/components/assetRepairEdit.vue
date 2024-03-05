@@ -108,6 +108,7 @@
 import {ElMessage, FormInstance} from 'element-plus';
 import {ref} from 'vue';
 import service from "../utils/request";
+import {AssetRepair, FixedAsset} from "../interface/interface";
 //导入全局常量baseUrl
 
 
@@ -133,25 +134,27 @@ const defaultData = {
     repairDate: null,
     cost: null,
     details: null,
+    status: null,
+    fixedAsset: {
+        assetId: null,
+        assetTypeId: null,
+        name: "",
+        purchaseDate: null,
+        price: 0,
+        imgDir: "",
+        status: "",
+        assetType: {
+            assetTypeId: 0,
+            typeName: "",
+            description: ""
+        }
+    }
 };
 
 
-interface FormData {
-    repairId: number | null;
-    assetId: number | null;
-    repairDate: string | null;
-    cost: number | null;
-    details: string | null;
+interface FormData extends AssetRepair{
 }
-interface ListItem {
-    assetId: number;
-    assetTypeId: number;
-    name: string;
-    purchaseDate: Date;
-    price: number;
-    status: string;
-    imgDir: string;
-}
+interface ListItem extends FixedAsset{}
 
 
 const statusToCss = {

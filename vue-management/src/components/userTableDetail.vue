@@ -32,7 +32,7 @@ import { ref, watchEffect } from 'vue';
 
 const props = defineProps({
     data: {
-        type: Object,
+        type:Object,
         required: true
     }
 });
