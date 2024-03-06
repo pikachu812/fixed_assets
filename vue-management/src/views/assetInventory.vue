@@ -14,7 +14,7 @@
                 </el-button>
                 <!--筛选两个日期之间的盘点的记录-->
                 <el-date-picker
-                    v-model="query.inventoryDate"
+                    v-model="query.date"
                     type="daterange"
                     range-separator="至"
                     start-placeholder="开始日期"
@@ -35,6 +35,7 @@
                 <el-table-column
                     prop="inventoryId"
                     label="盘点编号"
+                    :formatter="formatId"
                     align="center"
                     width="100"
                 ></el-table-column>
@@ -50,7 +51,7 @@
                     align="center"
                 ></el-table-column>
                 <el-table-column
-                    prop="department"
+                    prop="department.name"
                     label="部门"
                     align="center"
                 ></el-table-column>
@@ -62,7 +63,7 @@
                 ></el-table-column>
                 <el-table-column
                     sortable
-                    prop="bookAmount"
+                    prop="bookValue"
                     label="账面金额"
                     :formatter="priceFormatter"
                     align="center"
@@ -167,6 +168,7 @@ const query = reactive({
     department: null,
     bookQuantity: null,
     bookAmount: null,
+    date: null,
 });
 
 const tableData = ref<TableItem[]>([]);
@@ -184,6 +186,7 @@ const loading = ref(false)
 const options = ref<ListItem[]>([])
 
 const form = ref({
+    inventoryId: null,
     departmentId: null,
     inventoryName: null,
 });
@@ -217,6 +220,11 @@ const priceFormatter = (row, column, cellValue, index) => {
     return `￥${cellValue.toFixed(2)}`;
 }
 
+const formatId = (row, column, id, index) => {
+    console.log('id', id);
+    return `PD${id.toString().padStart(5, '0')}`;
+};
+
 const formatDate = (row, column, cellValue, index) => {
     // 假设cellValue是一个标准的日期字符串或者Date对象
     // 你可以根据需要调整日期格式
@@ -226,11 +234,21 @@ const formatDate = (row, column, cellValue, index) => {
 
 // 获取表格数据
 const getData = async () => {
-    service.post("/fixedAssets/", query).then((res) => {
+
+    console.log('query', query);
+
+    service.post("/assetInventory/search", query).then((res) => {
         console.log("res", res);
         console.log(res);
 
+        if(query.date){
+            res.data = res.data.filter((item) => {
+                return new Date(item.inventoryDate) >= new Date(query.date[0]) && new Date(item.inventoryDate) <= new Date(query.date[1])
+            })
+        }
+
         tableData.value = res.data;
+
         pageTotal.value = res.data.length;
         pageIndex.value = 1;
     });
@@ -240,7 +258,7 @@ getData();
 const handleEdit = (index: number, row: TableItem) => {
     // 当处理编辑操作时，会将当前行的数据传递给子组件
     idx = index;
-    rowData.value = row;
+    form.value = row;
     idEdit.value = true;
     visible.value = true;
 };
@@ -251,6 +269,11 @@ const handleSearch = () => {
 };
 
 const closeDialog = () => {
+    form.value = {
+        inventoryId: null,
+        departmentId: null,
+        inventoryName: null,
+    };
     visible.value = false;
     idEdit.value = false;
     getData();
@@ -266,7 +289,7 @@ const handleDelete = async (index: number) => {
         await ElMessageBox.confirm("确定要删除此盘点记录吗？", "警告", {
             type: "warning",
         });
-        // 这里替换为实际的后端请求代码
+        service.delete(`/assetInventory/delete/${tableData.value[index].inventoryId}`);
         console.log('删除盘点记录', tableData.value[index].inventoryId);
         ElMessage.success("删除成功");
         tableData.value.splice(index, 1);
@@ -291,7 +314,7 @@ const saveEdit = async () => {
         let response;
         if (idEdit.value) {
             // 编辑模式
-            response = await service.put(`/assetInventory/${rowData.value?.inventoryId}`, formData);
+            response = await service.put(`/assetInventory/update/${form.value.inventoryId}`, formData);
         } else {
             // 新增模式
             response = await service.post("/assetInventory/add", formData);

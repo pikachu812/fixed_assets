@@ -89,7 +89,7 @@
           and fa.status = '闲置'
         LIMIT #{num}
     </select>
-    <select id="selectInventoryByDepartment" resultType="java.util.Map">
+    <select id="selectInventoryByDepartment" resultType="map">
         SELECT
             d.department_id as departmentId,
             d.name AS departmentName,

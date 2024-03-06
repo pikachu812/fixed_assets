@@ -22,7 +22,7 @@ public class AssetInventoryController {
         return ResponseEntity.ok(savedAssetInventory);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteAssetInventory(@PathVariable("id") Integer inventoryId) {
         boolean isDeleted = assetInventoryService.deleteAssetInventory(inventoryId);
         if (isDeleted) {

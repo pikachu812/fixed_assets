@@ -23,7 +23,6 @@ public interface FixedAssetDao {
     List<FixedAsset> selectSomeByName(@Param("name") String name, @Param("num") int num);
 
 
-    @MapKey("departmentId")
     Map<String, Object> selectInventoryByDepartment(@Param("departmentId") Integer departmentId);
 
 }

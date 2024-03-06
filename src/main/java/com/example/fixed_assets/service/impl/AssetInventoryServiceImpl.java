@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -29,6 +30,7 @@ public class AssetInventoryServiceImpl implements AssetInventoryService {
 
 
     @Override
+    @Transactional
     public AssetInventory saveAssetInventory(AssetInventory assetInventory) {
 
 
@@ -36,9 +38,14 @@ public class AssetInventoryServiceImpl implements AssetInventoryService {
 
         logger.info("inventoryByDepartment: " + inventoryByDepartment);
 
+        BigDecimal totalPrice = (BigDecimal) inventoryByDepartment.get("totalPrice");
+        Long totalNum = (Long) inventoryByDepartment.get("totalNum");
 
-        assetInventory.setBookValue(BigDecimal.valueOf((Double) inventoryByDepartment.get("totalPrice")));
-        assetInventory.setBookQuantity((Integer) inventoryByDepartment.get("totalPrice"));
+        logger.info("totalPrice: " + totalPrice);
+        logger.info("totalNum: " + totalNum);
+
+        assetInventory.setBookValue(totalPrice);
+        assetInventory.setBookQuantity(totalNum.intValue());
         assetInventory.setInventoryDate(new Date());
 
         assetInventoryDao.insert(assetInventory);
@@ -51,8 +58,34 @@ public class AssetInventoryServiceImpl implements AssetInventoryService {
     }
 
     @Override
+    @Transactional
     public AssetInventory updateAssetInventory(AssetInventory assetInventory) {
-        assetInventoryDao.update(assetInventory);
+
+        AssetInventory oldAssetInventory = assetInventoryDao.selectById(assetInventory.getInventoryId());
+        if (oldAssetInventory == null) {
+            return null;
+        }
+
+
+        if (assetInventory.getDepartmentId() != null && !assetInventory.getDepartmentId().equals(oldAssetInventory.getDepartmentId())) {
+            Map<String, Object> inventoryByDepartment = fixedAssetDao.selectInventoryByDepartment(assetInventory.getDepartmentId());
+
+            BigDecimal totalPrice = (BigDecimal) inventoryByDepartment.get("totalPrice");
+            Long totalNum = (Long) inventoryByDepartment.get("totalNum");
+
+            logger.info("totalPrice: " + totalPrice);
+            logger.info("totalNum: " + totalNum);
+            oldAssetInventory.setDepartmentId(assetInventory.getDepartmentId());
+            oldAssetInventory.setBookValue(totalPrice);
+            oldAssetInventory.setBookQuantity(totalNum.intValue());
+            oldAssetInventory.setInventoryDate(new Date());
+
+        }
+
+        oldAssetInventory.setInventoryName(assetInventory.getInventoryName());
+
+
+        assetInventoryDao.update(oldAssetInventory);
         return assetInventory;
     }
 
