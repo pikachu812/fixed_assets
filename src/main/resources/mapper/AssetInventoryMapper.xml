@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fixed_assets.dao.AssetInventoryDao">
+
+    <resultMap id="AssetInventoryResultMap" type="com.example.fixed_assets.entity.AssetInventory">
+        <id column="inventory_id" property="inventoryId"/>
+        <result column="inventory_date" property="inventoryDate"/>
+        <result column="department_id" property="departmentId"/>
+        <result column="book_quantity" property="bookQuantity"/>
+        <result column="book_value" property="bookValue"/>
+        <result column="inventory_name" property="inventoryName"/>
+        <association property="department" javaType="com.example.fixed_assets.entity.Department">
+            <id column="department_id" property="departmentId"/>
+            <result column="department_name" property="name"/>
+            <result column="department_description" property="description"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert">
+        INSERT INTO asset_inventory (inventory_date, department_id, book_quantity, book_value, inventory_name)
+        VALUES (#{inventoryDate}, #{departmentId}, #{bookQuantity}, #{bookValue}, #{inventoryName})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM asset_inventory WHERE inventory_id = #{inventoryId}
+    </delete>
+
+    <update id="update">
+        UPDATE asset_inventory
+        SET inventory_date = #{inventoryDate},
+            department_id = #{departmentId},
+            book_quantity = #{bookQuantity},
+            book_value = #{bookValue},
+            inventory_name = #{inventoryName}
+        WHERE inventory_id = #{inventoryId}
+    </update>
+
+    <select id="selectById" resultMap="AssetInventoryResultMap">
+        SELECT a.*, d.name AS department_name, d.description AS department_description
+        FROM asset_inventory a
+                 LEFT JOIN department d ON a.department_id = d.department_id
+        WHERE a.inventory_id = #{inventoryId}
+    </select>
+
+    <select id="selectAll" resultMap="AssetInventoryResultMap">
+        SELECT a.*, d.name AS department_name, d.description AS department_description
+        FROM asset_inventory a
+                 LEFT JOIN department d ON a.department_id = d.department_id
+    </select>
+
+    <select id="searchByCondition" resultMap="AssetInventoryResultMap">
+        SELECT a.*, d.name AS department_name, d.description AS department_description
+        FROM asset_inventory a
+        LEFT JOIN department d ON a.department_id = d.department_id
+        <where>
+            <if test="inventoryName != null and inventoryName != ''">
+                OR a.inventory_name LIKE CONCAT('%', #{inventoryName}, '%')
+            </if>
+            <if test="departmentId != null">
+                OR a.department_id = #{departmentId}
+            </if>
+            <if test="bookQuantity != null">
+                OR a.book_quantity = #{bookQuantity}
+            </if>
+            <if test="bookValue != null">
+                OR a.book_value = #{bookValue}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

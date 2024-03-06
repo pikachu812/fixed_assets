@@ -152,12 +152,9 @@ import {
 } from "element-plus";
 import {Search, Edit, Delete, CirclePlusFilled} from "@element-plus/icons-vue";
 import service from "../utils/request";
-import {Department, FixedAsset} from "../interface/interface";
+import {AssetInventory, Department} from "../interface/interface";
 
-interface TableItem extends FixedAsset {
-    currentDepreciation: number;
-    accumulatedDepreciation: number;
-    netBookValue: number;
+interface TableItem extends AssetInventory {
 }
 
 interface ListItem extends Department {
@@ -281,22 +278,23 @@ const handleDelete = async (index: number) => {
     }
 };
 
-const saveEdit = () => {
+const saveEdit = async () => {
     loading.value = true; // 显示加载状态
     try {
         const formData = {
             departmentId: form.value.departmentId,
-            inventoryName: rowData.value ? rowData.value.inventoryName : '',
-            ... // 其他需要提交的表单数据
+            inventoryName: form.value.inventoryName,
         };
+
+        console.log('formData', formData);
 
         let response;
         if (idEdit.value) {
             // 编辑模式
-            response = await service.put(`/fixedAssets/${rowData.value?.inventoryId}`, formData);
+            response = await service.put(`/assetInventory/${rowData.value?.inventoryId}`, formData);
         } else {
             // 新增模式
-            response = await service.post("/fixedAssets", formData);
+            response = await service.post("/assetInventory/add", formData);
         }
 
         if (response && response.data) {

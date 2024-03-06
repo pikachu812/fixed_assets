@@ -89,6 +89,24 @@
           and fa.status = '闲置'
         LIMIT #{num}
     </select>
+    <select id="selectInventoryByDepartment" resultType="java.util.Map">
+        SELECT
+            d.department_id as departmentId,
+            d.name AS departmentName,
+            COALESCE(SUM(fa.price), 0) AS totalPrice,
+            COUNT(a.asset_id) AS totalNum
+        FROM
+            department d
+                LEFT JOIN
+            asset_allocation a ON d.name = a.department AND a.status = '审核通过'
+                LEFT JOIN
+            fixed_asset fa ON a.asset_id = fa.asset_id
+        where d.department_id = #{departmentId}
+        GROUP BY
+            d.department_id
+        ORDER BY
+            d.department_id;
+    </select>
 
     <!-- 结果映射 -->
     <resultMap id="FixedAssetWithTypeResultMap" type="com.example.fixed_assets.entity.FixedAsset">

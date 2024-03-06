@@ -48,6 +48,16 @@ interface FixedAsset {
     assetType: AssetType;
 }
 
+interface AssetInventory {
+    inventoryId: number;
+    inventoryDate: string; // 或 Date 类型，取决于您如何处理日期
+    departmentId: number;
+    department: Department;
+    bookValue: number; // 或 string 类型，如果您希望保持原始格式
+    bookQuantity: number;
+    inventoryName: string;
+}
+
 
 interface Department {
     departmentId: number | null;
@@ -71,4 +81,4 @@ interface User {
 }
 
 
-export type { AssetType, FixedAsset, AssetScrap, AssetRepair, Department, Employee, User, AssetAllocation};
+export type { AssetType, FixedAsset, AssetScrap, AssetRepair, Department, Employee, User, AssetAllocation, AssetInventory};

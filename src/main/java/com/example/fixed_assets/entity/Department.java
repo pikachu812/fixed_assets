@@ -1,9 +1,11 @@
 package com.example.fixed_assets.entity;
 
+import lombok.Data;
+
 /**
  * 部门实体类
  */
-@lombok.Data
+@Data
 public class Department {
 
     private Integer departmentId;
