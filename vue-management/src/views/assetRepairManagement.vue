@@ -9,10 +9,7 @@
                     clearable
                 ></el-input>
                 <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-                <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true"
-                >新增
-                </el-button
-                >
+<!--                <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>-->
             </div>
 
 
@@ -80,24 +77,24 @@
                             @click="handleRepair(scope.row)">
                           维修
                         </el-button>
-                        <el-button
-                            type="primary"
-                            size="small"
-                            :icon="Edit"
-                            @click="handleEdit(scope.$index, scope.row)"
-                            v-permiss="16"
-                        >
-                            编辑
-                        </el-button>
-                        <el-button
-                            type="danger"
-                            size="small"
-                            :icon="Delete"
-                            @click="handleDelete(scope.$index)"
-                            v-permiss="16"
-                        >
-                            删除
-                        </el-button>
+<!--                        <el-button-->
+<!--                            type="primary"-->
+<!--                            size="small"-->
+<!--                            :icon="Edit"-->
+<!--                            @click="handleEdit(scope.$index, scope.row)"-->
+<!--                            v-permiss="16"-->
+<!--                        >-->
+<!--                            编辑-->
+<!--                        </el-button>-->
+<!--                        <el-button-->
+<!--                            type="danger"-->
+<!--                            size="small"-->
+<!--                            :icon="Delete"-->
+<!--                            @click="handleDelete(scope.$index)"-->
+<!--                            v-permiss="16"-->
+<!--                        >-->
+<!--                            删除-->
+<!--                        </el-button>-->
                     </template>
                 </el-table-column>
             </el-table>

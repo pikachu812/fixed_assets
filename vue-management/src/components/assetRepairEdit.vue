@@ -7,6 +7,7 @@
                 remote
                 reserve-keyword
                 placeholder="请输入一个关键字"
+
                 remote-show-suffix
                 :remote-method="remoteMethod"
                 :loading="loading"
@@ -17,7 +18,7 @@
                     :key="item.assetId"
                     :label="item.name"
                     :value="item.assetId"
-                    :disabled="item.status !== '闲置'"
+                    :disabled="item.assetId !== form.assetId"
                 >
 
                     <span style="float: left">{{item.assetId}}.{{ item.name }}</span>
@@ -54,50 +55,6 @@
         <el-form-item label="损坏原因" prop="details">
             <el-input v-model="form.details" type="textarea" maxlength="100" show-word-limit></el-input>
         </el-form-item>
-
-
-<!--        <el-form-item label="资产图片" prop="imgDir">-->
-<!--            <el-upload-->
-<!--                class="avatar-uploader"-->
-<!--                :action="baseUrl+ '/fixedAssets/upload'"-->
-<!--                :show-file-list="false"-->
-<!--                :on-success="handleAvatarSuccess"-->
-<!--                :before-upload="beforeAvatarUpload"-->
-<!--            >-->
-
-<!--                <el-image-->
-<!--                    v-if="form.imgDir !== undefined"-->
-<!--                    style="width: 150px; height: 150px"-->
-<!--                    :src="form.imgDir"-->
-<!--                    :zoom-rate="1.2"-->
-<!--                    :max-scale="7"-->
-<!--                    :min-scale="0.2"-->
-<!--                    :initial-index="4"-->
-<!--                    fit="cover"-->
-<!--                />-->
-<!--                <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>-->
-<!--            </el-upload>-->
-<!--        </el-form-item>-->
-
-<!--   自动修改状态？   -->
-
-
-
-<!--        <el-form-item label="资产状态" prop="description">-->
-<!--            <el-select-->
-<!--                v-model="form.status"-->
-<!--                placeholder="Select"-->
-<!--                size="large"-->
-<!--                style="width: 240px"-->
-<!--            >-->
-<!--                <el-option-->
-<!--                    v-for="item in statusOptions"-->
-<!--                    :key="item.value"-->
-<!--                    :label="item.label"-->
-<!--                    :value="item.value"-->
-<!--                />-->
-<!--            </el-select>-->
-<!--        </el-form-item>-->
         <el-form-item>
             <el-button type="primary" @click="saveEdit(formRef)">保存</el-button>
         </el-form-item>
@@ -143,6 +100,7 @@ const defaultData = {
         price: 0,
         imgDir: "",
         status: "",
+        usefulYear: 0,
         assetType: {
             assetTypeId: 0,
             typeName: "",
@@ -204,9 +162,10 @@ const saveEdit = (formEl: FormInstance | undefined) => {
 
     formEl.validate((valid) => {
         if (!valid) return false;
-        const action = props.edit ? '/assetRepair/update/' + form.value.repairId : '/assetRepair/add';
+        // const action = props.edit ? '/assetRepair/update/' + form.value.repairId : '/assetRepair/add';
 
-        console.log(action);
+        const action = '/assetRepair/add';
+
 
         service.post(action, form.value).then((res) => {
             console.log("res");

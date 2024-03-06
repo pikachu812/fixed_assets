@@ -65,8 +65,9 @@
                 <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
             </el-upload>
         </el-form-item>
-        <el-form-item label="资产状态" prop="description">
+        <el-form-item label="资产状态" prop="description" >
             <el-select
+                disabled
                 v-model="form.status"
                 placeholder="Select"
                 size="large"

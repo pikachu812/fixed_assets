@@ -89,7 +89,9 @@ public class AssetRepairServiceImpl implements AssetRepairService {
         AssetRepairDao.updateAssetRepair(assetRepair);
 
         FixedAsset fixedAsset = fixedAssetDao.selectFixedAssetById(assetRepair.getAssetId());
-        fixedAsset.setStatus("闲置");
+
+        //2024-03-06 是使用中报修了，所以维修后状态应该是使用中
+        fixedAsset.setStatus("使用中");
         fixedAssetDao.updateFixedAsset(fixedAsset);
     }
 }

@@ -58,10 +58,19 @@
                             v-if="scope.row.status === '审核通过' && scope.row.fixedAsset.status === '使用中'"
                             type="primary"
                             size="small"
-                            :icon="Edit"
+                            :icon="Finished"
                             @click="giveBack(scope.$index, scope.row)"
                         >
                             归还
+                        </el-button>
+
+                        <el-button
+                            v-if="scope.row.status === '审核通过' && scope.row.fixedAsset.status === '使用中'"
+                            type=warning
+                            size="small"
+                            :icon="Edit"
+                            @click="handleRepair(scope.$index,scope.row)">
+                            报修
                         </el-button>
 
                     </template>
@@ -80,19 +89,32 @@
             </div>
         </div>
 
+        <el-dialog
+            title="新增维修记录"
+            v-model="visible"
+            width="70%"
+            destroy-on-close
+            :close-on-click-modal="false"
+            @close="closeDialog"
+        >
+            <AssetRepairEdit :data="repairData" :edit="idEdit" :update="updateData"/>
+        </el-dialog>
+
     </div>
 </template>
 
 <script setup lang="ts" name="basetable">
 import {ref, reactive} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
-import {Close, Delete, Edit, Search, CirclePlusFilled, Check, View} from "@element-plus/icons-vue";
-import AssetTypeEdit from "../components/assetTypeEdit.vue";
+import {Edit, Search, Finished} from "@element-plus/icons-vue";
 import service from "../utils/request";
-import {AssetAllocation} from "../interface/interface";
+import {AssetAllocation, AssetRepair} from "../interface/interface";
+import AssetRepairEdit from "../components/assetRepairEdit.vue";
 
 interface TableItem extends AssetAllocation{}
 
+
+interface RepairItem extends AssetRepair{}
 
 const statusToCss = {
     "审核通过": "success",
@@ -110,7 +132,29 @@ const pageIndex = ref(1);
 const visible = ref(false);
 let idx: number = -1;
 const idEdit = ref(false);
-
+const repairData = ref<RepairItem>({
+    repairId: null,
+    assetId: null,
+    repairDate: null,
+    cost: null,
+    status: null,
+    details: null,
+    fixedAsset: {
+        assetId: null,
+        assetTypeId: null,
+        name: null,
+        purchaseDate: null,
+        price: null,
+        imgDir: null,
+        status: null,
+        usefulYear: null,
+        assetType: {
+            assetTypeId: null,
+            typeName: null,
+            description: null,
+        },
+    },
+});
 const rowData = ref<TableItem>({
     allocationId: null,
     allocationDescription: null,
@@ -235,67 +279,32 @@ const detail = (row: TableItem) => {
     }
 };
 
-const allocationPass = (index: number) => {
-    ElMessageBox.confirm("确定要通过吗？", "提示", {type: "warning"}).then(() => {
-
-
-        // 获取当前行的数据
-        let row = tableData.value[index];
-
-
-        service.post("/assetAllocation/pass/" + row.allocationId, {}).then((res) => {    //邱秋3/2改的，不知道对不对
-            ElMessage.success("通过");
-        }).catch(() => {
-            ElMessage.error("通过失败");
-        });
-
-    }).catch(() => {
-        ElMessage.error("取消");
-    });
-};
-
-// 不通过，需要填写不通过理由
-const allocationUnpass = (index: number) => {
+const handleRepair = (index: number, row: TableItem) => {
     idx = index;
     visible.value = true;
+    idEdit.value = true;
+
+    repairData.value = {
+        repairId: null,
+        assetId: row.fixedAsset.assetId,
+        repairDate: null,
+        cost: null,
+        status: null,
+        details: null,
+        fixedAsset: row.fixedAsset
+    };
+
 };
 
-// 关闭弹窗
+const updateData = (row: TableItem) => {
+    console.log(tableData.value);
+    closeDialog();
+};
+
 const closeDialog = () => {
     visible.value = false;
     idEdit.value = false;
     getData();
-};
-
-const saveEdit = () => {
-    ElMessageBox.confirm("确定要不通过吗？", "提示", {type: "warning"}).then(() => {
-
-
-        // 获取当前行的数据
-        let row = tableData.value[idx];
-        // 获取不通过理由
-        row.reason = reason.value;
-
-        //todo: 提交不通过理由
-        console.log(row);
-        console.log("不通过理由：" + reason.value);
-
-        service.post("/assetAllocation/reject/" + row.allocationId, {
-            reason: reason.value
-        }).then((res) => {    //邱秋3/2改的，不知道对不对
-
-            ElMessage.warning("已通知该员工");
-            visible.value = false;
-
-        }).catch(() => {
-            ElMessage.error("操作失败");
-            visible.value = false;
-        });
-
-
-    }).catch(() => {
-        ElMessage.error("取消");
-    });
 };
 
 </script>
