@@ -24,7 +24,14 @@
                 ref="multipleTable"
                 header-cell-class-name="table-header"
             >
-                <!--        <el-table-column label="序号" type="index" align="center" width="60%"/>-->
+                <el-table-column label="序号"
+
+                                 align="center" width="60%">
+                    <template #default="scope">
+                        <!--            分页后的处理序号-->
+                        {{ (pageIndex - 1) * pageSize + scope.$index + 1 }}
+                    </template>
+                </el-table-column>
 
                 <el-table-column
                     prop="assetId"
@@ -134,13 +141,7 @@ import {AssetRepair} from "../interface/interface";
 interface TableItem extends AssetRepair {
 }
 
-const statusToCss = {
-    "闲置": "success",
-    "维修中": "warning",
-    "使用中": "info",
-    "报废": "danger"
-}
-
+const allData = ref<TableItem[]>([]);
 const query = ref('');
 const tableData = ref<TableItem[]>([]);
 const pageTotal = ref(0);
@@ -164,6 +165,7 @@ const rowData = ref<TableItem>({
         price: 0,
         imgDir: "",
         status: "",
+        usefulYear: 0,
         assetType: {
             assetTypeId: 0,
             typeName: "",
@@ -196,11 +198,17 @@ const getData = async () => {
             }
         }
     }).then((res) => {
-        console.log("res", res);
         console.log(res);
-        tableData.value = res.data;
-        pageTotal.value = res.data.length;
-        pageIndex.value = 1;
+        // //res.data中的数据复制100次，模拟数据量大的情况
+        //   let data = res.data;
+        //   for (let i = 0; i < 1000; i++) {
+        //       data = data.concat(res.data);
+        //   }
+        //   res.data = data;
+
+        allData.value = res.data; // 假设后端返回的全部数据在data字段中
+        pageTotal.value = res.data.length; // 设置总数据量
+        doPagination(); // 调用分页函数
     });
 };
 getData();
@@ -211,8 +219,16 @@ const handleSearch = () => {
 };
 // 分页导航
 const handlePageChange = (val: number) => {
-    getData();
+    pageIndex.value = val; // 更新当前页码
+    doPagination(); // 根据新的页码重新分页
 };
+
+const doPagination = () => {
+    const start = (pageIndex.value - 1) * pageSize;
+    const end = start + pageSize;
+    tableData.value = allData.value.slice(start, end); // 从所有数据中切割当前页的数据
+};
+
 
 const handleRepair = (row: TableItem) => {
     console.log(row);

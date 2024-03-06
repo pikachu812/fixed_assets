@@ -18,8 +18,14 @@
                 ref="multipleTable"
                 header-cell-class-name="table-header"
             >
-                <el-table-column label="序号" type="index" align="center" width="60%"/>
+                <el-table-column label="序号"
 
+                                 align="center" width="60%" >
+                    <template #default="scope">
+                        <!--            分页后的处理序号-->
+                        {{(pageIndex-1)*pageSize+scope.$index+1}}
+                    </template>
+                </el-table-column>
                 <el-table-column prop="fixedAsset.name" label="资产名称" align="center" width="120%"></el-table-column>
                 <el-table-column prop="user.employee.name" label="员工姓名" align="center"
                                  width="120%"></el-table-column>
@@ -94,7 +100,7 @@ const statusToCss = {
     "待审核": "info",
     "审核不通过": "danger"
 }
-
+const allData = ref<TableItem[]>([]);
 const query = ref('');
 const reason = ref('');
 const tableData = ref<TableItem[]>([]);
@@ -169,15 +175,29 @@ const getData = async () => {
         departmentName: query.value,
         allocationDescription: query.value,
     }).then((res) => {    //邱秋3/2改的，不知道对不对
+        console.log(res);
 
-        tableData.value = res.data;
-        pageTotal.value = res.data.length;
-        pageIndex.value = 1;
+        // //res.data中的数据复制100次，模拟数据量大的情况
+        //   let data = res.data;
+        //   for (let i = 0; i < 100; i++) {
+        //       data = data.concat(res.data);
+        //   }
+        //   res.data = data;
+
+        allData.value = res.data; // 假设后端返回的全部数据在data字段中
+        pageTotal.value = res.data.length; // 设置总数据量
+        doPagination(); // 调用分页函数
     }).catch((err) => {
         ElMessage.error(err.response.data);
     });
 };
 getData();
+
+const doPagination = () => {
+    const start = (pageIndex.value - 1) * pageSize;
+    const end = start + pageSize;
+    tableData.value = allData.value.slice(start, end); // 从所有数据中切割当前页的数据
+};
 
 // 查询操作
 const handleSearch = () => {
@@ -185,7 +205,8 @@ const handleSearch = () => {
 };
 // 分页导航
 const handlePageChange = (val: number) => {
-    getData();
+    pageIndex.value = val; // 更新当前页码
+    doPagination(); // 根据新的页码重新分页
 };
 
 const giveBack = (index: number, row: TableItem) => {

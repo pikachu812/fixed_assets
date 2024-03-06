@@ -31,7 +31,11 @@
                     label="资产编号"
                     width="90%"
                     align="center"
-                ></el-table-column>
+                >
+                    <template #default="scope">
+                        {{ formatAssetId(scope.row.assetId) }}
+                    </template>
+                </el-table-column>
                 <el-table-column prop="fixedAsset.name" label="资产名称" align="center" width="160%"></el-table-column>
                 <el-table-column prop="scrapDate" :formatter="formatDate"
                                  label="报废日期" align="center" width="120%"></el-table-column>
@@ -114,14 +118,11 @@ import type { AssetScrap } from "../interface/interface";
 interface TableItem extends AssetScrap {}
 
 
+const formatAssetId = (assetId) => {
+    return `ZC${assetId.toString().padStart(5, '0')}`;
+};
 
-const statusToCss = {
-    "闲置": "success",
-    "维修中": "warning",
-    "使用中": "info",
-    "报废": "danger"
-}
-
+const allData = ref<TableItem[]>([]);
 const query = ref('');
 const tableData = ref<TableItem[]>([]);
 const pageTotal = ref(0);
@@ -143,6 +144,7 @@ const rowData = ref<TableItem>({
         price: 0,
         imgDir: "",
         status: "",
+        usefulYear: 0,
         assetType: {
             assetTypeId: 0,
             typeName: "",
@@ -162,6 +164,8 @@ const formatDate = (row: any, column: any, cellValue: string | number | Date, in
 
 // 获取表格数据
 const getData = async () => {
+    pageIndex.value = 1; // 重置页码
+
     service.post("/assetScrap/search", {
         fixedAsset: {
             name: query.value,
@@ -170,11 +174,17 @@ const getData = async () => {
             }
         }
     }).then((res) => {
-        console.log("res", res);
         console.log(res);
-        tableData.value = res.data;
-        pageTotal.value = res.data.length;
-        pageIndex.value = 1;
+        // //res.data中的数据复制100次，模拟数据量大的情况
+        //   let data = res.data;
+        //   for (let i = 0; i < 100; i++) {
+        //       data = data.concat(res.data);
+        //   }
+        //   res.data = data;
+
+        allData.value = res.data; // 假设后端返回的全部数据在data字段中
+        pageTotal.value = res.data.length; // 设置总数据量
+        doPagination(); // 调用分页函数
     });
 };
 getData();
@@ -185,8 +195,16 @@ const handleSearch = () => {
 };
 // 分页导航
 const handlePageChange = (val: number) => {
-    getData();
+    pageIndex.value = val; // 更新当前页码
+    doPagination(); // 根据新的页码重新分页
 };
+
+const doPagination = () => {
+    const start = (pageIndex.value - 1) * pageSize;
+    const end = start + pageSize;
+    tableData.value = allData.value.slice(start, end); // 从所有数据中切割当前页的数据
+};
+
 
 
 const handleDelete = async (index: number) => {

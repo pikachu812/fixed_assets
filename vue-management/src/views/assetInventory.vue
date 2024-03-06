@@ -172,6 +172,7 @@ const query = reactive({
 });
 
 const tableData = ref<TableItem[]>([]);
+const allData = ref<TableItem[]>([]);
 
 const pageIndex = ref(1);
 const pageSize = 10;
@@ -236,6 +237,8 @@ const formatDate = (row, column, cellValue, index) => {
 const getData = async () => {
 
     console.log('query', query);
+    pageIndex.value = 1;
+
 
     service.post("/assetInventory/search", query).then((res) => {
         console.log("res", res);
@@ -247,10 +250,17 @@ const getData = async () => {
             })
         }
 
-        tableData.value = res.data;
 
-        pageTotal.value = res.data.length;
-        pageIndex.value = 1;
+        // //res.data中的数据复制100次，模拟数据量大的情况
+        //   let data = res.data;
+        //   for (let i = 0; i < 100; i++) {
+        //       data = data.concat(res.data);
+        //   }
+        //   res.data = data;
+
+        allData.value = res.data; // 假设后端返回的全部数据在data字段中
+        pageTotal.value = res.data.length; // 设置总数据量
+        doPagination(); // 调用分页函数
     });
 };
 getData();
@@ -263,10 +273,22 @@ const handleEdit = (index: number, row: TableItem) => {
     visible.value = true;
 };
 
-const handleSearch = () => {
-    // 实际应用中应发送请求到后端进行搜索
-    getData()
+const doPagination = () => {
+    const start = (pageIndex.value - 1) * pageSize;
+    const end = start + pageSize;
+    tableData.value = allData.value.slice(start, end); // 从所有数据中切割当前页的数据
 };
+
+// 查询操作
+const handleSearch = () => {
+    getData();
+};
+// 分页导航
+const handlePageChange = (val: number) => {
+    pageIndex.value = val; // 更新当前页码
+    doPagination(); // 根据新的页码重新分页
+};
+
 
 const closeDialog = () => {
     form.value = {
@@ -279,10 +301,6 @@ const closeDialog = () => {
     getData();
 };
 
-const handlePageChange = (val: number) => {
-    // 实际应用中应根据分页参数重新获取数据
-    pageIndex.value = val;
-};
 
 const handleDelete = async (index: number) => {
     try {
