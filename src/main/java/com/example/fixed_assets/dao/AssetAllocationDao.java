@@ -30,4 +30,6 @@ public interface AssetAllocationDao {
 
     void rejectAssetAllocation(@Param("allocationId") Integer allocationId,
                                 @Param("reason") String reason);
+
+    void returnAsset(AssetAllocation assetAllocation);
 }

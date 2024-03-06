@@ -71,14 +71,14 @@
                 <el-form-item label="数量">
                     <el-input-number v-model="selectedAsset.quantity" :min="1" :max="maxVal"/>
                 </el-form-item>
-                <el-form-item label="返还日期">
-                    <el-date-picker
-                        type="date"
-                        placeholder="选择日期"
-                        v-model="selectedAsset.returnDate"
-                        style="width: 100%"
-                    ></el-date-picker>
-                </el-form-item>
+<!--                <el-form-item label="返还日期">-->
+<!--                    <el-date-picker-->
+<!--                        type="date"-->
+<!--                        placeholder="选择日期"-->
+<!--                        v-model="selectedAsset.returnDate"-->
+<!--                        style="width: 100%"-->
+<!--                    ></el-date-picker>-->
+<!--                </el-form-item>-->
                 <el-form-item label="领用说明">
                     <el-input
                         type="textarea"

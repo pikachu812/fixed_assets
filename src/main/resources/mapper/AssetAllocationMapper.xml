@@ -45,10 +45,10 @@
 
     <insert id="insert"></insert>
     <insert id="insertAsList" parameterType="java.util.List">
-        INSERT INTO asset_allocation (asset_id, user_id, department, allocation_date, return_date, allocation_description)
+        INSERT INTO asset_allocation (asset_id, user_id, department, allocation_date, allocation_description)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.assetId}, #{item.userId}, #{item.department}, #{item.allocationDate}, #{item.returnDate}, #{item.allocationDescription})
+            (#{item.assetId}, #{item.userId}, #{item.department}, #{item.allocationDate}, #{item.allocationDescription})
         </foreach>
     </insert>
     <update id="update"></update>
@@ -60,6 +60,11 @@
     <update id="rejectAssetAllocation">
         UPDATE asset_allocation
         SET status = '审核不通过', reason = #{reason}
+        WHERE allocation_id = #{allocationId}
+    </update>
+    <update id="returnAsset">
+        UPDATE asset_allocation
+        SET  status = '已归还', return_date = #{returnDate}
         WHERE allocation_id = #{allocationId}
     </update>
 

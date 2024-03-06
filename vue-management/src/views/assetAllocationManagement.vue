@@ -25,15 +25,31 @@
                                  width="120%"></el-table-column>
                 <el-table-column prop="user.employee.department.name" label="部门名称" align="center"
                                  width="120%"></el-table-column>
-                <el-table-column prop="allocationDate" :formatter="formatDate"
+                <el-table-column sortable prop="allocationDate" :formatter="formatDate"
                                  label="领用日期" align="center" width="120%"></el-table-column>
-                <el-table-column prop="returnDate" :formatter="formatDate"
+                <el-table-column sortable prop="returnDate" :formatter="formatDate"
                                  label="返回日期" align="center" width="120%"></el-table-column>
+                <el-table-column
+                    :filters="[
+                        { text: '待审核', value: '待审核' },
+                        { text: '审核通过', value: '审核通过' },
+                        { text: '审核不通过', value: '审核不通过' },
+                        { text: '已归还', value: '已归还' }
+                    ]"
+                    :filter-method="filterStatus"
+                    label="状态" align="center" width="120%">
+                    <template #default="scope">
+                        <el-tag @click="detail(scope.row)" :type="statusToCss[scope.row.status] ? statusToCss[scope.row.status] : 'danger'">
+                            {{ scope.row.status }}
+                        </el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="allocationDescription" label="申请理由" align="center"></el-table-column>
 
                 <el-table-column label="审核操作" width="250" align="center">
                     <template #default="scope">
                         <el-button
+                            v-if="scope.row.status === '待审核'"
                             type="success"
                             size="small"
                             :icon="Check"
@@ -44,6 +60,7 @@
                         </el-button>
 
                         <el-button
+                            v-if="scope.row.status === '待审核'"
                             type="danger"
                             size="small"
                             :icon="Close"
@@ -115,6 +132,13 @@ const visible = ref(false);
 let idx: number = -1;
 const idEdit = ref(false);
 
+const statusToCss = {
+    "审核通过": "success",
+    "已归还": "primary",
+    "待审核": "info",
+    "审核不通过": "danger"
+}
+
 const rowData = ref<TableItem>({
     allocationId: null,
     allocationDescription: null,
@@ -157,11 +181,27 @@ const rowData = ref<TableItem>({
 const formatDate = (row, column, cellValue, index) => {
     // 假设cellValue是一个标准的日期字符串或者Date对象
     // 你可以根据需要调整日期格式
+    if(cellValue === null) return "";
+
     const date = new Date(cellValue);
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
 
 
+const filterStatus = (value, row) => {
+    return row.status === value;
+};
+
+const detail = (row: TableItem) => {
+
+    if(row.status === "审核不通过"){
+        //弹窗显示不通过理由
+        ElMessageBox.alert(row.reason, "不通过理由", {
+            confirmButtonText: "确定",
+            type: "warning",
+        });
+    }
+};
 // 获取表格数据
 const getData = async () => {
 
@@ -170,7 +210,7 @@ const getData = async () => {
         employeeName: query.value,
         departmentName: query.value,
         allocationDescription: query.value,
-        status: '待审核'
+        // status: '待审核'
     }).then((res) => {    //邱秋3/2改的，不知道对不对
 
         tableData.value = res.data;
@@ -200,6 +240,7 @@ const allocationPass = (index: number) => {
 
         service.post("/assetAllocation/pass/" + row.allocationId, {}).then((res) => {    //邱秋3/2改的，不知道对不对
             ElMessage.success("通过");
+            getData();
         }).catch(() => {
             ElMessage.error("通过失败");
         });
@@ -241,6 +282,7 @@ const saveEdit = () => {
 
             ElMessage.warning("已通知该员工");
             visible.value = false;
+            getData();
 
         }).catch(() => {
             ElMessage.error("操作失败");

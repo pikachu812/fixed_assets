@@ -61,16 +61,6 @@ public class AssetAllocationServiceImpl implements AssetAllocationService {
 
         logger.info("Service");
 
-        String date = (String) map.get("returnDate");
-
-        if (date == null || date.isEmpty()) {
-            throw new RuntimeException("归还日期不能为空");
-        }
-
-        Instant time = Instant.parse(date);
-        ZonedDateTime zonedDateTime = time.atZone(ZonedDateTime.now().getZone());
-        Date returnDate = Date.from(zonedDateTime.toInstant());
-        Date now = new Date();
 
 
         User user = (User) map.get("user");
@@ -91,8 +81,6 @@ public class AssetAllocationServiceImpl implements AssetAllocationService {
         logger.info("num: " + num);
         logger.info("name: " + name);
         logger.info("allocationDescription: " + allocationDescription);
-        logger.info("returnDate: " + returnDate);
-        logger.info("now: " + now);
         logger.info("user: " + user);
         logger.info("user.getEmployee().getDepartment().getName(): " + user.getEmployee().getDepartment().getName());
 
@@ -114,8 +102,7 @@ public class AssetAllocationServiceImpl implements AssetAllocationService {
             tmp.setAssetId(fixedAsset.getAssetId());
             tmp.setUserId(user.getUserId());
             tmp.setDepartment(user.getEmployee().getDepartment().getName());
-            tmp.setAllocationDate(now);
-            tmp.setReturnDate(returnDate);
+            tmp.setAllocationDate(new Date());
             tmp.setAllocationDescription(allocationDescription);
             allocationList.add(tmp);
 
@@ -195,9 +182,15 @@ public class AssetAllocationServiceImpl implements AssetAllocationService {
     }
 
     @Override
+    @Transactional
     public void returnAssetAllocation(Integer allocationId) {
 
             AssetAllocation assetAllocation = assetAllocationDao.selectById(allocationId);
+
+            assetAllocation.setStatus("已归还");
+            assetAllocation.setReturnDate(new Date());
+
+            assetAllocationDao.returnAsset(assetAllocation);
 
             FixedAsset fixedAsset = fixedAssetDao.selectFixedAssetById(assetAllocation.getAssetId());
 
