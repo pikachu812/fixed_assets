@@ -119,7 +119,7 @@ const defaultData = {
     purchaseDate: null,
     price: null,
     imgDir: null,
-    status: null,
+    status: '闲置',
     usefulYear: null,
     assetType: null
 };
