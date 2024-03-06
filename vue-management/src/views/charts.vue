@@ -1,127 +1,136 @@
 <template>
-	<div class="container">
-		<div class="plugins-tips">
-			vue-schart：vue.js封装sChart.js的图表组件。 访问地址：
-			<a href="https://github.com/lin-xin/vue-schart" target="_blank">vue-schart</a>
-		</div>
-		<div class="schart-box">
-			<div class="content-title">柱状图</div>
-			<schart class="schart" canvasId="bar" :options="options1"></schart>
-		</div>
-		<div class="schart-box">
-			<div class="content-title">折线图</div>
-			<schart class="schart" canvasId="line" :options="options2"></schart>
-		</div>
-		<div class="schart-box">
-			<div class="content-title">饼状图</div>
-			<schart class="schart" canvasId="pie" :options="options3"></schart>
-		</div>
-		<div class="schart-box">
-			<div class="content-title">环形图</div>
-			<schart class="schart" canvasId="ring" :options="options4"></schart>
-		</div>
-	</div>
+    <el-row gutter="20">
+        <el-col :span="12">
+            <el-card class="box-card">
+                <template #header>
+                    <div class="clearfix">
+                        <span>部门资产分布</span>
+                    </div>
+                </template>
+                <div ref="departmentChart" style="width: 100%; height: 400px;"></div>
+            </el-card>
+        </el-col>
+        <el-col :span="12">
+            <el-card class="box-card">
+                <template #header>
+                    <div class="clearfix">
+                        <span>不同类别资产数据</span>
+                    </div>
+                </template>
+                <div ref="assetTypeChart" style="width: 100%; height: 400px;"></div>
+            </el-card>
+        </el-col>
+    </el-row>
 </template>
 
-<script setup lang="ts" name="basecharts">
-import Schart from 'vue-schart';
+<script setup>
+import { ref, onMounted } from 'vue';
+import * as echarts from 'echarts';
+import { ElMessage } from 'element-plus';
+import service from "../utils/request";
 
-const options1 = {
-	type: 'bar',
-	title: {
-		text: '最近一周各品类销售图'
-	},
-	bgColor: '#fbfbfb',
-	labels: ['周一', '周二', '周三', '周四', '周五'],
-	datasets: [
-		{
-			label: '家电',
-			fillColor: 'rgba(241, 49, 74, 0.5)',
-			data: [234, 278, 270, 190, 230]
-		},
-		{
-			label: '百货',
-			data: [164, 178, 190, 135, 160]
-		},
-		{
-			label: '食品',
-			data: [144, 198, 150, 235, 120]
-		}
-	]
+const departmentChart = ref(null);
+const assetTypeChart = ref(null);
+
+const getDepartmentData = async () => {
+    try {
+        const res = await service.get("/statistics/assetByDepartment");
+        updateDepartmentChart(res.data);
+    } catch (err) {
+        ElMessage.error(err.response.data);
+    }
 };
-const options2 = {
-	type: 'line',
-	title: {
-		text: '最近几个月各品类销售趋势图'
-	},
-	bgColor: '#fbfbfb',
-	labels: ['6月', '7月', '8月', '9月', '10月'],
-	datasets: [
-		{
-			label: '家电',
-			data: [234, 278, 270, 190, 230]
-		},
-		{
-			label: '百货',
-			data: [164, 178, 150, 135, 160]
-		},
-		{
-			label: '食品',
-			data: [114, 138, 200, 235, 190]
-		}
-	]
+
+const getAssetTypeData = async () => {
+    try {
+        const res = await service.get("/statistics/assetByType");
+        updateAssetTypeChart(res.data);
+    } catch (err) {
+        ElMessage.error(err.response.data);
+    }
 };
-const options3 = {
-	type: 'pie',
-	title: {
-		text: '服装品类销售饼状图'
-	},
-	legend: {
-		position: 'left'
-	},
-	bgColor: '#fbfbfb',
-	labels: ['T恤', '牛仔裤', '连衣裙', '毛衣', '七分裤', '短裙', '羽绒服'],
-	datasets: [
-		{
-			data: [334, 278, 190, 235, 260, 200, 141]
-		}
-	]
+
+// 更新部门资产分布图表数据
+const updateDepartmentChart = (data) => {
+    if (!departmentChart.value) return;
+
+    const myChart = echarts.init(departmentChart.value);
+    myChart.setOption({
+        title: {
+            text: '部门资产分布',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+        },
+        series: [
+            {
+                name: '资产数量',
+                type: 'pie',
+                radius: '50%',
+                data: data.map(item => ({
+                    value: item.asset_count,
+                    name: item.department
+                })),
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    });
 };
-const options4 = {
-	type: 'ring',
-	title: {
-		text: '环形三等分'
-	},
-	showValue: false,
-	legend: {
-		position: 'bottom',
-		bottom: 40
-	},
-	bgColor: '#fbfbfb',
-	labels: ['vue', 'react', 'angular'],
-	datasets: [
-		{
-			data: [500, 500, 500]
-		}
-	]
+
+// 更新资产类别图表数据
+const updateAssetTypeChart = (data) => {
+    if (!assetTypeChart.value) return;
+
+    const myChart = echarts.init(assetTypeChart.value);
+    myChart.setOption({
+        title: {
+            text: '不同类别资产数据',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: data.map(item => item.type),
+            axisLabel: {
+                rotate: -45, // 使X轴的标签斜着显示
+                interval: 0, // 显示所有标签，不跳过
+                textStyle: {
+                    fontSize: 12 // 可以调整字体大小以确保标签的清晰度
+                }
+            }
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: data.map(item => item.count),
+            type: 'bar',
+            showBackground: true,
+            backgroundStyle: {
+                color: 'rgba(180, 180, 180, 0.2)'
+            }
+        }]
+    });
 };
+
+onMounted(() => {
+    getDepartmentData(); // 调用函数获取部门资产数据并更新图表
+    getAssetTypeData(); // 调用函数获取资产类型数据并更新图表
+});
 </script>
-
-<style scoped>
-.schart-box {
-	display: inline-block;
-	margin: 20px;
-}
-.schart {
-	width: 600px;
-	height: 400px;
-}
-.content-title {
-	clear: both;
-	font-weight: 400;
-	line-height: 50px;
-	margin: 10px 0;
-	font-size: 22px;
-	color: #1f2f3d;
-}
-</style>
