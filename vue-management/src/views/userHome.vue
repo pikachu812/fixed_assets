@@ -238,6 +238,7 @@ const submitUseForm = () => {
     padding: 0 5% 25px;
 }
 
+
 .el-carousel__item h3 {
     color: #475669;
     opacity: 0.75;
