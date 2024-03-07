@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrap">
     <div class="ms-login">
-      <div class="ms-title">后台管理系统</div>
+      <div class="ms-title">企业固定资产核算系统</div>
       <el-form
         :model="param"
         :rules="rules"
@@ -32,7 +32,7 @@
           <el-button type="primary" @click="submitForm(login)">登录</el-button>
         </div>
         <el-checkbox class="login-tips" v-model="checked" label="记住密码" size="large" />
-        <p class="login-tips">Tips : 测试环节</p>
+<!--        <p class="login-tips">Tips : 测试环节</p>-->
       </el-form>
     </div>
   </div>
