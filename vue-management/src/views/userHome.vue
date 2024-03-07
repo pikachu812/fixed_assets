@@ -9,8 +9,6 @@
                 </el-carousel-item>
             </el-carousel>
         </div>
-
-
         <el-row>
             <el-col :span="15"></el-col>
             <!-- 空列占据左半边 -->
