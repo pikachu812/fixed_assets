@@ -1,16 +1,17 @@
 <template>
-  <div class="content-container">
-<!--      轮播图。走马灯-->
-        <el-carousel :interval="4000" type="card" height="200px" width = "80%">
-          <el-carousel-item v-for="item in 6" :key="item">
-            <h3 text="2xl" justify="center">{{ item }}</h3>
-          </el-carousel-item>
-        </el-carousel>
-  </div>
-  <br>
-  <br>
+    <!-- TODO   看239行-->
+    <div>
+        <div class="content-container">
+            <!--      轮播图。走马灯-->
+            <el-carousel :interval="4000" type="card" height="200px" width="80%">
+                <el-carousel-item v-for="item in 6" :key="item">
+                    <h3 text="2xl" justify="center">{{ item }}</h3>
+                </el-carousel-item>
+            </el-carousel>
+        </div>
 
-  <el-row>
+
+        <el-row>
             <el-col :span="15"></el-col>
             <!-- 空列占据左半边 -->
             <el-col :span="9">
@@ -39,7 +40,7 @@
                     </el-col>
                 </el-row>
             </el-col>
-<!--    展示固定资产卡片部分-->
+            <!--    展示固定资产卡片部分-->
         </el-row>
         <div class="assets-container">
             <el-row :gutter="20">
@@ -52,7 +53,7 @@
                             :zoom-rate="1.2"
                             :max-scale="7"
                             :min-scale="0.2"
-                            :preview-src-list="srcList"
+                            :preview-src-list="[asset.imgDir]"
                             :initial-index="4"
                             fit="cover"
                         />
@@ -92,19 +93,21 @@
                 <!-- 可以添加更多的表单项 -->
             </el-form>
             <span slot="footer" class="dialog-footer">
-        <el-button @click="isModalVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitUseForm">确认领用</el-button>
-      </span>
+                <el-button @click="isModalVisible = false">取消</el-button>
+                <el-button type="primary" @click="submitUseForm">确认领用</el-button>
+            </span>
         </el-dialog>
-  <div > <br><br><br><br></div>
+
+    </div>
+
 </template>
 <script lang="tsx" setup>
 import {ref, watch, computed} from "vue";
 import {ElMessage} from "element-plus";
 import service from "../utils/request";
-import {AssetType, FixedAsset} from "../interface/interface";
+import {FixedAsset} from "../interface/interface";
 
-interface TableItem extends FixedAsset{
+interface TableItem extends FixedAsset {
     quantity: number; // BigDecimal from Java can be represented as a number in TypeScript for simplicity, but be cautious of precision issues for very large or very small values
     returnDate: Date;
     allocationDescription: string;
@@ -117,8 +120,6 @@ const search = ref("");
 const sortKey = ref(""); // 排序依据
 const sortOrder = ref("asc"); // 排序方向，默认为升序
 const maxVal = ref(0);
-
-
 
 
 const assets = ref<TableItem[]>([]);
@@ -172,7 +173,7 @@ const toggleSortOrder = () => {
 let searchTimeout = null; // 用于存储setTimeout的变量
 
 // 监听search变量的变化
-watch(search, (newValue, oldValue) => {
+watch(search, () => {
     clearTimeout(searchTimeout); // 取消之前的搜索操作
     searchTimeout = setTimeout(() => {
         getData();
@@ -212,7 +213,7 @@ const submitUseForm = () => {
     console.log("提交领用请求", selectedAsset.value);
 
 
-    service.post("/assetAllocation/allocation", selectedAsset.value,{
+    service.post("/assetAllocation/allocation", selectedAsset.value, {
         withCredentials: true,
     }).then((res) => {
         console.log("领用成功", res);
@@ -234,37 +235,39 @@ const submitUseForm = () => {
 <style scoped>
 
 .content-container {
-  padding: 0 5%; /* 根据需要调整，这里设置的是左右各留10%的空间 */
+    /* 根据需要调整，这里设置的是左右各留10%的空间 */
+    /** 25px 改成你想要距离轮播图的距离 */
+    padding: 0 5% 25px;
 }
 
 .el-carousel__item h3 {
-  color: #475669;
-  opacity: 0.75;
-  line-height: 200px;
-  margin: 0;
-  text-align: center;
+    color: #475669;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0;
+    text-align: center;
 }
 
 .el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
+    background-color: #99a9bf;
 }
 
 .el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
+    background-color: #d3dce6;
 }
 
 .assets-container {
 
-  padding: 0 10%; /* 根据需要调整，这里设置的是左右各留10%的空间 */
+    padding: 0 10%; /* 根据需要调整，这里设置的是左右各留10%的空间 */
 
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
 .asset-item {
     position: relative;
     text-align: center;
-  /*width: 220px; !* 根据需要调整宽度 *!*/
-  /*padding: 10px;*/
+    /*width: 220px; !* 根据需要调整宽度 *!*/
+    /*padding: 10px;*/
     padding: 10px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     border-radius: 4px;
