@@ -1,6 +1,16 @@
 <template>
-    <div>
-        <el-row>
+  <div class="content-container">
+<!--      轮播图。走马灯-->
+        <el-carousel :interval="4000" type="card" height="200px" width = "80%">
+          <el-carousel-item v-for="item in 6" :key="item">
+            <h3 text="2xl" justify="center">{{ item }}</h3>
+          </el-carousel-item>
+        </el-carousel>
+  </div>
+  <br>
+  <br>
+
+  <el-row>
             <el-col :span="15"></el-col>
             <!-- 空列占据左半边 -->
             <el-col :span="9">
@@ -29,6 +39,7 @@
                     </el-col>
                 </el-row>
             </el-col>
+<!--    展示固定资产卡片部分-->
         </el-row>
         <div class="assets-container">
             <el-row :gutter="20">
@@ -71,14 +82,7 @@
                 <el-form-item label="数量">
                     <el-input-number v-model="selectedAsset.quantity" :min="1" :max="maxVal"/>
                 </el-form-item>
-<!--                <el-form-item label="返还日期">-->
-<!--                    <el-date-picker-->
-<!--                        type="date"-->
-<!--                        placeholder="选择日期"-->
-<!--                        v-model="selectedAsset.returnDate"-->
-<!--                        style="width: 100%"-->
-<!--                    ></el-date-picker>-->
-<!--                </el-form-item>-->
+
                 <el-form-item label="领用说明">
                     <el-input
                         type="textarea"
@@ -92,7 +96,7 @@
         <el-button type="primary" @click="submitUseForm">确认领用</el-button>
       </span>
         </el-dialog>
-    </div>
+  <div > <br><br><br><br></div>
 </template>
 <script lang="tsx" setup>
 import {ref, watch, computed} from "vue";
@@ -228,13 +232,39 @@ const submitUseForm = () => {
 };
 </script>
 <style scoped>
+
+.content-container {
+  padding: 0 5%; /* 根据需要调整，这里设置的是左右各留10%的空间 */
+}
+
+.el-carousel__item h3 {
+  color: #475669;
+  opacity: 0.75;
+  line-height: 200px;
+  margin: 0;
+  text-align: center;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
+}
+
 .assets-container {
-    margin-top: 20px;
+
+  padding: 0 10%; /* 根据需要调整，这里设置的是左右各留10%的空间 */
+
+  margin-top: 20px;
 }
 
 .asset-item {
     position: relative;
     text-align: center;
+  /*width: 220px; !* 根据需要调整宽度 *!*/
+  /*padding: 10px;*/
     padding: 10px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     border-radius: 4px;

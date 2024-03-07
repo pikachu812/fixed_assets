@@ -8,20 +8,15 @@
       router
 
   >
-    <div class="flex-grow" />
+    <div class="system-name">企业固定资产核算系统</div>
+    <div class="flex-grow"/>
     <el-menu-item index="/userHome" key="/userHome">主页</el-menu-item>
-      <el-menu-item index="/assetAllocationList" key="/assetAllocationList">固定资产申领列表</el-menu-item>
+    <el-menu-item index="/assetAllocationList" key="/assetAllocationList">固定资产申领列表</el-menu-item>
     <el-sub-menu index="3">
       <template #title>我的</template>
       <el-menu-item index="/user" key="/user">个人中心</el-menu-item>
       <el-menu-item divided @click="loginout">退出登录</el-menu-item>
-      <el-menu-item index="2-3">item three</el-menu-item>
-      <el-sub-menu index="2-4">
-        <template #title>item four</template>
-        <el-menu-item index="2-4-1">item one</el-menu-item>
-        <el-menu-item index="2-4-2">item two</el-menu-item>
-        <el-menu-item index="2-4-3">item three</el-menu-item>
-      </el-sub-menu>
+
     </el-sub-menu>
   </el-menu>
 </template>
@@ -49,10 +44,27 @@ const loginout = () => {
 }
 
 
-
 </script>
 
 <style>
+
+.el-menu-demo {
+  background-color: #edf0f4 !important; /* 深灰色背景 */
+  color: #fff; /* 文字颜色设置为白色以便于深色背景下的阅读 */
+}
+
+.system-name {
+  font-size: 20px; /* 可根据需要调整 */
+  color: #1B7BB5; /* 设置系统名称的文字颜色 */
+  line-height: 60px; /* 调整这个值以垂直居中文字，根据实际高度调整 */
+  padding-left: 20px; /* 添加一些左侧内边距 */
+  font-weight: bold; /* 可选：如果你希望系统名称更加显眼 */
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
 .flex-grow {
   flex-grow: 1;
 }
