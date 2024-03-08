@@ -1,11 +1,17 @@
 <template>
-    <!-- TODO   看239行-->
+
     <div>
+      <div>
         <div class="content-container">
             <!--      轮播图。走马灯-->
             <el-carousel :interval="4000" type="card" height="200px" width="80%">
-                <el-carousel-item v-for="item in 6" :key="item">
-                    <h3 text="2xl" justify="center">{{ item }}</h3>
+                <el-carousel-item v-for="(imgSrc, index) in images" :key="index">
+                  <el-image
+                      style="width: 100%; height: 100%;"
+                      fit="cover"
+                      :src="imgSrc"
+                  ></el-image>
+<!--                  <h3 text="2xl" justify="center">{{ item }}</h3>-->
                 </el-carousel-item>
             </el-carousel>
         </div>
@@ -38,6 +44,7 @@
                     </el-col>
                 </el-row>
             </el-col>
+
             <!--    展示固定资产卡片部分-->
         </el-row>
         <div class="assets-container">
@@ -95,7 +102,7 @@
                 <el-button type="primary" @click="submitUseForm">确认领用</el-button>
             </span>
         </el-dialog>
-
+      </div>
     </div>
 
 </template>
@@ -119,8 +126,18 @@ const sortKey = ref(""); // 排序依据
 const sortOrder = ref("asc"); // 排序方向，默认为升序
 const maxVal = ref(0);
 
-
 const assets = ref<TableItem[]>([]);
+
+const images = ref([
+  '/assets/img/banner/1.jpg',
+  '/assets/img/banner/2.jpg',
+  '/assets/img/banner/3.jpg',
+  '/assets/img/banner/4.jpg',
+  '/assets/img/banner/5.jpg',
+  '/assets/img/banner/6.jpg',
+  '/assets/img/banner/7.jpg',
+
+]);
 
 const getData = async () => {
     service.post("/fixedAssets/getFixedAssetsByCondition", {
@@ -235,9 +252,8 @@ const submitUseForm = () => {
 .content-container {
     /* 根据需要调整，这里设置的是左右各留10%的空间 */
     /** 25px 改成你想要距离轮播图的距离 */
-    padding: 0 5% 25px;
+    padding: 0 5% 20px;
 }
-
 
 .el-carousel__item h3 {
     color: #475669;
