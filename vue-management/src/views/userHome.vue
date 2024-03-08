@@ -1,111 +1,75 @@
+
+
 <template>
-
-    <div>
-      <div>
+  <div>
+    <el-row class="content-row">
+      <!-- 轮播图 -->
+      <el-col :span="24">
         <div class="content-container">
-            <!--      轮播图。走马灯-->
-            <el-carousel :interval="4000" type="card" height="200px" width="80%">
-                <el-carousel-item v-for="(imgSrc, index) in images" :key="index">
-                  <el-image
-                      style="width: 100%; height: 100%;"
-                      fit="cover"
-                      :src="imgSrc"
-                  ></el-image>
-<!--                  <h3 text="2xl" justify="center">{{ item }}</h3>-->
-                </el-carousel-item>
-            </el-carousel>
+          <el-carousel :interval="4000" type="card" height="300px" width="80%">
+            <el-carousel-item v-for="(imgSrc, index) in images" :key="index">
+              <el-image style="width: 100%; height: 100%;" fit="cover" :src="imgSrc"></el-image>
+            </el-carousel-item>
+          </el-carousel>
         </div>
-        <el-row>
-            <el-col :span="15"></el-col>
-            <!-- 空列占据左半边 -->
-            <el-col :span="9">
-                <!-- 右半边放置控件 -->
-                <el-row :gutter="10">
-                    <el-col :span="10">
-                        <el-input
-                            v-model="search"
-                            placeholder="搜索固定资产..."
-                            prefix-icon="el-icon-search"
-                        ></el-input>
-                    </el-col>
-                    <el-col :span="6">
-                        <el-select v-model="sortKey" placeholder="排序依据">
-                            <el-option label="名称" value="name"></el-option>
-                            <el-option label="数量" value="quantity"></el-option>
-                        </el-select>
-                    </el-col>
-                    <el-col :span="2">
-                        <el-button
-                            type="primary"
-                            @click="toggleSortOrder" round>{{
-                                sortOrder === "asc" ? "升序" : "降序"
-                            }}
-                        </el-button>
-                    </el-col>
-                </el-row>
-            </el-col>
+      </el-col>
+    </el-row>
 
-            <!--    展示固定资产卡片部分-->
+    <el-row>
+      <el-col :span="15"></el-col>
+      <!-- 空列占据左半边 -->
+      <el-col :span="9">
+        <!-- 右半边放置控件 -->
+        <el-row :gutter="10">
+          <el-col :span="10">
+            <el-input
+                v-model="search"
+                placeholder="搜索固定资产..."
+                prefix-icon="el-icon-search"
+            ></el-input>
+          </el-col>
+          <el-col :span="6">
+            <el-select v-model="sortKey" placeholder="排序依据">
+              <el-option label="名称" value="name"></el-option>
+              <el-option label="数量" value="quantity"></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="2">
+            <el-button
+                type="primary"
+                @click="toggleSortOrder" round>{{
+                sortOrder === "asc" ? "升序" : "降序"
+              }}
+            </el-button>
+          </el-col>
         </el-row>
+      </el-col>
+
+      <!--    展示固定资产卡片部分-->
+    </el-row>
+
+    <el-row class="list-row">
+      <!-- 展示领用列表 -->
+      <el-col :span="24">
         <div class="assets-container">
-            <el-row :gutter="20">
-                <el-col :span="6" v-for="(asset, index) in filteredAssets" :key="index">
-                    <div class="asset-item">
-                        <el-image
-                            class="asset-image"
-                            style="width: 200px; height: 150px"
-                            :src="asset.imgDir"
-                            :zoom-rate="1.2"
-                            :max-scale="7"
-                            :min-scale="0.2"
-                            :preview-src-list="[asset.imgDir]"
-                            :initial-index="4"
-                            fit="cover"
-                        />
-                        <div class="asset-info">
-                            <h3>{{ asset.name }}</h3>
-                            <p>数量：{{ asset.quantity }}</p>
-                        </div>
-                        <el-button
-                            type="primary"
-                            class="use-button"
-                            @click="handleUseButtonClick(asset)"
-                        >领用
-                        </el-button
-                        >
-                    </div>
-                </el-col>
-            </el-row>
+          <el-row :gutter="20">
+            <el-col :span="6" v-for="(asset, index) in filteredAssets" :key="index">
+              <div class="asset-item">
+                <el-image class="asset-image" style="width: 200px; height: 150px" :src="asset.imgDir" fit="cover"></el-image>
+                <div class="asset-info">
+                  <h3>{{ asset.name }}</h3>
+                  <p>数量：{{ asset.quantity }}</p>
+                </div>
+                <el-button type="primary" class="use-button" @click="handleUseButtonClick(asset)">领用</el-button>
+              </div>
+            </el-col>
+          </el-row>
         </div>
-        <el-dialog v-model="isModalVisible" title="领用资产">
-            <el-form ref="useForm">
-                <el-form-item label="资产名称">
-                    <el-input v-model="selectedAsset.name" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="资产类别">
-                    <el-input v-model="selectedAsset.assetType.typeName" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="数量">
-                    <el-input-number v-model="selectedAsset.quantity" :min="1" :max="maxVal"/>
-                </el-form-item>
-
-                <el-form-item label="领用说明">
-                    <el-input
-                        type="textarea"
-                        v-model="selectedAsset.allocationDescription"
-                    ></el-input>
-                </el-form-item>
-                <!-- 可以添加更多的表单项 -->
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="isModalVisible = false">取消</el-button>
-                <el-button type="primary" @click="submitUseForm">确认领用</el-button>
-            </span>
-        </el-dialog>
-      </div>
-    </div>
-
+      </el-col>
+    </el-row>
+  </div>
 </template>
+
 <script lang="tsx" setup>
 import {ref, watch, computed} from "vue";
 import {ElMessage} from "element-plus";
@@ -322,17 +286,5 @@ const submitUseForm = () => {
     visibility: hidden; /* 开始时不可见 */
     opacity: 0; /* 初始设为完全透明 */
     transition: all 0.3s;
-}
-
-.search-sort-container {
-    display: flex;
-    gap: 10px; /* 根据需要调整间距 */
-    align-items: center; /* 垂直居中对齐 */
-}
-
-/* 根据需要调整输入框、下拉框和按钮的样式 */
-.el-input,
-.el-select {
-    flex-grow: 2; /* 让输入框和下拉框占据可用空间 */
 }
 </style>
