@@ -23,15 +23,15 @@
     <select id="assetByType" resultType="map">
         SELECT
             at.type_name AS type,
-            COUNT(fa.asset_id) AS count
+            COUNT(CASE WHEN fa.status = '使用中' THEN fa.asset_id ELSE NULL END) AS count
         FROM
             asset_type at
-                LEFT JOIN
-            fixed_asset fa ON at.asset_type_id = fa.asset_type_id
+                LEFT JOIN fixed_asset fa ON at.asset_type_id = fa.asset_type_id
         GROUP BY
             at.type_name
         ORDER BY
             count DESC;
+
     </select>
 
 

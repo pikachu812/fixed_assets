@@ -5,7 +5,7 @@
       <el-icon v-if="sidebar.collapse"><Expand /></el-icon>
       <el-icon v-else><Fold /></el-icon>
     </div>
-    <div class="logo">企业固定资产后台</div>
+    <div class="logo">企业固定资产核算系统</div>
     <div class="header-right">
       <div class="header-user-con">
         <!-- 新增跳转到前端首页的按钮 -->

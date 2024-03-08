@@ -1,5 +1,4 @@
 
-
 <template>
   <div>
     <el-row class="content-row">
@@ -37,15 +36,11 @@
           <el-col :span="2">
             <el-button
                 type="primary"
-                @click="toggleSortOrder" round>{{
-                sortOrder === "asc" ? "升序" : "降序"
-              }}
+                @click="toggleSortOrder" round>{{ sortOrder === "asc" ? "升序" : "降序" }}
             </el-button>
           </el-col>
         </el-row>
       </el-col>
-
-      <!--    展示固定资产卡片部分-->
     </el-row>
 
     <el-row class="list-row">
@@ -66,6 +61,24 @@
           </el-row>
         </div>
       </el-col>
+    </el-row>
+    <el-row style="padding-top: 30px">
+      <el-col :span="8">
+
+      </el-col>
+      <el-col :span="12">
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalAssets">
+        </el-pagination>
+      </el-col>
+      <!-- 分页组件 -->
+
     </el-row>
   </div>
 </template>
@@ -103,6 +116,22 @@ const images = ref([
 
 ]);
 
+const currentPage = ref(1);
+const pageSize = ref(10);
+const totalAssets = computed(() => {
+  return  assets.value.length;
+});
+
+const handleSizeChange = (newSize) => {
+  pageSize.value = newSize;
+  currentPage.value = 1; // 切换页大小时回到第一页
+};
+
+const handleCurrentChange = (newPage) => {
+  currentPage.value = newPage;
+};
+
+
 const getData = async () => {
     service.post("/fixedAssets/getFixedAssetsByCondition", {
         assetId: null,
@@ -136,6 +165,19 @@ const getData = async () => {
         for (let [key, value] of map) {
             arr.push(value);
         }
+
+
+      //res.data中的数据复制100次，模拟数据量大的情况
+
+      // let arr2 = [];
+      //   arr.pop();
+      //   for (let i = 0; i < 100; i++) {
+      //       for(let j = 0;j < arr.length;j ++){
+      //         arr2.push(arr[j]);
+      //       }
+      //   }
+      //
+      //   arr = arr2;
 
         console.log("arr", arr);
 
@@ -178,8 +220,12 @@ const filteredAssets = computed(() => {
             return sortOrder.value === "asc" ? comparison : -comparison;
         });
     }
-    return result;
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return result.slice(start, end);
 });
+
+
 const handleUseButtonClick = (asset) => {
     //selectedAsset的值是asset的拷贝
     selectedAsset.value = JSON.parse(JSON.stringify(asset));

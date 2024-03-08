@@ -31,12 +31,12 @@
 						<el-form-item label="用户名："> {{ userDetail.username }} </el-form-item>
                         <el-form-item label="角色">
                             <el-tag v-if="userDetail.roleId === 1" type="success">管理员</el-tag>
-                            <el-tag v-else type="info">普通用户</el-tag>
+                            <el-tag v-else type="warning">普通用户</el-tag>
                         </el-form-item>
-                        <el-form-item label="员工姓名：" v-if="userDetail.employee">
+                        <el-form-item label="员工姓名：" v-if="userDetail.employee && userDetail.roleId !== 1">
                             {{ userDetail.employee.name }}
                         </el-form-item>
-                        <el-form-item label="部门：" v-if="userDetail.employee.department">
+                        <el-form-item label="部门：" v-if="userDetail.employee.department && userDetail.roleId !== 1">
                             {{ userDetail.employee.department.name }}
                         </el-form-item>
 						<el-form-item label="旧密码：">
