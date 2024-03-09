@@ -10,7 +10,7 @@
   >
     <div class="system-name">企业固定资产核算系统</div>
     <div class="flex-grow"/>
-    <el-menu-item index="/userHome" key="/userHome">主页</el-menu-item>
+    <el-menu-item index="/userHome" key="/userHome">首页</el-menu-item>
     <el-menu-item index="/assetAllocationList" key="/assetAllocationList">固定资产申领列表</el-menu-item>
     <el-sub-menu index="3">
       <template #title>我的</template>

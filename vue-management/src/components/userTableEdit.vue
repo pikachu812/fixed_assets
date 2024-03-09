@@ -57,11 +57,11 @@ interface ListItem extends Department {
 const roleList = [
     {
         value: 'admin',
-        label: 'admin',
+        label: '管理员',
     },
     {
         value: 'user',
-        label: 'user',
+        label: '普通员工',
     }
 ]
 
