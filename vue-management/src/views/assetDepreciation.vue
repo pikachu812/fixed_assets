@@ -202,9 +202,7 @@ const calculateDepreciation = (item, method) => {
     }
 
     netBookValue = (item.price - accumulatedDepreciation); // 计算净账面价值
-    // 确保净账面价值不会变成负数
-    netBookValue = Math.max(0, netBookValue);
-
+    netBookValue = Math.max(0, netBookValue); // 确保净账面价值不会变成负数
 
     return {
         currentDepreciation: depreciationExpense,

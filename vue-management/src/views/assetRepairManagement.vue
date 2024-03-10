@@ -42,7 +42,7 @@
                 </el-table-column>
                 <el-table-column prop="fixedAsset.name" label="资产名称" align="center" width="160%"></el-table-column>
                 <el-table-column prop="repairDate" :formatter="formatDate"
-                                 label="维修日期" align="center" width="120%"></el-table-column>
+                                 label="报修日期" align="center" width="120%"></el-table-column>
 
                 <el-table-column label="资产图片" align="center" width="120%">
                     <template #default="scope">
@@ -65,7 +65,7 @@
                     </template>
 
                 </el-table-column>
-                <el-table-column prop="details" label="损坏原因" align="center" width="160%"></el-table-column>
+                <el-table-column prop="details" label="报修详情" align="center" width="160%"></el-table-column>
 
                 <el-table-column label="操作" align="center">
                     <template #default="scope">

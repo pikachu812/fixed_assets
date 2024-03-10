@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <el-row class="content-row">
@@ -50,7 +49,8 @@
           <el-row :gutter="20">
             <el-col :span="6" v-for="(asset, index) in filteredAssets" :key="index">
               <div class="asset-item">
-                <el-image class="asset-image" style="width: 200px; height: 150px" :src="asset.imgDir" fit="cover"></el-image>
+                <el-image class="asset-image" style="width: 200px; height: 150px" :src="asset.imgDir"
+                          fit="cover"></el-image>
                 <div class="asset-info">
                   <h3>{{ asset.name }}</h3>
                   <p>数量：{{ asset.quantity }}</p>
@@ -59,9 +59,37 @@
               </div>
             </el-col>
           </el-row>
+          <!--          固定资产领用单-->
+          <el-dialog v-model="isModalVisible" title="领用资产">
+            <el-form ref="useForm">
+              <el-form-item label="资产名称">
+                <el-input v-model="selectedAsset.name" disabled></el-input>
+              </el-form-item>
+              <el-form-item label="资产类别">
+                <el-input v-model="selectedAsset.assetType.typeName" disabled></el-input>
+              </el-form-item>
+              <el-form-item label="领用数量">
+                <el-input-number v-model="selectedAsset.quantity" :min="1" :max="maxVal"/>
+              </el-form-item>
+
+              <el-form-item label="领用说明">
+                <el-input
+                    type="textarea"
+                    v-model="selectedAsset.allocationDescription"
+                ></el-input>
+              </el-form-item>
+              <!-- 可以添加更多的表单项 -->
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+        <el-button @click="isModalVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitUseForm">确认领用</el-button>
+      </span>
+          </el-dialog>
         </div>
       </el-col>
     </el-row>
+
+    <!-- 分页组件 -->
     <el-row style="padding-top: 30px">
       <el-col :span="8">
 
@@ -77,7 +105,7 @@
             :total="totalAssets">
         </el-pagination>
       </el-col>
-      <!-- 分页组件 -->
+
 
     </el-row>
   </div>
@@ -90,9 +118,9 @@ import service from "../utils/request";
 import {FixedAsset} from "../interface/interface";
 
 interface TableItem extends FixedAsset {
-    quantity: number; // BigDecimal from Java can be represented as a number in TypeScript for simplicity, but be cautious of precision issues for very large or very small values
-    returnDate: Date;
-    allocationDescription: string;
+  quantity: number; // BigDecimal from Java can be represented as a number in TypeScript for simplicity, but be cautious of precision issues for very large or very small values
+  returnDate: Date;
+  allocationDescription: string;
 }
 
 const isModalVisible = ref(false);
@@ -108,8 +136,8 @@ const assets = ref<TableItem[]>([]);
 const images = ref([
   '/assets/img/banner/1.jpg',
   '/assets/img/banner/2.jpg',
-  '/assets/img/banner/3.jpg',
   '/assets/img/banner/4.jpg',
+  '/assets/img/banner/3.jpg',
   '/assets/img/banner/5.jpg',
   '/assets/img/banner/6.jpg',
   '/assets/img/banner/7.jpg',
@@ -119,7 +147,7 @@ const images = ref([
 const currentPage = ref(1);
 const pageSize = ref(10);
 const totalAssets = computed(() => {
-  return  assets.value.length;
+  return assets.value.length;
 });
 
 const handleSizeChange = (newSize) => {
@@ -133,93 +161,93 @@ const handleCurrentChange = (newPage) => {
 
 
 const getData = async () => {
-    service.post("/fixedAssets/getFixedAssetsByCondition", {
-        assetId: null,
-        assetTypeId: null,
-        name: null,
-        purchaseDate: null,
-        price: null,
-        imgDir: null,
-        status: "闲置", // 只获取闲置状态的资产
-        assetType: null
-    }).then((res) => {
+  service.post("/fixedAssets/getFixedAssetsByCondition", {
+    assetId: null,
+    assetTypeId: null,
+    name: null,
+    purchaseDate: null,
+    price: null,
+    imgDir: null,
+    status: "闲置", // 只获取闲置状态的资产
+    assetType: null
+  }).then((res) => {
 
-        let result = res.data;
+    let result = res.data;
 
-        //按照名称统计资产数量
-        let map = new Map();
-        for (let i = 0; i < result.length; i++) {
-            let obj = result[i];
-            if (map.get(obj.name) == null) {
-                obj.quantity = 1;
-                map.set(obj.name, obj);
-            } else {
-                let old = map.get(obj.name);
-                old.quantity++;
-                map.set(obj.name, old);
-            }
-        }
+    //按照名称统计资产数量
+    let map = new Map();
+    for (let i = 0; i < result.length; i++) {
+      let obj = result[i];
+      if (map.get(obj.name) == null) {
+        obj.quantity = 1;
+        map.set(obj.name, obj);
+      } else {
+        let old = map.get(obj.name);
+        old.quantity++;
+        map.set(obj.name, old);
+      }
+    }
 
-        // 将map转化为数组
-        let arr = [];
-        for (let [key, value] of map) {
-            arr.push(value);
-        }
+    // 将map转化为数组
+    let arr = [];
+    for (let [key, value] of map) {
+      arr.push(value);
+    }
 
 
-      //res.data中的数据复制100次，模拟数据量大的情况
+    //res.data中的数据复制100次，模拟数据量大的情况
 
-      // let arr2 = [];
-      //   arr.pop();
-      //   for (let i = 0; i < 100; i++) {
-      //       for(let j = 0;j < arr.length;j ++){
-      //         arr2.push(arr[j]);
-      //       }
-      //   }
-      //
-      //   arr = arr2;
+    // let arr2 = [];
+    //   arr.pop();
+    //   for (let i = 0; i < 100; i++) {
+    //       for(let j = 0;j < arr.length;j ++){
+    //         arr2.push(arr[j]);
+    //       }
+    //   }
+    //
+    //   arr = arr2;
 
-        console.log("arr", arr);
+    console.log("arr", arr);
 
-        assets.value = arr;
-    });
+    assets.value = arr;
+  });
 };
 getData();
 
 // 排序方向切换方法
 const toggleSortOrder = () => {
-    sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
+  sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
 };
 
 let searchTimeout = null; // 用于存储setTimeout的变量
 
 // 监听search变量的变化
 watch(search, () => {
-    clearTimeout(searchTimeout); // 取消之前的搜索操作
-    searchTimeout = setTimeout(() => {
-        getData();
-    }, 1000);
+  clearTimeout(searchTimeout); // 取消之前的搜索操作
+  searchTimeout = setTimeout(() => {
+    getData();
+  }, 1000);
 });
 
 // 创建一个计算属性来实现前端过滤
 const filteredAssets = computed(() => {
-    let result = assets.value;
-    if (search.value) {
-        result = result.filter((asset) =>
-            asset.name.toLowerCase().includes(search.value.toLowerCase())
-        );
-    }
-    if (sortKey.value) {
-        result.sort((a, b) => {
-            let comparison = 0;
-            if (sortKey.value === "name") {
-                comparison = a.name.localeCompare(b.name);
-            } else if (sortKey.value === "quantity") {
-                comparison = a.quantity - b.quantity;
-            }
-            return sortOrder.value === "asc" ? comparison : -comparison;
-        });
-    }
+  let result = assets.value;
+  if (search.value) {
+    result = result.filter((asset) =>
+        asset.name.toLowerCase().includes(search.value.toLowerCase())
+    );
+  }
+  if (sortKey.value) {
+    result.sort((a, b) => {
+      let comparison = 0;
+      if (sortKey.value === "name") {
+        comparison = a.name.localeCompare(b.name);
+      } else if (sortKey.value === "quantity") {
+        comparison = a.quantity - b.quantity;
+      }
+      return sortOrder.value === "asc" ? comparison : -comparison;
+    });
+  }
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
   return result.slice(start, end);
@@ -227,32 +255,32 @@ const filteredAssets = computed(() => {
 
 
 const handleUseButtonClick = (asset) => {
-    //selectedAsset的值是asset的拷贝
-    selectedAsset.value = JSON.parse(JSON.stringify(asset));
-    maxVal.value = asset.quantity;
-    isModalVisible.value = true;
+  //selectedAsset的值是asset的拷贝
+  selectedAsset.value = JSON.parse(JSON.stringify(asset));
+  maxVal.value = asset.quantity;
+  isModalVisible.value = true;
 };
 
 const submitUseForm = () => {
-    // 这里模拟一个API请求，实际应用中你需要替换成真实的API调用
-    console.log("提交领用请求", selectedAsset.value);
+  // 这里模拟一个API请求，实际应用中你需要替换成真实的API调用
+  console.log("提交领用请求", selectedAsset.value);
 
 
-    service.post("/assetAllocation/allocation", selectedAsset.value, {
-        withCredentials: true,
-    }).then((res) => {
-        console.log("领用成功", res);
-        // 假设请求成功
-        isModalVisible.value = false; // 关闭模态框
-        // 这里可以添加成功提示，比如使用Element UI的Message组件
-        ElMessage.success("领用成功");
+  service.post("/assetAllocation/allocation", selectedAsset.value, {
+    withCredentials: true,
+  }).then((res) => {
+    console.log("领用成功", res);
+    // 假设请求成功
+    isModalVisible.value = false; // 关闭模态框
+    // 这里可以添加成功提示，比如使用Element UI的Message组件
+    ElMessage.success("领用成功");
 
-        getData();
-    }).catch((err) => {
-        console.error("领用失败", err);
-        // 获取请求失败后端返回的错误信息并弹窗提示
-        ElMessage.error(err.response.data);
-    });
+    getData();
+  }).catch((err) => {
+    console.error("领用失败", err);
+    // 获取请求失败后端返回的错误信息并弹窗提示
+    ElMessage.error(err.response.data);
+  });
 
 
 };
@@ -260,77 +288,77 @@ const submitUseForm = () => {
 <style scoped>
 
 .content-container {
-    /* 根据需要调整，这里设置的是左右各留10%的空间 */
-    /** 25px 改成你想要距离轮播图的距离 */
-    padding: 0 5% 20px;
+  /* 根据需要调整，这里设置的是左右各留10%的空间 */
+  /** 25px 改成你想要距离轮播图的距离 */
+  padding: 0 5% 20px;
 }
 
 .el-carousel__item h3 {
-    color: #475669;
-    opacity: 0.75;
-    line-height: 200px;
-    margin: 0;
-    text-align: center;
+  color: #475669;
+  opacity: 0.75;
+  line-height: 200px;
+  margin: 0;
+  text-align: center;
 }
 
 .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
+  background-color: #99a9bf;
 }
 
 .el-carousel__item:nth-child(2n + 1) {
-    background-color: #d3dce6;
+  background-color: #d3dce6;
 }
 
 .assets-container {
 
-    padding: 0 10%; /* 根据需要调整，这里设置的是左右各留10%的空间 */
+  padding: 0 10%; /* 根据需要调整，这里设置的是左右各留10%的空间 */
 
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .asset-item {
-    position: relative;
-    text-align: center;
-    /*width: 220px; !* 根据需要调整宽度 *!*/
-    /*padding: 10px;*/
-    padding: 10px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    transition: all 0.3s;
-    overflow: hidden;
+  position: relative;
+  text-align: center;
+  /*width: 220px; !* 根据需要调整宽度 *!*/
+  /*padding: 10px;*/
+  padding: 10px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  transition: all 0.3s;
+  overflow: hidden;
 }
 
 .asset-item:hover .use-button {
-    visibility: visible; /* 改变可见性 */
-    opacity: 1; /* 当鼠标悬停时按钮完全不透明 */
+  visibility: visible; /* 改变可见性 */
+  opacity: 1; /* 当鼠标悬停时按钮完全不透明 */
 }
 
 .asset-item:hover .asset-info {
-    opacity: 0;
+  opacity: 0;
 }
 
 .asset-image {
-    width: 100%;
-    border-radius: 4px;
-    transition: transform 0.3s ease;
+  width: 100%;
+  border-radius: 4px;
+  transition: transform 0.3s ease;
 }
 
 .asset-image:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .asset-info {
-    margin-top: 10px;
-    transition: opacity 0.3s ease;
+  margin-top: 10px;
+  transition: opacity 0.3s ease;
 }
 
 .use-button {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    visibility: hidden; /* 开始时不可见 */
-    opacity: 0; /* 初始设为完全透明 */
-    transition: all 0.3s;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  visibility: hidden; /* 开始时不可见 */
+  opacity: 0; /* 初始设为完全透明 */
+  transition: all 0.3s;
 }
 </style>

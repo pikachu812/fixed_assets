@@ -45,12 +45,12 @@
             />
         </el-form-item>
 <!--    注意cost和price的区别  -->
-        <el-form-item
-            label="维修费用"
-            prop="cost">
-            <el-input-number v-model="form.cost" :precision="2" :step="0.01" :min="0.00" />
+<!--        <el-form-item-->
+<!--            label="维修费用"-->
+<!--            prop="cost">-->
+<!--            <el-input-number v-model="form.cost" :precision="2" :step="0.01" :min="0.00" />-->
 
-        </el-form-item>
+<!--        </el-form-item>-->
 <!--        损坏原因-->
         <el-form-item label="损坏原因" prop="details">
             <el-input v-model="form.details" type="textarea" maxlength="100" show-word-limit></el-input>

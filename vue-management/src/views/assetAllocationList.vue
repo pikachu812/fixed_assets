@@ -1,106 +1,62 @@
 <template>
-    <div>
-        <div class="container">
-            <div class="search-box">
-                <el-input
-                    v-model="query"
-                    placeholder="搜索记录..."
-                    class="search-input mr10"
-                    clearable
-                ></el-input>
-                <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
-                <!--        <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>-->
-            </div>
-            <el-table
-                :data="tableData"
-                border
-                class="table"
-                ref="multipleTable"
-                header-cell-class-name="table-header"
-            >
-                <el-table-column label="序号"
-
-                                 align="center" width="60%" >
-                    <template #default="scope">
-                        <!--            分页后的处理序号-->
-                        {{(pageIndex-1)*pageSize+scope.$index+1}}
-                    </template>
-                </el-table-column>
-                <el-table-column prop="fixedAsset.name" label="资产名称" align="center" width="120%"></el-table-column>
-                <el-table-column prop="user.employee.name" label="员工姓名" align="center"
-                                 width="120%"></el-table-column>
-                <el-table-column prop="user.employee.department.name" label="部门名称" align="center"
-                                 width="120%"></el-table-column>
-                <el-table-column
-                    :filters="[
+  <div >
+    <div class="container">
+      <div class="search-box">
+        <el-input v-model="query" placeholder="搜索记录..." class="search-input mr10" clearable></el-input>
+        <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
+      </div>
+      <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header" style="width: 100%">
+        <el-table-column label="序号" align="center" width="60">
+          <template #default="scope">
+            {{ (pageIndex - 1) * pageSize + scope.$index + 1 }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="fixedAsset.name" label="资产名称" align="center" width="120"></el-table-column>
+        <el-table-column prop="user.employee.name" label="员工姓名" align="center" width="100"></el-table-column>
+        <el-table-column prop="user.employee.department.name" label="部门名称" align="center" width="100"></el-table-column>
+        <el-table-column
+            :filters="[
                         { text: '待审核', value: '待审核' },
                         { text: '审核通过', value: '审核通过' },
                         { text: '审核不通过', value: '审核不通过' },
                         { text: '已归还', value: '已归还' }
                     ]"
-                    :filter-method="filterStatus"
-                    label="状态" align="center" width="120%">
-                    <template #default="scope">
-                        <el-tag @click="detail(scope.row)" :type="statusToCss[scope.row.status] ? statusToCss[scope.row.status] : 'danger'">
-                            {{ scope.row.status }}
-                        </el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column sortable prop="allocationDate" :formatter="formatDate"
-                                 label="领用日期" align="center" width="120%"></el-table-column>
-                <el-table-column sortable prop="returnDate" :formatter="formatDate"
-                                    label="归还日期" align="center" width="120%"></el-table-column>
-                <el-table-column prop="allocationDescription" label="申请理由" align="center"></el-table-column>
-                <el-table-column label="操作" align="center">
-                    <template #default="scope">
+            :filter-method="filterStatus"
+            label="状态"
+            align="center"
+            width="120">
+          <template #default="scope">
+            <el-tag @click="detail(scope.row)" :type="statusToCss[scope.row.status] ? statusToCss[scope.row.status] : 'danger'">
+              {{ scope.row.status }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column sortable prop="allocationDate" :formatter="formatDate" label="领用日期" align="center" width="90"></el-table-column>
+        <el-table-column sortable prop="returnDate" :formatter="formatDate" label="归还日期" align="center" width="90"></el-table-column>
+        <!-- 增加的宽度设置 -->
+        <el-table-column prop="allocationDescription" label="申请理由" width="300px" align="center"></el-table-column>
+        <el-table-column label="操作" align="center" width="200%">
+          <template #default="scope">
+            <el-button v-if="scope.row.status === '审核通过' && scope.row.fixedAsset.status === '使用中'" type="primary" size="small" :icon="Finished" @click="giveBack(scope.$index, scope.row)">
+              归还
+            </el-button>
+            <el-button v-if="scope.row.status === '审核通过' && scope.row.fixedAsset.status === '使用中'" type="warning" size="small" :icon="Edit" @click="handleRepair(scope.$index,scope.row)">
+              报修
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 
-                        <el-button
-                            v-if="scope.row.status === '审核通过' && scope.row.fixedAsset.status === '使用中'"
-                            type="primary"
-                            size="small"
-                            :icon="Finished"
-                            @click="giveBack(scope.$index, scope.row)"
-                        >
-                            归还
-                        </el-button>
+      <br><br><br><br><br><br><br><br><br><br>
 
-                        <el-button
-                            v-if="scope.row.status === '审核通过' && scope.row.fixedAsset.status === '使用中'"
-                            type=warning
-                            size="small"
-                            :icon="Edit"
-                            @click="handleRepair(scope.$index,scope.row)">
-                            报修
-                        </el-button>
-
-                    </template>
-                </el-table-column>
-
-            </el-table>
-            <div class="pagination">
-                <el-pagination
-                    background
-                    layout="total, prev, pager, next"
-                    :current-page="pageIndex"
-                    :page-size="pageSize"
-                    :total="pageTotal"
-                    @current-change="handlePageChange"
-                ></el-pagination>
-            </div>
-        </div>
-
-        <el-dialog
-            title="新增维修记录"
-            v-model="visible"
-            width="70%"
-            destroy-on-close
-            :close-on-click-modal="false"
-            @close="closeDialog"
-        >
-            <AssetRepairEdit :data="repairData" :edit="idEdit" :update="updateData"/>
-        </el-dialog>
-
+      <div class="pagination">
+        <el-pagination background layout="total, prev, pager, next" :current-page="pageIndex" :page-size="pageSize" :total="pageTotal" @current-change="handlePageChange"></el-pagination>
+      </div>
     </div>
+    <el-dialog title="新增维修记录" v-model="visible" width="70%" destroy-on-close :close-on-click-modal="false" @close="closeDialog">
+      <AssetRepairEdit :data="repairData" :edit="idEdit" :update="updateData" />
+    </el-dialog>
+  </div>
 </template>
 
 <script setup lang="ts" name="basetable">
@@ -119,7 +75,7 @@ interface RepairItem extends AssetRepair{}
 const statusToCss = {
     "审核通过": "success",
     "已归还": "primary",
-    "待审核": "info",
+    "待审核": "warning",
     "审核不通过": "danger"
 }
 const allData = ref<TableItem[]>([]);
@@ -310,6 +266,13 @@ const closeDialog = () => {
 </script>
 
 <style scoped>
+.container {
+  /*height:100%;*/
+  background-image: url('../assets/img/f1_bg.png');
+  background-size: cover; /* 覆盖整个容器 */
+  background-position: center; /* 图片居中显示 */
+}
+
 .search-box {
     margin-bottom: 20px;
 }

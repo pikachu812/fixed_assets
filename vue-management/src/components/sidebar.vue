@@ -68,7 +68,7 @@ const items = [
   },
   {
     icon: "User",
-    index: "1",
+    // index: "1",
     title: "基本信息管理",
     permiss: "1",
     subs: [
@@ -84,68 +84,118 @@ const items = [
       },
     ],
   },
+  // {
+  //   icon: "Calendar",
+  //   index: "2",
+  //   title: "固定资产管理",
+  //   permiss: "2",
+  //   subs: [
+  //     {
+  //       index: "/assetTypeManagement",
+  //       title: "固定资产类型管理",
+  //       permiss: "16",
+  //     },
+  //     {
+  //       index: "/assetManagement",
+  //       title: "固定资产信息管理",
+  //       permiss: "16",
+  //     },
+  //     {
+  //       index: "/assetAllocationManagement",
+  //       title: "固定资产领用管理",
+  //       permiss: "2",
+  //     },
+  //   ],
+  // },
+    // 固定类型管理
   {
-    icon: "Calendar",
-    index: "2",
-    title: "固定资产管理",
-    permiss: "2",
-    subs: [
-      {
-        index: "/assetTypeManagement",
-        title: "固定资产类型管理",
-        permiss: "16",
-      },
-      {
-        index: "/assetManagement",
-        title: "固定资产信息管理",
-        permiss: "16",
-      },
-      {
-        index: "/assetAllocationManagement",
-        title: "固定资产领用管理",
-        permiss: "2",
-      },
-    ],
+    icon: "Odometer",
+    index: "/assetTypeManagement",
+    title: "固定资产类型管理",
+    permiss: "1",
   },
-  // 第三项 维修＆报废
+// 固定资产信息管理
+  {
+    icon: "Document",
+    index: "/assetManagement",
+    title: "固定资产信息管理",
+    permiss: "1",
+  },
+    // 固定资产领用管理
+  {
+    icon: "PriceTag",
+    index: "/assetAllocationManagement",
+    title: "固定资产领用管理",
+    permiss: "1",
+  },
+    //固定资产维修管理
   {
     icon: "Magnet",
-    index: "3",
-    title: "固定资产 维修 / 报废",
-    permiss: "2",
-    subs: [
-      {
-        index: "/assetRepairManagement",
-        title: "固定资产维修管理",
-        permiss: "16",
-      },
-      {
-        index: "/assetScrapManagement",
-        title: "固定资产报废管理",
-        permiss: "16",
-      },
-    ],
+    index: "/assetRepairManagement",
+    title: "固定资产维修管理",
+    permiss: "1"
   },
-    // 第四项  折旧＆盘点
+    //固定资产报废管理
+  {
+    icon: "CircleClose",
+    index: "/assetScrapManagement",
+    title: "固定资产报废管理",
+    permiss: "1"
+  },
+  // 第三项 维修＆报废
+  // {
+  //   icon: "Magnet",
+  //   index: "3",
+  //   title: "固定资产 维修 / 报废",
+  //   permiss: "2",
+  //   subs: [
+  //     {
+  //       index: "/assetRepairManagement",
+  //       title: "固定资产维修管理",
+  //       permiss: "16",
+  //     },
+  //     {
+  //       index: "/assetScrapManagement",
+  //       title: "固定资产报废管理",
+  //       permiss: "16",
+  //     },
+  //   ],
+  // },
+
+  // 固定资产折旧管理
   {
     icon: "DataLine",
-    index: "4",
-    title: "固定资产 折旧 / 盘点",
-    permiss: "2",
-    subs: [
-      {
-        index: "/assetDepreciation",
-        title: "固定资产折旧",
-        permiss: "16",
-      },
-      {
-        index: "/assetInventory",
-        title: "固定资产盘点",
-        permiss: "16",
-      },
-    ],
-
+    index: "/assetDepreciation",
+    title: "固定资产折旧",
+    permiss: "1",
   },
+  // 固定资产盘点管理
+  {
+    icon: "Pointer",
+    index: "/assetInventory",
+    title: "固定资产盘点",
+    permiss: "1",
+  },
+
+  //   // 第四项  折旧＆盘点
+  // {
+  //   icon: "DataLine",
+  //   index: "4",
+  //   title: "固定资产 折旧 / 盘点",
+  //   permiss: "2",
+  //   subs: [
+  //     {
+  //       index: "/assetDepreciation",
+  //       title: "固定资产折旧",
+  //       permiss: "16",
+  //     },
+  //     {
+  //       index: "/assetInventory",
+  //       title: "固定资产盘点",
+  //       permiss: "16",
+  //     },
+  //   ],
+  // },
   {
     icon: "PieChart",
     index: "/charts",
