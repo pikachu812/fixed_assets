@@ -16,32 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `asset_depreciation`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `asset_depreciation`;
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asset_depreciation` (
-  `depreciation_id` int NOT NULL AUTO_INCREMENT,
-  `asset_id` int DEFAULT NULL,
-  `depreciation_date` date DEFAULT NULL,
-  `depreciation_amount` decimal(10,2) DEFAULT NULL,
-  `accumulated_depreciation` decimal(10,2) DEFAULT NULL,
-  `book_value` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`depreciation_id`),
-  KEY `asset_id` (`asset_id`),
-  CONSTRAINT `asset_depreciation_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `fixed_asset` (`asset_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `user` (
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role_id` int DEFAULT NULL,
+  `employee_id` int DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_pk` (`username`),
+  KEY `role_id` (`role_id`),
+  KEY `user_ibfk_2` (`employee_id`),
+  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`),
+  CONSTRAINT `user_ibfk_2` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `asset_depreciation`
+-- Dumping data for table `user`
 --
 
-LOCK TABLES `asset_depreciation` WRITE;
-/*!40000 ALTER TABLE `asset_depreciation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `asset_depreciation` ENABLE KEYS */;
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (13,'user','202cb962ac59075b964b07152d234b70',2,6),(18,'李四','202cb962ac59075b964b07152d234b70',2,5),(19,'张三','e10adc3949ba59abbe56e057f20f883e',2,10),(20,'admin','e10adc3949ba59abbe56e057f20f883e',1,NULL),(21,'王五','e10adc3949ba59abbe56e057f20f883e',1,NULL),(22,'赵强','e10adc3949ba59abbe56e057f20f883e',2,11);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-05 21:04:39
+-- Dump completed on 2024-03-13 23:19:10

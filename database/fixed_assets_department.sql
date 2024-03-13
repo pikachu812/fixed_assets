@@ -27,7 +27,7 @@ CREATE TABLE `department` (
   `name` varchar(100) NOT NULL,
   `description` text,
   PRIMARY KEY (`department_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `department` (
 
 LOCK TABLES `department` WRITE;
 /*!40000 ALTER TABLE `department` DISABLE KEYS */;
-INSERT INTO `department` VALUES (2,'人事部','负责人事调动、入职等'),(3,'财务部','固定资产审核、盘点'),(8,'市场营销部','负责市场研究、品牌管理、广告、促销活动和其他营销策略的制定与实施，以提升公司产品或服务的市场份额和品牌知名度。'),(9,'研发部','负责新产品或服务的研究和开发，创新技术，以及改进现有产品。');
+INSERT INTO `department` VALUES (2,'人事部','负责人事调动、入职等'),(3,'财务部','固定资产审核、盘点'),(8,'市场营销部','负责市场研究、品牌管理、广告、促销活动和其他营销策略的制定与实施，以提升公司产品或服务的市场份额和品牌知名度。'),(9,'研发部','负责新产品或服务的研究和开发，创新技术，以及改进现有产品。'),(10,'后勤保障部','保障公司后勤，作为支撑部门存在');
 /*!40000 ALTER TABLE `department` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-05 21:04:39
+-- Dump completed on 2024-03-13 23:19:10

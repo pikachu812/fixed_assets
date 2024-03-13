@@ -37,7 +37,7 @@ CREATE TABLE `asset_allocation` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `asset_allocation_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `fixed_asset` (`asset_id`),
   CONSTRAINT `asset_allocation_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,7 @@ CREATE TABLE `asset_allocation` (
 
 LOCK TABLES `asset_allocation` WRITE;
 /*!40000 ALTER TABLE `asset_allocation` DISABLE KEYS */;
-INSERT INTO `asset_allocation` VALUES (2,2,13,'人事部','2024-03-03','2024-03-14','demo','待审核',NULL),(3,3,13,'人事部','2024-03-03','2024-03-14','demo','待审核',NULL),(4,9,13,'人事部','2024-03-03','2024-03-14','手抓饭真香','待审核',NULL),(5,2,13,'人事部','2024-03-03','2024-03-02','f saf ea ','待审核',NULL);
+INSERT INTO `asset_allocation` VALUES (13,10,19,'研发部','2024-03-10',NULL,'日常办公打印文件使用','审核通过',NULL),(14,14,19,'研发部','2024-03-11',NULL,'开会用','审核通过',NULL),(15,27,22,'后勤保障部','2024-03-12',NULL,'接送重要贵宾使用','审核通过',NULL),(16,28,22,'后勤保障部','2024-03-12',NULL,'接送重要贵宾使用','审核通过',NULL),(17,11,13,'市场营销部','2024-03-12',NULL,'数据分析用','审核通过',NULL),(18,20,18,'人事部','2024-03-12',NULL,'日常办公用','审核通过',NULL),(19,21,18,'人事部','2024-03-12',NULL,'日常办公用','待审核',NULL);
 /*!40000 ALTER TABLE `asset_allocation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-05 21:04:39
+-- Dump completed on 2024-03-13 23:19:09

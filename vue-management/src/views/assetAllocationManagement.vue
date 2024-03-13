@@ -12,6 +12,7 @@
         <!--        <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>-->
       </div>
       <el-table
+          :default-sort="{prop: 'allocationDate', order: 'descending'}"
           :data="tableData"
           border
           class="table"

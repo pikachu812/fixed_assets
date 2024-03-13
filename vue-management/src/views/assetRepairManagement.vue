@@ -15,6 +15,7 @@
 
       <!--      表格部分 -->
       <el-table
+          :default-sort="{prop: 'repairDate', order: 'descending'}"
           :data="tableData"
           border
           class="table"
@@ -41,8 +42,13 @@
           </template>
         </el-table-column>
         <el-table-column prop="fixedAsset.name" label="资产名称" align="center" width="160%"></el-table-column>
-        <el-table-column prop="repairDate" :formatter="formatDate"
-                         label="报修日期" align="center" width="120%"></el-table-column>
+        <el-table-column prop="repairDate"
+                         label="报修日期"
+                         align="center"
+                         width="120%"
+                         sortable
+                         :formatter="formatDate"
+        ></el-table-column>
 
         <el-table-column label="资产图片" align="center" width="120%">
           <template #default="scope">
@@ -56,7 +62,8 @@
             </el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="cost" :formatter="priceFormatter" label="维修费用￥" align="center" width="100%"></el-table-column>
+        <el-table-column prop="cost" :formatter="priceFormatter" label="维修费用￥" align="center"
+                         width="100%"></el-table-column>
         <el-table-column prop="details" label="维修状态" align="center" width="160%">
           <template #default="scope">
             <el-tag :type="scope.row.status === '待维修' ? 'danger' : 'success'">
@@ -116,9 +123,9 @@
 
         <el-form ref="formRef" label-width="100px">
           <el-form-item label="维修费用" prop="cost">
-              <el-input-number v-model="cost" :min="0" step="0.1" />
+            <el-input-number v-model="cost" :min="0" step="0.1"/>
 
-<!--              <el-input v-model="cost" style="width: 300px"></el-input>-->
+            <!--              <el-input v-model="cost" style="width: 300px"></el-input>-->
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="saveEdit()">提交</el-button>
@@ -187,9 +194,9 @@ const formatDate = (row, column, cellValue, index) => {
 }
 
 const priceFormatter = (row, column, cellValue, index) => {
-    //两位小数
-    let num = Number(cellValue);
-    return `￥${num.toFixed(2)}`;
+  //两位小数
+  let num = Number(cellValue);
+  return `￥${num.toFixed(2)}`;
 };
 
 const formatAssetId = (assetId) => {
@@ -239,6 +246,7 @@ const doPagination = () => {
 };
 
 const clickToRepair = (index: number) => {
+  console.log(index);
   idx = index;
   visible.value = true;
 }
@@ -254,7 +262,7 @@ const saveEdit = () => {
   row.cost = cost.value;
   ElMessageBox.confirm("确定维修完成了吗？", "提示", {type: "warning"}).then(() => {
     service.post("/assetRepair/repair/" + row.repairId, {
-        cost: row.cost
+      cost: row.cost
     }).then((res) => {
       ElMessage.success("维修成功");
       getData();
