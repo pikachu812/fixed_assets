@@ -83,7 +83,7 @@
                             type="danger"
                             size="small"
                             :icon="Delete"
-                            @click="handleDelete(scope.$index)"
+                            @click="handleDelete(scope.$index,scope.row)"
                             v-permiss="16"
                         >
                             删除
@@ -302,13 +302,13 @@ const closeDialog = () => {
 };
 
 
-const handleDelete = async (index: number) => {
+const handleDelete = async (index: number,row: TableItem) => {
     try {
         await ElMessageBox.confirm("确定要删除此盘点记录吗？", "警告", {
             type: "warning",
         });
-        service.delete(`/assetInventory/delete/${tableData.value[index].inventoryId}`);
-        console.log('删除盘点记录', tableData.value[index].inventoryId);
+        service.delete(`/assetInventory/delete/${row.inventoryId}`);
+        console.log('删除盘点记录', row.inventoryId);
         ElMessage.success("删除成功");
         tableData.value.splice(index, 1);
         pageTotal.value -= 1;

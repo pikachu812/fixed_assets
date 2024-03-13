@@ -82,7 +82,7 @@
                             type="danger"
                             size="small"
                             :icon="Delete"
-                            @click="handleDelete(scope.$index)"
+                            @click="handleDelete(scope.$index,scope.row)"
                             v-permiss="16"
                         >
                             删除
@@ -214,12 +214,12 @@ const handlePageChange = (val: number) => {
     doPagination(); // 根据新的页码重新分页
 };
 
-const handleDelete = async (index: number) => {
+const handleDelete = async (index: number,row:TableItem) => {
     // 二次确认删除
     try {
         await ElMessageBox.confirm("确定要删除吗？", "提示", {type: "warning"});
         // 调用API删除部门
-        const assetId = tableData.value[index].assetId;
+        const assetId = row.assetId;
         await service.delete("/fixedAssets/delete/" + assetId);
         ElMessage.success("删除成功");
         tableData.value.splice(index, 1); // 从本地数据中移除

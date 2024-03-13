@@ -70,7 +70,7 @@
                             type="danger"
                             size="small"
                             :icon="Delete"
-                            @click="handleDelete(scope.$index)"
+                            @click="handleDelete(scope.$index, scope.row)"
                             v-permiss="16"
                         >
                             删除
@@ -207,11 +207,11 @@ const doPagination = () => {
 
 
 
-const handleDelete = async (index: number) => {
+const handleDelete = async (index: number,row: TableItem) => {
     // 二次确认删除
     try {
         await ElMessageBox.confirm("确定要删除吗？", "提示", {type: "warning"});
-        const scrapId = tableData.value[index].scrapId;
+        const scrapId = row.scrapId;
         await service.delete("/assetScrap/delete/" + scrapId).then(
             (res) => {
                 ElMessage.success("删除成功");

@@ -61,7 +61,7 @@
                             type="danger"
                             size="small"
                             :icon="Delete"
-                            @click="handleDelete(scope.$index)"
+                            @click="handleDelete(scope.$index,scope.row)"
                             v-permiss="16"
                         >
                             删除
@@ -171,12 +171,12 @@ const doPagination = () => {
 };
 
 
-const handleDelete = async (index: number) => {
+const handleDelete = async (index: number,row:TableItem) => {
     // 二次确认删除
     try {
         await ElMessageBox.confirm("确定要删除吗？", "提示", {type: "warning"});
         // 调用API删除部门
-        const assetTypeId = tableData.value[index].assetTypeId;
+        const assetTypeId = row.assetTypeId;
         await service.delete("/assetType/delete/" + assetTypeId);
         ElMessage.success("删除成功");
         tableData.value.splice(index, 1); // 从本地数据中移除

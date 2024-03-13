@@ -53,7 +53,7 @@
                             type="danger"
                             size="small"
                             :icon="Delete"
-                            @click="handleDelete(scope.$index)"
+                            @click="handleDelete(scope.$index, scope.row)"
                         >
                             删除
                         </el-button>
@@ -163,12 +163,12 @@ const handleSearch = () => {
     getData();
 };
 
-const handleDelete = async (index: number) => {
+const handleDelete = async (index: number,row:TableItem) => {
     // 二次确认删除
     try {
         await ElMessageBox.confirm("确定要删除吗？", "提示", {type: "warning"});
         // 调用API删除部门
-        const departmentId = tableData.value[index].departmentId;
+        const departmentId = row.departmentId;
         await service.delete("/department/delete/" + departmentId);
         ElMessage.success("删除成功");
         tableData.value.splice(index, 1); // 从本地数据中移除
