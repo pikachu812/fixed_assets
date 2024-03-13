@@ -23,7 +23,6 @@
           header-cell-class-name="table-header"
       >
         <el-table-column label="序号"
-
                          align="center" width="60%">
           <template #default="scope">
             <!--            分页后的处理序号-->
@@ -81,7 +80,7 @@
                 type="success"
                 size="small"
                 :icon="WarnTriangleFilled"
-                @click="clickToRepair(scope.$index)"
+                @click="clickToRepair(scope.row)"
                 v-permiss="16">
               维修
             </el-button>
@@ -147,9 +146,31 @@ import {AssetRepair} from "../interface/interface";
 
 // 如果 TableItem 仅用于展示 AssetRepair 数据，则可以直接使用 AssetRepair 接口
 // 否则，如果 TableItem 是一个更通用的接口，它可以继承或包含 AssetRepair
-interface TableItem extends AssetRepair {
-}
+interface TableItem extends AssetRepair {}
 
+const editRow = ref<TableItem>({
+  repairId: null,
+  assetId: null,
+  repairDate: null,
+  cost: null,
+  status: null,
+  details: null,
+  fixedAsset: {
+    assetId: null,
+    assetTypeId: null,
+    name: "",
+    purchaseDate: null,
+    price: 0,
+    imgDir: "",
+    status: "",
+    usefulYear: 0,
+    assetType: {
+      assetTypeId: 0,
+      typeName: "",
+      description: ""
+    }
+  }
+});
 const cost = ref('');
 const allData = ref<TableItem[]>([]);
 const query = ref('');
@@ -245,19 +266,21 @@ const doPagination = () => {
   tableData.value = allData.value.slice(start, end); // 从所有数据中切割当前页的数据
 };
 
-const clickToRepair = (index: number) => {
-  console.log(index);
-  idx = index;
+const clickToRepair = (row: TableItem) => {
+  // idx = index;
+    editRow.value = row;
   visible.value = true;
+  console.log(editRow);
 }
 
 const saveEdit = () => {
   visible.value = false; // 不显示维修费用窗口
 
   // 获取当前行的数据
-  let row = tableData.value[idx];
+  let row = editRow.value;
 
   console.log(row);
+
 
   row.cost = cost.value;
   ElMessageBox.confirm("确定维修完成了吗？", "提示", {type: "warning"}).then(() => {
@@ -273,41 +296,30 @@ const saveEdit = () => {
     ElMessage.info("取消维修");
   });
 };
+//
+// const handleDelete = async (index: number) => {
+//   // 二次确认删除
+//   try {
+//     await ElMessageBox.confirm("确定要删除吗？", "提示", {type: "warning"});
+//     // 调用API删除部门
+//     const repairId = tableData.value[index].repairId;
+//     await service.delete("/assetRepair/delete/" + repairId).then(
+//         (res) => {
+//           ElMessage.success("删除成功");
+//           getData();
+//         }
+//     ).catch((err) => {
+//       ElMessage.error("删除失败");
+//     });
+//
+//   } catch (error) {
+//     // 处理取消删除或API调用错误
+//     if (error !== "cancel") {
+//       ElMessage.error("删除失败");
+//     }
+//   }
+// };
 
-const handleDelete = async (index: number) => {
-  // 二次确认删除
-  try {
-    await ElMessageBox.confirm("确定要删除吗？", "提示", {type: "warning"});
-    // 调用API删除部门
-    const repairId = tableData.value[index].repairId;
-    await service.delete("/assetRepair/delete/" + repairId).then(
-        (res) => {
-          ElMessage.success("删除成功");
-          getData();
-        }
-    ).catch((err) => {
-      ElMessage.error("删除失败");
-    });
-
-  } catch (error) {
-    // 处理取消删除或API调用错误
-    if (error !== "cancel") {
-      ElMessage.error("删除失败");
-    }
-  }
-};
-
-const handleEdit = (index: number, row: TableItem) => {
-  // 当处理编辑操作时，会将当前行的数据传递给子组件
-  idx = index;
-  rowData.value = row;
-  idEdit.value = true;
-  visible.value = true;
-};
-const updateData = (row: TableItem) => {
-  console.log(tableData.value);
-  closeDialog();
-};
 
 const closeDialog = () => {
   visible.value = false;

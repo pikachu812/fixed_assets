@@ -88,6 +88,8 @@ public class AssetRepairServiceImpl implements AssetRepairService {
         AssetRepair assetRepair = AssetRepairDao.selectAssetRepairById(repairId);
         assetRepair.setStatus("已维修");
         assetRepair.setCost(cost);
+
+
         AssetRepairDao.updateAssetRepair(assetRepair);
 
         FixedAsset fixedAsset = fixedAssetDao.selectFixedAssetById(assetRepair.getAssetId());
