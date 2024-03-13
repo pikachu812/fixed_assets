@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -83,9 +84,10 @@ public class AssetRepairServiceImpl implements AssetRepairService {
 
     @Override
     @Transactional
-    public void repairAsset(Long repairId) {
+    public void repairAsset(Long repairId, Double cost) {
         AssetRepair assetRepair = AssetRepairDao.selectAssetRepairById(repairId);
         assetRepair.setStatus("已维修");
+        assetRepair.setCost(cost);
         AssetRepairDao.updateAssetRepair(assetRepair);
 
         FixedAsset fixedAsset = fixedAssetDao.selectFixedAssetById(assetRepair.getAssetId());

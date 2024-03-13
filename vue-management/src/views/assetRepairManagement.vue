@@ -56,7 +56,7 @@
             </el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="cost" label="维修费用￥" align="center" width="100%"></el-table-column>
+        <el-table-column prop="cost" :formatter="priceFormatter" label="维修费用￥" align="center" width="100%"></el-table-column>
         <el-table-column prop="details" label="维修状态" align="center" width="160%">
           <template #default="scope">
             <el-tag :type="scope.row.status === '待维修' ? 'danger' : 'success'">
@@ -116,7 +116,9 @@
 
         <el-form ref="formRef" label-width="100px">
           <el-form-item label="维修费用" prop="cost">
-            <el-input v-model="cost" style="width: 300px"></el-input>
+              <el-input-number v-model="cost" :min="0" step="0.1" />
+
+<!--              <el-input v-model="cost" style="width: 300px"></el-input>-->
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="saveEdit()">提交</el-button>
@@ -184,6 +186,12 @@ const formatDate = (row, column, cellValue, index) => {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
 
+const priceFormatter = (row, column, cellValue, index) => {
+    //两位小数
+    let num = Number(cellValue);
+    return `￥${num.toFixed(2)}`;
+};
+
 const formatAssetId = (assetId) => {
   return `ZC${assetId.toString().padStart(6, '0')}`;
 };
@@ -243,10 +251,11 @@ const saveEdit = () => {
 
   console.log(row);
 
-  // 获取不通过理由
   row.cost = cost.value;
   ElMessageBox.confirm("确定维修完成了吗？", "提示", {type: "warning"}).then(() => {
-    service.post("/assetRepair/repair/" + row.repairId, {}).then((res) => {
+    service.post("/assetRepair/repair/" + row.repairId, {
+        cost: row.cost
+    }).then((res) => {
       ElMessage.success("维修成功");
       getData();
     }).catch((err) => {

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = {"http://127.0.0.1:5173", "http://localhost:5173"}, maxAge = 3600, allowCredentials = "true")
 @RestController
@@ -41,9 +43,13 @@ public class AssetRepairController {
 
     @PostMapping("/repair/{repairId}")
     public ResponseEntity<?> repairAsset(
-            @PathVariable Long repairId
-    ) {
-        assetRepairService.repairAsset(repairId);
+            @PathVariable Long repairId,
+            @RequestBody Map<String, Object> map
+            ) {
+
+        Double cost = Double.valueOf(map.get("cost").toString());
+
+        assetRepairService.repairAsset(repairId, cost);
         return ResponseEntity.ok("维修成功");
     }
 

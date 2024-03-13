@@ -3,6 +3,7 @@ package com.example.fixed_assets.service;
 import com.example.fixed_assets.entity.AssetRepair;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface AssetRepairService {
@@ -24,6 +25,6 @@ public interface AssetRepairService {
 
     List<AssetRepair> searchAssetRepair(AssetRepair assetRepair);
 
-    void repairAsset(Long repairId);
+    void repairAsset(Long repairId, Double cost);
 
 }
