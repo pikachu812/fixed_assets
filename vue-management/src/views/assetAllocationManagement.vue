@@ -61,7 +61,7 @@
                 type="success"
                 size="small"
                 :icon="Check"
-                @click="allocationPass(scope.$index)"
+                @click="allocationPass(scope.row)"
                 v-permiss="16"
             >
               通过
@@ -72,7 +72,7 @@
                 type="danger"
                 size="small"
                 :icon="Close"
-                @click="allocationUnpass(scope.$index)"
+                @click="allocationUnpass(scope.row)"
                 v-permiss="16">
               不通过
             </el-button>
@@ -255,12 +255,8 @@ const doPagination = () => {
 };
 
 
-const allocationPass = (index: number) => {
+const allocationPass = (row: TableItem) => {
   ElMessageBox.confirm("确定要通过吗？", "提示", {type: "warning"}).then(() => {
-
-
-    // 获取当前行的数据
-    let row = tableData.value[index];
 
 
     service.post("/assetAllocation/pass/" + row.allocationId, {}).then((res) => {    //邱秋3/2改的，不知道对不对
@@ -275,10 +271,50 @@ const allocationPass = (index: number) => {
   });
 };
 
+const selectedRow = ref<TableItem>({
+  allocationId: null,
+  allocationDescription: null,
+  status: null,
+  reason: null,
+  user: {
+    userId: null,
+    username: null,
+    roleId: null,
+    employeeId: null,
+    employee: {
+      employeeId: null,
+      name: null,
+      departmentId: null,
+      department: {
+        departmentId: null,
+        name: null,
+        description: null,
+      },
+    },
+  },
+  fixedAsset: {
+    assetId: null,
+    assetTypeId: null,
+    name: null,
+    purchaseDate: null,
+    price: null,
+    imgDir: null,
+    status: null,
+    usefulYear: null,
+    assetType: {
+      assetTypeId: null,
+      typeName: null,
+      description: null,
+    },
+  },
+  allocationDate: null,
+  returnDate: null,
+});
+
 // 不通过，需要填写不通过理由
-const allocationUnpass = (index: number) => {
-  idx = index;
+const allocationUnpass = (row: TableItem) => {
   visible.value = true;
+  selectedRow.value = row;
 };
 
 // 关闭弹窗
@@ -293,7 +329,7 @@ const saveEdit = () => {
 
 
     // 获取当前行的数据
-    let row = tableData.value[idx];
+    let row = selectedRow.value;
     // 获取不通过理由
     row.reason = reason.value;
 
