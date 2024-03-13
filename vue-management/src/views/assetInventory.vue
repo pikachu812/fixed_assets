@@ -4,7 +4,7 @@
             <div class="search-box">
                 <el-input
                     v-model="query.inventoryName"
-                    placeholder="资产名称"
+                    placeholder="盘点名称"
                     class="search-input mr10"
                     clearable
                 ></el-input>

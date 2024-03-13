@@ -85,6 +85,7 @@
                     prop="netBookValue"
                     label="固定资产折旧净值"
                     :formatter="priceFormatter"
+                    width="180px"
                     align="center"
                 ></el-table-column>
 

@@ -17,7 +17,7 @@ x
                 <el-table-column label="用户角色" align="center">
                     <template #default="scope">
                         <el-tag :type="scope.row.role.roleName === 'admin' ? 'success' : 'info'">
-                            {{ scope.row.role.roleName === 'user' ? '普通员工' : '管理员' }}
+                            {{ scope.row.role.roleName === 'user' ? '员工' : '管理员' }}
                         </el-tag>
                     </template>
                 </el-table-column>

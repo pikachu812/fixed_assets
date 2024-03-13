@@ -12,7 +12,7 @@ interface AssetRepair {
     repairId: number;
     assetId: number;
     repairDate: string; // 或 Date 类型，取决于您如何处理日期
-    cost: number; // 或 string 类型，如果您希望保持原始格式
+    cost: string | null; // 或 string 类型，如果您希望保持原始格式
     status: string;
     details: string | null;
     fixedAsset: FixedAsset;

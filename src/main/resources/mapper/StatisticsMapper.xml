@@ -4,35 +4,39 @@
 <mapper namespace="com.example.fixed_assets.dao.StatisticsDao">
 
 
-
     <select id="assetByDepartment" resultType="map">
-        SELECT
-            d.name AS department,
-            COALESCE(SUM(CASE WHEN a.status = '审核通过' THEN 1 ELSE 0 END), 0) AS asset_count
-        FROM
-            department d
-                LEFT JOIN
-            asset_allocation a ON d.name = a.department
-        GROUP BY
-            d.name
-        ORDER BY
-            asset_count DESC;
+        SELECT d.name                                                              AS department,
+               COALESCE(SUM(CASE WHEN a.status = '审核通过' THEN 1 ELSE 0 END), 0) AS asset_count
+        FROM department d
+                 LEFT JOIN
+             asset_allocation a ON d.name = a.department
+        GROUP BY d.name
+        ORDER BY asset_count DESC;
 
     </select>
-
     <select id="assetByType" resultType="map">
-        SELECT
-            at.type_name AS type,
-            COUNT(CASE WHEN fa.status = '使用中' THEN fa.asset_id ELSE NULL END) AS count
-        FROM
-            asset_type at
-                LEFT JOIN fixed_asset fa ON at.asset_type_id = fa.asset_type_id
-        GROUP BY
-            at.type_name
-        ORDER BY
-            count DESC;
-
+        SELECT at.type_name       AS type,
+               COUNT(fa.asset_id) AS count
+        FROM asset_type at
+                 LEFT JOIN
+             fixed_asset fa ON at.asset_type_id = fa.asset_type_id
+        GROUP BY at.type_name
+        ORDER BY count DESC;
     </select>
+
+    <!--    <select id="assetByType" resultType="map">-->
+    <!--        SELECT-->
+    <!--            at.type_name AS type,-->
+    <!--            COUNT(CASE WHEN fa.status = '使用中' THEN fa.asset_id ELSE NULL END) AS count-->
+    <!--        FROM-->
+    <!--            asset_type at-->
+    <!--                LEFT JOIN fixed_asset fa ON at.asset_type_id = fa.asset_type_id-->
+    <!--        GROUP BY-->
+    <!--            at.type_name-->
+    <!--        ORDER BY-->
+    <!--            count DESC;-->
+
+    <!--    </select>-->
 
 
 </mapper>

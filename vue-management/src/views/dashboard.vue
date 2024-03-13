@@ -7,71 +7,78 @@
 						<el-avatar :size="120" :src="imgurl" />
 						<div class="user-info-cont">
 							<div class="user-info-name">{{ name }}</div>
-							<div>{{ role }}</div>
+							<div> 管理员</div>
 						</div>
 					</div>
 					<div class="user-info-list">
 						上次登录时间：
-						<span>2024-03-01</span>
+						<span>2024-03-12</span>
 					</div>
 					<div class="user-info-list">
 						上次登录地点：
 						<span>上海</span>
 					</div>
 				</el-card>
-				<el-card shadow="hover" style="height: 252px">
+				<el-card shadow="hover" style="height: 244px">
 					<template #header>
 						<div class="clearfix">
 							<span>语言详情</span>
 						</div>
 					</template>
+					Java
+					<el-progress :percentage="69.4" color="#42b983"></el-progress>
 					Vue
-					<el-progress :percentage="79.4" color="#42b983"></el-progress>
-					TypeScript
-					<el-progress :percentage="14" color="#f1e05a"></el-progress>
+					<el-progress :percentage="24" color="#f1e05a"></el-progress>
 					CSS
 					<el-progress :percentage="5.6"></el-progress>
 					HTML
 					<el-progress :percentage="1" color="#f56c6c"></el-progress>
 				</el-card>
 			</el-col>
+
+
 			<el-col :span="16">
-				<el-row :gutter="20" class="mgb20">
-					<el-col :span="8">
-						<el-card shadow="hover" :body-style="{ padding: '0px' }">
-							<div class="grid-content grid-con-1">
-								<el-icon class="grid-con-icon"><User /></el-icon>
-								<div class="grid-cont-right">
-									<div class="grid-num">1234</div>
-									<div>用户访问量</div>
-								</div>
-							</div>
-						</el-card>
-					</el-col>
-					<el-col :span="8">
-						<el-card shadow="hover" :body-style="{ padding: '0px' }">
-							<div class="grid-content grid-con-2">
-								<el-icon class="grid-con-icon"><ChatDotRound /></el-icon>
-								<div class="grid-cont-right">
-									<div class="grid-num">321</div>
-									<div>系统消息</div>
-								</div>
-							</div>
-						</el-card>
-					</el-col>
-					<el-col :span="8">
-						<el-card shadow="hover" :body-style="{ padding: '0px' }">
-							<div class="grid-content grid-con-3">
-								<el-icon class="grid-con-icon"><Goods /></el-icon>
-								<div class="grid-cont-right">
-									<div class="grid-num">5000</div>
-									<div>固定资产数量</div>
-								</div>
-							</div>
-						</el-card>
-					</el-col>
+            <el-row :gutter="20" class="mgb20">
+
+              <h2 >欢迎访问企业固定资产核算系统后台</h2>
+
+<!--              <el-col :span="8">-->
+<!--						<el-card shadow="hover" :body-style="{ padding: '0px' }">-->
+<!--							<div class="grid-content grid-con-1">-->
+<!--								<el-icon class="grid-con-icon"><User /></el-icon>-->
+<!--								<div class="grid-cont-right">-->
+<!--									<div class="grid-num">1234</div>-->
+<!--									<div>用户访问量</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</el-card>-->
+<!--					</el-col>-->
+<!--					<el-col :span="8">-->
+<!--						<el-card shadow="hover" :body-style="{ padding: '0px' }">-->
+<!--							<div class="grid-content grid-con-2">-->
+<!--								<el-icon class="grid-con-icon"><ChatDotRound /></el-icon>-->
+<!--								<div class="grid-cont-right">-->
+<!--									<div class="grid-num">321</div>-->
+<!--									<div>系统消息</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</el-card>-->
+<!--					</el-col>-->
+<!--					<el-col :span="8">-->
+<!--						<el-card shadow="hover" :body-style="{ padding: '0px' }">-->
+<!--							<div class="grid-content grid-con-3">-->
+<!--								<el-icon class="grid-con-icon"><Goods /></el-icon>-->
+<!--								<div class="grid-cont-right">-->
+<!--									<div class="grid-num">5000</div>-->
+<!--									<div>固定资产数量</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</el-card>-->
+<!--					</el-col>-->
 				</el-row>
-				<el-card shadow="hover" style="height: 403px">
+
+<!--        待办事项-->
+				<el-card shadow="hover" style="height: 400px">
 					<template #header>
 						<div class="clearfix">
 							<span>待办事项</span>
@@ -101,18 +108,20 @@
 				</el-card>
 			</el-col>
 		</el-row>
-		<el-row :gutter="20">
-			<el-col :span="12">
-				<el-card shadow="hover">
-					<schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>
-				</el-card>
-			</el-col>
-			<el-col :span="12">
-				<el-card shadow="hover">
-					<schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
-				</el-card>
-			</el-col>
-		</el-row>
+
+<!--    下面两行-->
+<!--		<el-row :gutter="20">-->
+<!--			<el-col :span="12">-->
+<!--				<el-card shadow="hover">-->
+<!--					<schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>-->
+<!--				</el-card>-->
+<!--			</el-col>-->
+<!--			<el-col :span="12">-->
+<!--				<el-card shadow="hover">-->
+<!--					<schart ref="line" class="schart" canvasId="line" :options="options2"></schart>-->
+<!--				</el-card>-->
+<!--			</el-col>-->
+<!--		</el-row>-->
 	</div>
 </template>
 
@@ -169,33 +178,38 @@ const options2 = {
 };
 const todoList = reactive([
 	{
-		title: '今天要修复100个bug',
+		title: '审核今日领用申请',
 		status: false
 	},
 	{
-		title: '今天要修复100个bug',
+		title: '添加新的用户信息',
 		status: false
 	},
 	{
-		title: '今天要写100行代码加几个bug吧',
+		title: '登记入库固定资产信息',
 		status: false
 	},
 	{
-		title: '今天要修复100个bug',
+		title: '进行Q1研发部门季度设备检查',
 		status: false
 	},
 	{
-		title: '今天要修复100个bug',
+		title: '处理员工报修单',
 		status: true
 	},
-	{
-		title: '今天要写100行代码加几个bug吧',
-		status: true
-	}
+	// {
+	// 	title: '检查需要报废的固定',
+	// 	status: true
+	// }
 ]);
 </script>
 
 <style scoped>
+h2 {
+  padding: 30px 0 10px 30px;
+  color : #337ecc;
+
+}
 .el-row {
 	margin-bottom: 20px;
 }

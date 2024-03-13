@@ -90,6 +90,8 @@
         ></el-pagination>
       </div>
     </div>
+
+    <!--    不通过弹窗-->
     <el-dialog
         align-center
         :title="'审核详情'"
@@ -99,7 +101,6 @@
         :close-on-click-modal="false"
         @close="closeDialog"
     >
-      <!--      <AllocationEdit :data="rowData" :edit="idEdit" :update="updateData"/>-->
       <el-form ref="formRef" label-width="100px">
         <el-form-item label="不通过原因" prop="name">
           <el-input
@@ -112,9 +113,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <!-- <el-dialog title="查看用户详情" v-model="visible1" width="700px" destroy-on-close>
-            <UserTableDetail :data="rowData" />
-        </el-dialog> -->
+
   </div>
 </template>
 
