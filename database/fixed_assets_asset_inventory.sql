@@ -33,7 +33,7 @@ CREATE TABLE `asset_inventory` (
   PRIMARY KEY (`inventory_id`),
   KEY `asset_id` (`asset_id`),
   CONSTRAINT `asset_inventory_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `fixed_asset` (`asset_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `asset_inventory` (
 
 LOCK TABLES `asset_inventory` WRITE;
 /*!40000 ALTER TABLE `asset_inventory` DISABLE KEYS */;
-INSERT INTO `asset_inventory` VALUES (2,NULL,'2024-03-12',9,2,19469.00,'季度设备检查');
+INSERT INTO `asset_inventory` VALUES (2,NULL,'2024-03-12',9,2,19469.00,'季度设备检查'),(5,NULL,'2024-03-19',10,2,730000.00,'年末盘点');
 /*!40000 ALTER TABLE `asset_inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-13 23:19:11
+-- Dump completed on 2024-03-19 12:23:42

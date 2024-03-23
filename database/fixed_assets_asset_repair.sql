@@ -32,7 +32,7 @@ CREATE TABLE `asset_repair` (
   PRIMARY KEY (`repair_id`),
   KEY `asset_id` (`asset_id`),
   CONSTRAINT `asset_repair_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `fixed_asset` (`asset_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `asset_repair` (
 
 LOCK TABLES `asset_repair` WRITE;
 /*!40000 ALTER TABLE `asset_repair` DISABLE KEYS */;
-INSERT INTO `asset_repair` VALUES (6,10,'2024-03-10','已维修',0.60,'卡纸导致无法使用'),(7,14,'2024-03-13','已维修',NULL,'不慎从会议桌摔落地'),(8,10,'2024-03-05','已维修',NULL,'bgjilhk'),(9,10,'2024-03-13','待维修',NULL,'不慎掉落地面摔坏镜头');
+INSERT INTO `asset_repair` VALUES (6,10,'2024-03-10','已维修',888.10,'卡纸导致无法使用'),(7,14,'2024-03-13','已维修',888.10,'不慎从会议桌摔落地'),(12,21,'2024-03-13','已维修',8888.00,'我是李四'),(13,10,'2024-03-14','已维修',20.00,'不小心摔了导致零件坏了'),(14,10,'2024-03-10','已维修',200.00,'不慎掉落'),(15,10,'2024-03-19','已维修',20.00,'不慎掉落');
 /*!40000 ALTER TABLE `asset_repair` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-13 23:19:11
+-- Dump completed on 2024-03-19 12:23:42
