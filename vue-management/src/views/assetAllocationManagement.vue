@@ -12,8 +12,8 @@
         <!--        <el-button type="warning" :icon="CirclePlusFilled" @click="visible = true">新增</el-button>-->
       </div>
       <el-table
-          :default-sort="{prop: 'allocationDate', order: 'descending'}"
           :data="tableData"
+          @sort-change="handleSortChange"
           border
           class="table"
           ref="multipleTable"
@@ -32,7 +32,8 @@
                          width="90px"></el-table-column>
         <el-table-column prop="user.employee.department.name" label="部门名称" align="center"
                          width="100px"></el-table-column>
-        <el-table-column sortable prop="allocationDate" :formatter="formatDate"
+        <el-table-column sortable
+                         prop="allocationDate" :formatter="formatDate"
                          label="领用日期" align="center" width="110px"></el-table-column>
         <el-table-column sortable prop="returnDate" :formatter="formatDate"
                          label="返回日期" align="center" width="110px"></el-table-column>
@@ -197,6 +198,36 @@ const formatDate = (row, column, cellValue, index) => {
 }
 
 
+
+
+const handleSortChange = ({prop, order}) => {
+    if (!prop || !order) return; // 如果没有排序列或顺序，则不执行任何操作
+
+    // 根据排序列和顺序对allData进行排序
+    allData.value.sort((a, b) => {
+        let valueA = a[prop];
+        let valueB = b[prop];
+
+        if (typeof valueA === 'string') {
+            valueA = valueA.toUpperCase(); // 如果是字符串，则不区分大小写
+        }
+        if (typeof valueB === 'string') {
+            valueB = valueB.toUpperCase();
+        }
+
+        if (order === 'ascending') {
+            return valueA > valueB ? 1 : (valueA < valueB ? -1 : 0);
+        } else {
+            return valueA < valueB ? 1 : (valueA > valueB ? -1 : 0);
+        }
+    });
+
+    // 重新分页
+    doPagination();
+};
+
+
+
 const filterStatus = (value, row) => {
   return row.status === value;
 };
@@ -231,11 +262,24 @@ const getData = async () => {
     //   res.data = data;
 
     allData.value = res.data; // 假设后端返回的全部数据在data字段中
+
+    //根据后端返回的数据进行排序
+    allData.value.sort((a, b) => {
+        let valueA = a.allocationDate;
+        let valueB = b.allocationDate;
+        if (valueA === null) {
+            return 1;
+        }
+        if (valueB === null) {
+            return -1;
+        }
+        return valueA > valueB ? -1 : (valueA < valueB ? 1 : 0);
+    });
+
     pageTotal.value = res.data.length; // 设置总数据量
     doPagination(); // 调用分页函数
   });
 };
-getData();
 
 // 查询操作
 const handleSearch = () => {
@@ -355,6 +399,10 @@ const saveEdit = () => {
     ElMessage.error("取消");
   });
 };
+
+getData();
+
+
 
 </script>
 

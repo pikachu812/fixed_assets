@@ -34,7 +34,7 @@ CREATE TABLE `user` (
   KEY `user_ibfk_2` (`employee_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`),
   CONSTRAINT `user_ibfk_2` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (13,'user','202cb962ac59075b964b07152d234b70',2,6),(18,'李四','202cb962ac59075b964b07152d234b70',2,5),(19,'张三','e10adc3949ba59abbe56e057f20f883e',2,10),(20,'admin','e10adc3949ba59abbe56e057f20f883e',1,NULL),(21,'王五','e10adc3949ba59abbe56e057f20f883e',1,NULL),(22,'赵强','e10adc3949ba59abbe56e057f20f883e',2,11);
+INSERT INTO `user` VALUES (13,'user','202cb962ac59075b964b07152d234b70',2,6),(18,'李四','202cb962ac59075b964b07152d234b70',2,5),(19,'张三','e10adc3949ba59abbe56e057f20f883e',2,10),(20,'admin','e10adc3949ba59abbe56e057f20f883e',1,NULL),(21,'王五','e10adc3949ba59abbe56e057f20f883e',1,NULL),(22,'赵强','e10adc3949ba59abbe56e057f20f883e',2,11),(23,'李HR','e10adc3949ba59abbe56e057f20f883e',2,12);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-13 23:19:10
+-- Dump completed on 2024-03-19 12:23:41
