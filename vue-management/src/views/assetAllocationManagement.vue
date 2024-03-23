@@ -35,7 +35,7 @@
         <el-table-column sortable prop="allocationDate" :formatter="formatDate"
                          label="领用日期" align="center" width="110px"></el-table-column>
         <el-table-column sortable prop="returnDate" :formatter="formatDate"
-                         label="返回日期" align="center" width="110px"></el-table-column>
+                         label="退还日期" align="center" width="110px"></el-table-column>
         <el-table-column
             :filters="[
                         { text: '待审核', value: '待审核' },
@@ -197,6 +197,7 @@ const formatDate = (row, column, cellValue, index) => {
 }
 
 
+
 const filterStatus = (value, row) => {
   return row.status === value;
 };
@@ -257,7 +258,6 @@ const doPagination = () => {
 
 const allocationPass = (row: TableItem) => {
   ElMessageBox.confirm("确定要通过吗？", "提示", {type: "warning"}).then(() => {
-
 
     service.post("/assetAllocation/pass/" + row.allocationId, {}).then((res) => {    //邱秋3/2改的，不知道对不对
       ElMessage.success("通过");
